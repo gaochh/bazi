@@ -145,7 +145,7 @@ header p {
   background: linear-gradient(145deg, rgba(40, 25, 15, 0.9), rgba(30, 18, 10, 0.95));
   border: 1px solid rgba(212, 175, 55, 0.15);
   border-radius: 10px;
-  padding: 18px 10px;
+  padding: 18px 10px 14px;
   text-align: center;
   transition: all 0.3s;
 }
@@ -160,7 +160,6 @@ header p {
   font-size: 0.75rem;
   letter-spacing: 2px;
   margin-bottom: 10px;
-  text-transform: uppercase;
 }
 
 .pillar-gan {
@@ -185,12 +184,23 @@ header p {
   display: inline-block;
   margin: 2px;
   letter-spacing: 1px;
+  color: #fff;
 }
 
 .pillar-nayin {
   font-size: 0.7rem;
   color: #a08870;
   margin-top: 6px;
+}
+
+.pillar-changsheng {
+  font-size: 0.72rem;
+  color: #d4af37;
+  margin-top: 6px;
+  padding: 2px 8px;
+  background: rgba(212, 175, 55, 0.08);
+  border-radius: 8px;
+  display: inline-block;
 }
 
 .info-grid {
@@ -277,28 +287,72 @@ header p {
   color: #fff;
 }
 
-.wuxing-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.pillar-detail {
-  font-size: 0.82rem;
-  margin-top: 8px;
-  color: #a08870;
-}
-
-.pillar-detail span {
-  display: inline-block;
-  margin: 0 3px;
-}
-
 .gan-day-master {
   color: #d4af37;
   font-size: 1.6rem;
   font-weight: 700;
+}
+
+/* 神煞 */
+.shensha-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shensha-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(212, 175, 55, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+}
+
+.shensha-name {
+  color: #a08870;
+}
+
+.shensha-val {
+  color: #d4af37;
+  font-weight: 500;
+}
+
+/* 大运 */
+.dayun-table-wrap {
+  overflow-x: auto;
+}
+
+.dayun-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.dayun-table th {
+  color: #b89a6a;
+  font-weight: 500;
+  text-align: center;
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  letter-spacing: 1px;
+}
+
+.dayun-table td {
+  text-align: center;
+  padding: 10px 6px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.06);
+  color: #e8d5c0;
+}
+
+.dayun-table tbody tr:hover {
+  background: rgba(212, 175, 55, 0.04);
+}
+
+.dayun-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .footer-note {
@@ -318,4 +372,6 @@ header p {
   .form-section { padding: 20px 16px; }
   .info-grid { grid-template-columns: 1fr; }
   .pillar-gan, .pillar-zhi { font-size: 1.5rem; }
+  .dayun-table { font-size: 0.75rem; }
+  .dayun-table th, .dayun-table td { padding: 6px 4px; }
 }

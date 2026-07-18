@@ -13,7 +13,7 @@
   <div class="app-container">
     <header>
       <h1>八字排盘</h1>
-      <p>四柱八字的 · 五行推演 · 命理分析</p>
+      <p>四柱八字 · 五行推演 · 命理分析</p>
     </header>
 
     <div class="form-section">
@@ -100,6 +100,22 @@
             <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="ssHour"></span></div>
           </div>
 
+          <div class="info-card">
+            <h3>◆ 十二长生</h3>
+            <div class="info-row"><span class="info-label">年柱</span><span class="info-value" id="csYear"></span></div>
+            <div class="info-row"><span class="info-label">月柱</span><span class="info-value" id="csMonth"></span></div>
+            <div class="info-row"><span class="info-label">日柱</span><span class="info-value" id="csDay"></span></div>
+            <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="csHour"></span></div>
+          </div>
+
+          <div class="info-card">
+            <h3>◆ 纳音五行</h3>
+            <div class="info-row"><span class="info-label">年柱</span><span class="info-value" id="nayinYear"></span></div>
+            <div class="info-row"><span class="info-label">月柱</span><span class="info-value" id="nayinMonth"></span></div>
+            <div class="info-row"><span class="info-label">日柱</span><span class="info-value" id="nayinDay"></span></div>
+            <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="nayinHour"></span></div>
+          </div>
+
           <div class="info-card full-width">
             <h3>◆ 五行分布</h3>
             <div class="wuxing-bar" id="wuxingBar"></div>
@@ -107,11 +123,16 @@
           </div>
 
           <div class="info-card full-width">
-            <h3>◆ 纳音五行</h3>
-            <div class="info-row"><span class="info-label">年柱</span><span class="info-value" id="nayinYear"></span></div>
-            <div class="info-row"><span class="info-label">月柱</span><span class="info-value" id="nayinMonth"></span></div>
-            <div class="info-row"><span class="info-label">日柱</span><span class="info-value" id="nayinDay"></span></div>
-            <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="nayinHour"></span></div>
+            <h3>◆ 神煞</h3>
+            <div class="shensha-grid" id="shenshaGrid"></div>
+          </div>
+
+          <div class="info-card full-width">
+            <h3>◆ 大运排布</h3>
+            <div id="dayunInfo" style="margin-bottom:12px;font-size:0.88rem;color:#b89a6a"></div>
+            <div class="dayun-table-wrap">
+              <table class="dayun-table" id="dayunTable"></table>
+            </div>
           </div>
         </div>
       </div>
@@ -128,27 +149,20 @@
       const yearSel = document.getElementById('birthYear');
       for (let y = 1900; y <= 2100; y++) {
         const opt = document.createElement('option');
-        opt.value = y;
-        opt.textContent = y + ' 年';
+        opt.value = y; opt.textContent = y + ' 年';
         if (y === defaultDate.year) opt.selected = true;
         yearSel.appendChild(opt);
       }
-
-      const monthSel = document.getElementById('birthMonth');
-      monthSel.value = defaultDate.month;
-
+      document.getElementById('birthMonth').value = defaultDate.month;
       const daySel = document.getElementById('birthDay');
       for (let d = 1; d <= 31; d++) {
         const opt = document.createElement('option');
-        opt.value = d;
-        opt.textContent = d + ' 日';
+        opt.value = d; opt.textContent = d + ' 日';
         if (d === defaultDate.day) opt.selected = true;
         daySel.appendChild(opt);
       }
-
-      const hourSel = document.getElementById('birthHour');
       const h = getHourBranchIdx(defaultDate.hour, defaultDate.minute);
-      hourSel.value = h;
+      document.getElementById('birthHour').value = h;
     })();
 
     document.getElementById('baziForm').addEventListener('submit', function(e) {
@@ -158,11 +172,8 @@
       const day = parseInt(document.getElementById('birthDay').value);
       const hourBranch = parseInt(document.getElementById('birthHour').value);
       const gender = document.getElementById('birthGender').value;
-
-      const hourMap = { 0: [23, 0], 1: [1, 0], 2: [3, 0], 3: [5, 0], 4: [7, 0], 5: [9, 0],
-                        6: [11, 0], 7: [13, 0], 8: [15, 0], 9: [17, 0], 10: [19, 0], 11: [21, 0] };
+      const hourMap = { 0:[23,0],1:[1,0],2:[3,0],3:[5,0],4:[7,0],5:[9,0],6:[11,0],7:[13,0],8:[15,0],9:[17,0],10:[19,0],11:[21,0] };
       const [hour, minute] = hourMap[hourBranch];
-
       const result = calcBazi(year, month, day, hour, minute, gender);
       displayResult(result);
     });
@@ -170,10 +181,8 @@
     function displayResult(r) {
       const grid = document.getElementById('pillarsGrid');
       grid.innerHTML = '';
-
       r.pillars.forEach((p, i) => {
-        const wxG = WU_XING_TG[p.gan];
-        const wxZ = WU_XING_DZ[p.zhi];
+        const wxG = WU_XING_TG[p.gan], wxZ = WU_XING_DZ[p.zhi];
         const card = document.createElement('div');
         card.className = 'pillar-card';
         card.innerHTML = `
@@ -188,12 +197,13 @@
           <div class="pillar-detail">
             <span>${r.yinyang[i].gan}</span>·<span>${r.yinyang[i].zhi}</span>
           </div>
+          <div class="pillar-changsheng">${r.changSheng[i]}</div>
         `;
         grid.appendChild(card);
       });
 
-      document.getElementById('riGanDisplay').textContent = r.riGan + ' (' + r.riWx + ')';
-      document.getElementById('riGanDesc').textContent = `日主为${r.riYinYang}${r.riWx} · 生于${r.riZhi}日`;
+      document.getElementById('riGanDisplay').textContent = r.riGan + ' (' + r.riWx + ' · ' + r.riYinYang + ')';
+      document.getElementById('riGanDesc').textContent = `日主为${r.riYinYang}${r.riWx} · 生于${r.riZhi}日 · ${r.hourRange}出生`;
 
       document.getElementById('shengXiao').textContent = r.shengXiao;
       document.getElementById('genderDisplay').textContent = r.gender;
@@ -205,6 +215,11 @@
       document.getElementById('ssDay').textContent = '日主';
       document.getElementById('ssHour').textContent = r.shiShen[3];
 
+      document.getElementById('csYear').textContent = r.changSheng[0];
+      document.getElementById('csMonth').textContent = r.changSheng[1];
+      document.getElementById('csDay').textContent = r.changSheng[2];
+      document.getElementById('csHour').textContent = r.changSheng[3];
+
       document.getElementById('nayinYear').textContent = r.nayin[0];
       document.getElementById('nayinMonth').textContent = r.nayin[1];
       document.getElementById('nayinDay').textContent = r.nayin[2];
@@ -212,8 +227,7 @@
 
       const bar = document.getElementById('wuxingBar');
       bar.innerHTML = '';
-      const wxOrder = ['木', '火', '土', '金', '水'];
-      const wxLabels = { '木': '木', '火': '火', '土': '土', '金': '金', '水': '水' };
+      const wxOrder = ['木','火','土','金','水'];
       wxOrder.forEach(wx => {
         if (r.wuxingCount[wx] > 0) {
           const seg = document.createElement('div');
@@ -236,15 +250,51 @@
         tag.innerHTML = `${wx} ${r.wuxingCount[wx]} (${r.wuxingPercent[wx]}%)`;
         tags.appendChild(tag);
       });
-
       if (r.missingWx.length > 0) {
         const missTag = document.createElement('span');
         missTag.className = 'wuxing-tag';
         missTag.style.background = '#555';
         missTag.style.color = '#ccc';
-        missTag.textContent = `缺: ${r.missingWx.join('、')}`;
+        missTag.textContent = '缺: ' + r.missingWx.join('、');
         tags.appendChild(missTag);
       }
+
+      const sg = document.getElementById('shenshaGrid');
+      sg.innerHTML = '';
+      const entries = Object.entries(r.shenSha);
+      if (entries.length === 0) {
+        sg.innerHTML = '<div style="color:#a08870;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>';
+      } else {
+        entries.forEach(([name, val]) => {
+          const div = document.createElement('div');
+          div.className = 'shensha-item';
+          const vStr = Array.isArray(val) ? val.join('、') : val;
+          div.innerHTML = `<span class="shensha-name">${name}</span><span class="shensha-val">${vStr}</span>`;
+          sg.appendChild(div);
+        });
+      }
+
+      const dy = r.daYun;
+      document.getElementById('dayunInfo').innerHTML = `起运年龄：<strong>${dy.startAge} 岁</strong> &nbsp;·&nbsp; 排法：<strong>${dy.shunPai ? '顺排' : '逆排'}</strong>`;
+      const dt = document.getElementById('dayunTable');
+      dt.innerHTML = '';
+      const thead = document.createElement('thead');
+      thead.innerHTML = '<tr><th>大运</th><th>年龄</th><th>天干</th><th>地支</th><th>五行</th><th>纳音</th></tr>';
+      dt.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      dy.pillars.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.index}</td>
+          <td>${p.ageFrom}-${p.ageTo}岁</td>
+          <td style="color:${WU_XING_COLOR[p.wxG]};font-weight:500">${p.gan}</td>
+          <td style="color:${WU_XING_COLOR[p.wxZ]};font-weight:500">${p.zhi}</td>
+          <td><span class="pillar-wx" style="background:${WU_XING_COLOR[p.wxG]}">${p.wxG}</span><span class="pillar-wx" style="background:${WU_XING_COLOR[p.wxZ]}">${p.wxZ}</span></td>
+          <td style="color:#a08870">${p.naYin}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      dt.appendChild(tbody);
 
       document.getElementById('resultSection').classList.add('visible');
       document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
