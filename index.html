@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>八字排盘 - 四柱八字在线测算</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <h1>八字排盘</h1>
+      <p>四柱八字的 · 五行推演 · 命理分析</p>
+    </header>
+
+    <div class="form-section">
+      <h2>◆ 请输入出生信息</h2>
+      <form id="baziForm" autocomplete="off">
+        <div class="form-row">
+          <div class="form-group">
+            <label>年</label>
+            <select id="birthYear"></select>
+          </div>
+          <div class="form-group">
+            <label>月</label>
+            <select id="birthMonth">
+              <option value="1">1 月</option><option value="2">2 月</option>
+              <option value="3">3 月</option><option value="4">4 月</option>
+              <option value="5">5 月</option><option value="6">6 月</option>
+              <option value="7">7 月</option><option value="8">8 月</option>
+              <option value="9">9 月</option><option value="10">10 月</option>
+              <option value="11">11 月</option><option value="12">12 月</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>日</label>
+            <select id="birthDay"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>时辰</label>
+            <select id="birthHour">
+              <option value="0">子时 (23:00-00:59)</option>
+              <option value="1">丑时 (01:00-02:59)</option>
+              <option value="2">寅时 (03:00-04:59)</option>
+              <option value="3">卯时 (05:00-06:59)</option>
+              <option value="4">辰时 (07:00-08:59)</option>
+              <option value="5">巳时 (09:00-10:59)</option>
+              <option value="6" selected>午时 (11:00-12:59)</option>
+              <option value="7">未时 (13:00-14:59)</option>
+              <option value="8">申时 (15:00-16:59)</option>
+              <option value="9">酉时 (17:00-18:59)</option>
+              <option value="10">戌时 (19:00-20:59)</option>
+              <option value="11">亥时 (21:00-22:59)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>性别</label>
+            <select id="birthGender">
+              <option value="男">男</option>
+              <option value="女">女</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">开 始 排 盘</button>
+      </form>
+    </div>
+
+    <div class="result-section" id="resultSection">
+      <div class="form-section">
+        <h2>◆ 四柱八字</h2>
+        <div class="pillars-grid" id="pillarsGrid"></div>
+
+        <div class="info-grid">
+          <div class="info-card full-width">
+            <h3>◆ 日主</h3>
+            <div style="text-align:center;padding:8px 0">
+              <span class="gan-day-master" id="riGanDisplay"></span>
+              <div style="color:#b89a6a;font-size:0.85rem;margin-top:4px" id="riGanDesc"></div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3>◆ 命主信息</h3>
+            <div class="info-row"><span class="info-label">生肖</span><span class="info-value" id="shengXiao"></span></div>
+            <div class="info-row"><span class="info-label">性别</span><span class="info-value" id="genderDisplay"></span></div>
+            <div class="info-row"><span class="info-label">日干五行</span><span class="info-value" id="riWxDisplay"></span></div>
+            <div class="info-row"><span class="info-label">日支藏干</span><span class="info-value" id="cangGanDisplay"></span></div>
+          </div>
+
+          <div class="info-card">
+            <h3>◆ 十神</h3>
+            <div class="info-row"><span class="info-label">年柱</span><span class="info-value" id="ssYear"></span></div>
+            <div class="info-row"><span class="info-label">月柱</span><span class="info-value" id="ssMonth"></span></div>
+            <div class="info-row"><span class="info-label">日柱</span><span class="info-value" id="ssDay">日主</span></div>
+            <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="ssHour"></span></div>
+          </div>
+
+          <div class="info-card full-width">
+            <h3>◆ 五行分布</h3>
+            <div class="wuxing-bar" id="wuxingBar"></div>
+            <div class="wuxing-bar-total" id="wuxingTags"></div>
+          </div>
+
+          <div class="info-card full-width">
+            <h3>◆ 纳音五行</h3>
+            <div class="info-row"><span class="info-label">年柱</span><span class="info-value" id="nayinYear"></span></div>
+            <div class="info-row"><span class="info-label">月柱</span><span class="info-value" id="nayinMonth"></span></div>
+            <div class="info-row"><span class="info-label">日柱</span><span class="info-value" id="nayinDay"></span></div>
+            <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="nayinHour"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">仅供学习参考 · 传统文化研究</div>
+  </div>
+
+  <script src="js/bazi.js"></script>
+  <script>
+    const defaultDate = getDefaultDate();
+
+    (function initForm() {
+      const yearSel = document.getElementById('birthYear');
+      for (let y = 1900; y <= 2100; y++) {
+        const opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y + ' 年';
+        if (y === defaultDate.year) opt.selected = true;
+        yearSel.appendChild(opt);
+      }
+
+      const monthSel = document.getElementById('birthMonth');
+      monthSel.value = defaultDate.month;
+
+      const daySel = document.getElementById('birthDay');
+      for (let d = 1; d <= 31; d++) {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d + ' 日';
+        if (d === defaultDate.day) opt.selected = true;
+        daySel.appendChild(opt);
+      }
+
+      const hourSel = document.getElementById('birthHour');
+      const h = getHourBranchIdx(defaultDate.hour, defaultDate.minute);
+      hourSel.value = h;
+    })();
+
+    document.getElementById('baziForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const year = parseInt(document.getElementById('birthYear').value);
+      const month = parseInt(document.getElementById('birthMonth').value);
+      const day = parseInt(document.getElementById('birthDay').value);
+      const hourBranch = parseInt(document.getElementById('birthHour').value);
+      const gender = document.getElementById('birthGender').value;
+
+      const hourMap = { 0: [23, 0], 1: [1, 0], 2: [3, 0], 3: [5, 0], 4: [7, 0], 5: [9, 0],
+                        6: [11, 0], 7: [13, 0], 8: [15, 0], 9: [17, 0], 10: [19, 0], 11: [21, 0] };
+      const [hour, minute] = hourMap[hourBranch];
+
+      const result = calcBazi(year, month, day, hour, minute, gender);
+      displayResult(result);
+    });
+
+    function displayResult(r) {
+      const grid = document.getElementById('pillarsGrid');
+      grid.innerHTML = '';
+
+      r.pillars.forEach((p, i) => {
+        const wxG = WU_XING_TG[p.gan];
+        const wxZ = WU_XING_DZ[p.zhi];
+        const card = document.createElement('div');
+        card.className = 'pillar-card';
+        card.innerHTML = `
+          <div class="pillar-name">${p.name}</div>
+          <div class="pillar-gan">${p.gan}</div>
+          <div class="pillar-zhi">${p.zhi}</div>
+          <div>
+            <span class="pillar-wx" style="background:${WU_XING_COLOR[wxG]}">${wxG}</span>
+            <span class="pillar-wx" style="background:${WU_XING_COLOR[wxZ]}">${wxZ}</span>
+          </div>
+          <div class="pillar-nayin">${r.nayin[i]}</div>
+          <div class="pillar-detail">
+            <span>${r.yinyang[i].gan}</span>·<span>${r.yinyang[i].zhi}</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById('riGanDisplay').textContent = r.riGan + ' (' + r.riWx + ')';
+      document.getElementById('riGanDesc').textContent = `日主为${r.riYinYang}${r.riWx} · 生于${r.riZhi}日`;
+
+      document.getElementById('shengXiao').textContent = r.shengXiao;
+      document.getElementById('genderDisplay').textContent = r.gender;
+      document.getElementById('riWxDisplay').textContent = r.riWx;
+      document.getElementById('cangGanDisplay').textContent = r.cangGan[2].join('、');
+
+      document.getElementById('ssYear').textContent = r.shiShen[0];
+      document.getElementById('ssMonth').textContent = r.shiShen[1];
+      document.getElementById('ssDay').textContent = '日主';
+      document.getElementById('ssHour').textContent = r.shiShen[3];
+
+      document.getElementById('nayinYear').textContent = r.nayin[0];
+      document.getElementById('nayinMonth').textContent = r.nayin[1];
+      document.getElementById('nayinDay').textContent = r.nayin[2];
+      document.getElementById('nayinHour').textContent = r.nayin[3];
+
+      const bar = document.getElementById('wuxingBar');
+      bar.innerHTML = '';
+      const wxOrder = ['木', '火', '土', '金', '水'];
+      const wxLabels = { '木': '木', '火': '火', '土': '土', '金': '金', '水': '水' };
+      wxOrder.forEach(wx => {
+        if (r.wuxingCount[wx] > 0) {
+          const seg = document.createElement('div');
+          seg.className = 'wuxing-bar-seg';
+          const pct = r.wuxingPercent[wx];
+          seg.style.width = pct + '%';
+          seg.style.background = WU_XING_COLOR[wx];
+          seg.textContent = pct >= 10 ? wx : '';
+          bar.appendChild(seg);
+        }
+      });
+
+      const tags = document.getElementById('wuxingTags');
+      tags.innerHTML = '';
+      wxOrder.forEach(wx => {
+        const tag = document.createElement('span');
+        tag.className = 'wuxing-tag';
+        tag.style.background = WU_XING_COLOR[wx] + '33';
+        tag.style.color = WU_XING_COLOR[wx];
+        tag.innerHTML = `${wx} ${r.wuxingCount[wx]} (${r.wuxingPercent[wx]}%)`;
+        tags.appendChild(tag);
+      });
+
+      if (r.missingWx.length > 0) {
+        const missTag = document.createElement('span');
+        missTag.className = 'wuxing-tag';
+        missTag.style.background = '#555';
+        missTag.style.color = '#ccc';
+        missTag.textContent = `缺: ${r.missingWx.join('、')}`;
+        tags.appendChild(missTag);
+      }
+
+      document.getElementById('resultSection').classList.add('visible');
+      document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+</body>
+</html>
