@@ -64,6 +64,9 @@
     .so-shensha-item .ss-val { color: #b8860b; font-weight: 500; }
     .so-relations { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 2px; }
     .so-rel { font-size: 0.58rem; padding: 0 4px; border-radius: 2px; }
+    .focus-chip { display:inline-block; padding:4px 12px; border:1px solid #d4c5b0; border-radius:14px; font-size:0.78rem; cursor:pointer; color:#8b7355; background:#faf6f0; transition:all 0.2s; user-select:none; }
+    .focus-chip:hover { border-color:#c4a02a; background:#f5f0e8; }
+    .focus-chip.active { border-color:#b8860b; background:#fff6e0; color:#8b6914; font-weight:600; }
 
     /* ── AI ── */
     .ai-loading { display:flex; justify-content:center; gap:8px; margin-bottom:10px; }
@@ -236,6 +239,22 @@
               <table class="dayun-table" id="dayunTable"></table>
             </div>
             <div id="flowCascadeArea"></div>
+
+            <div id="liunianSection" style="display:none;margin-top:12px;padding-top:10px;border-top:1px solid #e8ddd0">
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="focusAreas"></div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <button type="button" class="btn-submit" id="liunianBtn" style="flex:1;margin-top:0;padding:10px 14px;font-size:0.85rem;letter-spacing:2px;min-width:120px">AI 批流年</button>
+                <span id="liunianYearLabel" style="color:#b8860b;font-weight:600;font-size:0.9rem"></span>
+              </div>
+              <div id="liunianStatus" style="display:none;margin-top:10px;text-align:center;padding:16px 0;color:#8b7355;font-size:0.85rem">
+                <div class="ai-loading"><span></span><span></span><span></span></div>
+                <div id="liunianStatusText">AI 正在批流年···</div>
+              </div>
+              <div id="liunianResult" style="display:none;margin-top:10px">
+                <div class="ai-result-inner" id="liunianResultInner"></div>
+                <div style="margin-top:8px;text-align:right"><button type="button" id="liunianClearBtn" style="background:none;border:1px solid #d4c5b0;border-radius:4px;padding:3px 10px;font-size:0.72rem;color:#a09080;cursor:pointer;font-family:inherit">隐藏结果</button></div>
+              </div>
+            </div>
           </div>
 
           <div class="info-card full-width" id="aiCard">
@@ -629,6 +648,9 @@
         ({ idx: m.idx, label: m.label, gan: m.gan, zhi: m.zhi, cls: flow.monthIdx === m.idx ? ' active' : '', data: 'data-flow="month" data-month-idx="' + m.idx + '"' })
       ));
       buildShenshaGrid(allSha);
+
+      document.getElementById('liunianYearLabel').textContent = year + ' 年';
+      document.getElementById('liunianSection').style.display = 'block';
     }
 
     function selectFlowMonth(monthIdx) {
@@ -753,6 +775,105 @@
     }
 
     // ═══════════════════════════════════════════
+    //  批流年
+    // ═══════════════════════════════════════════
+    const FOCUS_AREAS = ['事业','财运','婚姻','健康','学业','家庭','官非','出行','人际','六亲'];
+    let selectedFocusAreas = [];
+    let liunianAbort = null;
+
+    function initFocusAreas() {
+      const el = document.getElementById('focusAreas');
+      el.innerHTML = '<span style="color:#a09080;font-size:0.72rem;margin-right:4px;padding-top:2px">关注方面:</span>' +
+        FOCUS_AREAS.map(a => '<span class="focus-chip" data-area="' + a + '">' + a + '</span>').join('');
+      el.querySelectorAll('.focus-chip').forEach(c => c.addEventListener('click', function() {
+        this.classList.toggle('active');
+        selectedFocusAreas = [...document.querySelectorAll('.focus-chip.active')].map(e => e.dataset.area);
+      }));
+    }
+    initFocusAreas();
+
+    document.getElementById('liunianBtn').addEventListener('click', function() {
+      if (!lastResult) return;
+      if (!flow.year) { showLiunianError('请先点击一个流年'); return; }
+      startLiuNianAnalysis(flow.year);
+    });
+    document.getElementById('liunianClearBtn').addEventListener('click', function() {
+      document.getElementById('liunianResult').style.display = 'none';
+    });
+
+    function getLiuNianForPrompt(year) {
+      const r = lastResult;
+      const by = parseInt(document.getElementById('birthYear').value);
+      const bm = parseInt(document.getElementById('birthMonth').value);
+      const bd = parseInt(document.getElementById('birthDay').value);
+      const nianZhi = DI_ZHI[getNianZhiIndex(by, bm, bd)];
+      return calcLiuNian(year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
+    }
+
+    function buildLiuNianPrompt(r, year, dy) {
+      const lr = getLiuNianForPrompt(year);
+      const gzRel = calcBranchRelation(dy.zhi, lr.zhi);
+      const areaText = selectedFocusAreas.length ? selectedFocusAreas.join('、') : '整体运势';
+
+      let yinyangText = '';
+      r.pillars.forEach((p, i) => { yinyangText += '\n    ' + p.name + ': ' + p.gan + '(' + r.yinyang[i].gan + ') ' + p.zhi + '(' + r.yinyang[i].zhi + ')'; });
+
+      let relText = '';
+      (lr.relations || []).forEach(function(rr) { relText += '\n    ' + rr.pillar + '(' + rr.zhi + ') → ' + rr.relation; });
+
+      return ['## 八字原局信息', '### 四柱', r.pillars.map((p, i) => '  柱: ' + p.gan + p.zhi + '  五行: ' + WU_XING_TG[p.gan] + WU_XING_DZ[p.zhi] + '  纳音: ' + r.nayin[i] + '  十神: ' + r.shiShen[i] + '  十二长生: ' + r.changSheng[i]).join('\n'),
+        '日主: ' + r.riGan + ' (' + r.riWx + ')',
+        '### 五行分布', Object.entries(r.wuxingCount).map(([k, v]) => '  ' + k + ': ' + v + ' (' + r.wuxingPercent[k] + '%)').join('\n'),
+        '缺: ' + (r.missingWx.length ? r.missingWx.join('、') : '无') + '  旺: ' + (r.maxWx.length ? r.maxWx[0][0] : ''),
+        '### 当前大运', '大运: ' + dy.gan + dy.zhi + ' (' + dy.wxG + dy.wxZ + ' · ' + dy.naYin + ')  ' + dy.ageFrom + '-' + dy.ageTo + '岁',
+        '### 选定流年 (' + year + '年)', '干支: ' + lr.gan + lr.zhi + '  五行: ' + lr.wxG + lr.wxZ + '  纳音: ' + lr.naYin,
+        '对日主十神: ' + lr.shiShen + '  十二长生: ' + lr.changSheng + '  生肖: ' + lr.shengXiao + '年',
+        '流年神煞: ' + Object.entries(lr.shenSha).map(([k, v]) => k + '(' + (Array.isArray(v) ? v.join('、') : v) + ')').join('、'),
+        '与四柱关系: ' + relText,
+        '与大运关系: ' + (gzRel ? gzRel : '无特殊'),
+        '### 关注方面', areaText,
+        '### 要求', '请以"批流年"的视角，分析以上信息，给出 ' + year + ' 年在这个(些)方面的应事推断。先分析流年与大运、原局的做功互动，再结合 ' + areaText + ' 进行具体推断。输出格式请使用Markdown，步骤标题用汉字数字（一、二、三、四、五）。'
+      ].join('\n');
+    }
+
+    async function startLiuNianAnalysis(year) {
+      const cfg = loadAIConfig();
+      const keyInput = document.getElementById('aiApiKey').value.trim();
+      if (!keyInput && !cfg.key) { showLiunianError('请先在AI设置中输入 API Key'); return; }
+      const apiKey = keyInput || cfg.key, endpoint = document.getElementById('aiEndpoint').value, model = document.getElementById('aiModel').value.trim() || cfg.model;
+      const r = lastResult;
+      const dy = r.daYun.pillars[expandedDayunIdx >= 0 ? expandedDayunIdx : 0];
+      const prompt = buildLiuNianPrompt(r, year, dy);
+
+      document.getElementById('liunianResult').style.display = 'none';
+      document.getElementById('liunianResultInner').innerHTML = '';
+      document.getElementById('liunianStatus').style.display = 'block';
+      document.getElementById('liunianStatusText').textContent = 'AI 正在批流年···';
+
+      if (liunianAbort) liunianAbort.abort();
+      liunianAbort = new AbortController();
+
+      try {
+        let fullText = '';
+        const sp = '你是一位精通中国传统命理学的八字命理师，专注于"批流年"（年度运势预测）。请根据八字原局、当前大运、选定流年，分析流年与大运配合对原局的做功影响，给出可能发生的具体事件推断。\n\n分析步骤：\n\n一、**流年与四柱互动**：分析选定流年干支与年/月/日/时柱的冲合刑害关系（六冲、六合、三刑、六害、三合、半合、伏吟等），以及生克情况，判断哪些柱被引动。\n\n二、**流年与大运互动**：分析流年与大运之间的五行生克、地支关系（冲合刑害等），判断大运与流年共同作用的态势，是否伏吟、反吟。\n\n三、**十神吉凶**：分析流年十神（正官、七杀、正印、偏印、正财、偏财、比肩、劫财、食神、伤官）和流年十二神煞的吉凶含义，判断该年的大体吉凶倾向。\n\n四、**做功方式影响**：评估流年和大运如何影响原局的做功方式（官印相生、食神生财、杀印相生、比劫夺财等），对喜用神和忌神的作用是助力还是破坏。\n\n五、**【关注方面】应事推断**：根据用户选定的关注方面，结合以上四步分析，推断可能发生的具体事件、时间节点和应事方向。\n\n请用中文输出，使用Markdown格式，步骤使用汉字数字标题。给出的判断要有理有据，措辞以"可能""较容易""需要留意"为主，避免过于绝对。';
+        const streamOk = await callAIStream(apiKey, endpoint, model, prompt, (chunk) => { fullText += chunk; document.getElementById('liunianStatusText').textContent = 'AI 思考中··· (' + fullText.length + '字)'; }, liunianAbort.signal);
+        if (!streamOk || !fullText.trim()) fullText = await callAINonStream(apiKey, endpoint, model, prompt, liunianAbort.signal);
+        document.getElementById('liunianStatus').style.display = 'none';
+        document.getElementById('liunianResult').style.display = 'block';
+        renderAIResult(fullText, document.getElementById('liunianResultInner'));
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        document.getElementById('liunianStatus').style.display = 'none';
+        showLiunianError('请求失败: ' + err.message);
+      }
+    }
+
+    function showLiunianError(msg) {
+      document.getElementById('liunianResult').style.display = 'block';
+      document.getElementById('liunianResultInner').innerHTML = '<div class="ai-error">' + msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+    }
+
+    // ═══════════════════════════════════════════
     //  AI 智能解盘
     // ═══════════════════════════════════════════
     const AI_STORAGE_KEY = 'bazi_ai_config';
@@ -840,10 +961,11 @@
       const json = await resp.json(); return json.choices?.[0]?.message?.content || json.choices?.[0]?.text || '';
     }
 
-    function renderAIResult(text) {
+    function renderAIResult(text, targetEl) {
       let html = text.replace(/^#### (.+)$/gm, '<h5>$1</h5>').replace(/^### (.+)$/gm, '<h5>$1</h5>').replace(/^## (.+)$/gm, '<h4>$1</h4>').replace(/^# (.+)$/gm, '<h4>$1</h4>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`(.+?)`/g, '<code>$1</code>').replace(/^- (.+)$/gm, '<li>$1</li>').replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
       html = '<p>' + html + '</p>'.replace(/<p><\/p>/g, '').replace(/<br><\/li>/g, '</li>').replace(/<\/ul><br>/g, '</ul>').replace(/<br><ul>/g, '<ul>');
-      document.getElementById('aiResultInner').innerHTML = html;
+      if (targetEl) targetEl.innerHTML = html; else document.getElementById('aiResultInner').innerHTML = html;
+      return html;
     }
   </script>
 </body>
