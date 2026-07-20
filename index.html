@@ -29,6 +29,25 @@
     .flow-detail-item .fd-value { color: #d4af37; font-weight: 500; font-size: 0.85rem; margin-top: 1px; }
     .fd-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
     .fd-chip { font-size: 0.7rem; padding: 1px 6px; border-radius: 3px; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.08); }
+    .ai-loading { display:flex; justify-content:center; gap:8px; margin-bottom:10px; }
+    .ai-loading span { width:10px; height:10px; border-radius:50%; background:#d4af37; animation:aiPulse 1.2s ease-in-out infinite; }
+    .ai-loading span:nth-child(2) { animation-delay:0.2s; }
+    .ai-loading span:nth-child(3) { animation-delay:0.4s; }
+    @keyframes aiPulse { 0%,80%,100% { opacity:0.2; transform:scale(0.8); } 40% { opacity:1; transform:scale(1.2); } }
+    .ai-result-inner { font-size:0.85rem; line-height:1.8; color:#e8d5c0; }
+    .ai-result-inner h4 { color:#d4af37; font-size:0.9rem; margin:16px 0 6px; font-weight:600; letter-spacing:1px; border-bottom:1px solid rgba(212,175,55,0.1); padding-bottom:4px; }
+    .ai-result-inner h5 { color:#b89a6a; font-size:0.82rem; margin:10px 0 4px; font-weight:500; }
+    .ai-result-inner p { margin:4px 0; }
+    .ai-result-inner ul { margin:4px 0; padding-left:18px; }
+    .ai-result-inner li { margin:2px 0; list-style-type:disc; color:#c8b894; }
+    .ai-result-inner strong { color:#d4af37; }
+    .ai-result-inner .highlight { color:#81c784; }
+    .ai-result-inner .warning { color:#e57373; }
+    .ai-result-inner .table-wrap { overflow-x:auto; margin:8px 0; }
+    .ai-result-inner table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+    .ai-result-inner td, .ai-result-inner th { border:1px solid rgba(212,175,55,0.12); padding:4px 8px; text-align:center; }
+    .ai-result-inner th { background:rgba(212,175,55,0.06); color:#b89a6a; font-weight:500; }
+    .ai-error { color:#e57373; font-size:0.85rem; padding:12px; text-align:center; background:rgba(229,115,115,0.06); border-radius:8px; border:1px solid rgba(229,115,115,0.15); }
     @media (max-width: 640px) {
       .flow-detail-content { grid-template-columns: 1fr; }
     }
@@ -172,6 +191,40 @@
             <h3>◆ 流时详览 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem" id="flowDetailSubtitle"></span></h3>
             <div id="flowDetailContent"></div>
             <div id="flowCascade"></div>
+          </div>
+
+          <div class="info-card full-width" id="aiCard">
+            <h3>◆ AI 智能解盘</h3>
+            <div id="aiConfig" style="margin-bottom:12px;font-size:0.78rem;color:#b89a6a">
+              <div class="form-row" style="align-items:end">
+                <div class="form-group" style="flex:2">
+                  <label>API Key</label>
+                  <input type="password" id="aiApiKey" placeholder="sk-..." style="font-size:0.78rem;padding:6px 8px">
+                </div>
+                <div class="form-group" style="flex:1">
+                  <label>接口地址</label>
+                  <select id="aiEndpoint" style="font-size:0.78rem;padding:6px 8px">
+                    <option value="https://openrouter.ai/api/v1/chat/completions">OpenRouter</option>
+                    <option value="https://api.openai.com/v1/chat/completions">OpenAI</option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex:1">
+                  <label>模型</label>
+                  <input type="text" id="aiModel" value="google/gemini-2.0-flash-exp:free" placeholder="模型名" style="font-size:0.78rem;padding:6px 8px">
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+                <button type="button" class="btn-submit" id="aiAnalyzeBtn" style="padding:8px 20px;font-size:0.85rem;letter-spacing:2px;margin-top:0;flex:1;min-width:120px">开始AI解盘</button>
+                <button type="button" id="aiSaveKeyBtn" style="padding:8px 14px;font-size:0.78rem;background:rgba(212,175,55,0.1);color:#b89a6a;border:1px solid rgba(212,175,55,0.2);border-radius:6px;cursor:pointer;font-family:inherit">保存配置</button>
+              </div>
+            </div>
+            <div id="aiStatus" style="display:none;text-align:center;padding:20px 0;color:#a08870;font-size:0.85rem">
+              <div class="ai-loading"><span></span><span></span><span></span></div>
+              <div id="aiStatusText">AI 正在分析···</div>
+            </div>
+            <div id="aiResult" style="display:none">
+              <div class="ai-result-inner" id="aiResultInner"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -748,6 +801,327 @@
     function updateShenshaFromGanZhi(gan, zhi) {
       const ss = calcSimpleShensha(gan, zhi);
       buildShensha(ss);
+    }
+
+    // ═══════════════════════════════════════════
+    //  AI 智能解盘
+    // ═══════════════════════════════════════════
+
+    const AI_STORAGE_KEY = 'bazi_ai_config';
+
+    function loadAIConfig() {
+      try {
+        const raw = localStorage.getItem(AI_STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { key: '', endpoint: 'https://openrouter.ai/api/v1/chat/completions', model: 'google/gemini-2.0-flash-exp:free' };
+    }
+
+    function saveAIConfig() {
+      const cfg = {
+        key: document.getElementById('aiApiKey').value.trim(),
+        endpoint: document.getElementById('aiEndpoint').value,
+        model: document.getElementById('aiModel').value.trim()
+      };
+      localStorage.setItem(AI_STORAGE_KEY, JSON.stringify(cfg));
+      const btn = document.getElementById('aiSaveKeyBtn');
+      btn.textContent = '已保存 ✓';
+      btn.style.borderColor = '#81c784';
+      btn.style.color = '#81c784';
+      setTimeout(() => { btn.textContent = '保存配置'; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
+    }
+
+    (function initAI() {
+      const cfg = loadAIConfig();
+      document.getElementById('aiApiKey').value = cfg.key;
+      document.getElementById('aiEndpoint').value = cfg.endpoint;
+      document.getElementById('aiModel').value = cfg.model;
+    })();
+
+    document.getElementById('aiSaveKeyBtn').addEventListener('click', saveAIConfig);
+
+    document.getElementById('aiAnalyzeBtn').addEventListener('click', function() {
+      if (!lastResult) {
+        document.getElementById('baziForm').requestSubmit();
+        return;
+      }
+      startAIAnalysis();
+    });
+
+    let aiAbortController = null;
+
+    async function startAIAnalysis() {
+      const cfg = loadAIConfig();
+      const keyInput = document.getElementById('aiApiKey').value.trim();
+      if (!keyInput && !cfg.key) {
+        showAIError('请先输入 API Key');
+        return;
+      }
+      const apiKey = keyInput || cfg.key;
+      const endpoint = document.getElementById('aiEndpoint').value;
+      const model = document.getElementById('aiModel').value.trim() || cfg.model;
+
+      const r = lastResult;
+      const prompt = buildAIPrompt(r);
+
+      document.getElementById('aiResult').style.display = 'none';
+      document.getElementById('aiResultInner').innerHTML = '';
+      document.getElementById('aiStatus').style.display = 'block';
+      document.getElementById('aiStatusText').textContent = 'AI 正在分析···';
+      document.getElementById('aiCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      if (aiAbortController) aiAbortController.abort();
+      aiAbortController = new AbortController();
+
+      try {
+        let fullText = '';
+        const streamOk = await callAIStream(apiKey, endpoint, model, prompt, (chunk) => {
+          fullText += chunk;
+          document.getElementById('aiStatusText').textContent = 'AI 思考中··· (' + fullText.length + '字)';
+        }, aiAbortController.signal);
+
+        if (!streamOk || !fullText.trim()) {
+          // Try non-streaming fallback
+          fullText = await callAINonStream(apiKey, endpoint, model, prompt, aiAbortController.signal);
+        }
+
+        document.getElementById('aiStatus').style.display = 'none';
+        document.getElementById('aiResult').style.display = 'block';
+        renderAIResult(fullText);
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        document.getElementById('aiStatus').style.display = 'none';
+        showAIError('请求失败: ' + err.message);
+      }
+    }
+
+    function showAIError(msg) {
+      document.getElementById('aiResult').style.display = 'block';
+      document.getElementById('aiResultInner').innerHTML = '<div class="ai-error">' + escapeHtml(msg) + '</div>';
+      document.getElementById('aiCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function buildAIPrompt(r) {
+      const now = new Date();
+      const curYear = now.getFullYear();
+      const curMonth = now.getMonth() + 1;
+      const curDay = now.getDate();
+      const curHour = now.getHours();
+      const curMinute = now.getMinutes();
+      const curHB = getHourBranchIdx(curHour, curMinute);
+      const curDP = calcDayPillar(curYear, curMonth, curDay);
+      const curHP = calcHourPillar(curDP.stemIdx, curHour, curMinute);
+      const curNY = getNianZhiIndex(curYear, curMonth, curDay);
+      const curNZ = DI_ZHI[curNY];
+      const nZhi = DI_ZHI[getNianZhiIndex(
+        parseInt(document.getElementById('birthYear').value),
+        parseInt(document.getElementById('birthMonth').value),
+        parseInt(document.getElementById('birthDay').value)
+      )];
+      const curLN = calcLiuNian(curYear, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nZhi, r.pillars[1].zhi);
+
+      let dayunText = '';
+      r.daYun.pillars.forEach((p, i) => {
+        dayunText += '\n    大运' + (i+1) + ': ' + p.gan + p.zhi + ' (' + p.wxG + p.wxZ + ' · ' + p.naYin + ')  ' + p.ageFrom + '-' + p.ageTo + '岁';
+      });
+
+      let cangText = '';
+      r.pillars.forEach((p, i) => {
+        const cg = r.cangGan[i];
+        if (cg.length) cangText += '\n    ' + p.name + '藏干: ' + cg.join('、');
+      });
+
+      let ssZhiText = '';
+      r.pillars.forEach((p, i) => {
+        const sz = r.shiShenZhi[i];
+        if (sz && sz.length) {
+          ssZhiText += '\n    ' + p.name + '藏干十神: ' + sz.join('、');
+        }
+      });
+
+      return [
+        '## 八字命盘信息',
+        '',
+        '### 基本信息',
+        '出生: ' + document.getElementById('birthYear').value + '年' + document.getElementById('birthMonth').value + '月' + document.getElementById('birthDay').value + '日 ' +
+          SHI_CHEN[parseInt(document.getElementById('birthHour').value)] + ' 性别: ' + r.gender,
+        '',
+        '### 四柱',
+        r.pillars.map((p, i) =>
+          '  柱: ' + p.gan + p.zhi +
+          '  五行: ' + WU_XING_TG[p.gan] + WU_XING_DZ[p.zhi] +
+          '  纳音: ' + r.nayin[i] +
+          '  十神: ' + r.shiShen[i] +
+          '  十二长生: ' + r.changSheng[i] +
+          '  阴阳: ' + r.yinyang[i].gan + r.yinyang[i].zhi
+        ).join('\n'),
+        cangText,
+        ssZhiText,
+        '',
+        '### 日主',
+        '日干: ' + r.riGan + ' (' + r.riWx + ' · ' + r.riYinYang + ')',
+        '日支: ' + r.riZhi + '  藏干: ' + r.cangGan[2].join('、'),
+        '',
+        '### 五行分布',
+        Object.entries(r.wuxingCount).map(([k, v]) => '  ' + k + ': ' + v + ' (' + r.wuxingPercent[k] + '%)').join('\n'),
+        '缺: ' + (r.missingWx.length ? r.missingWx.join('、') : '无') + '  旺: ' + (r.maxWx.length ? r.maxWx[0][0] : ''),
+        '',
+        '### 神煞',
+        Object.entries(r.shenSha).map(([k, v]) => '  ' + k + ': ' + (Array.isArray(v) ? v.join('、') : v)).join('\n') || '  无显著神煞',
+        '',
+        '### 大运',
+        '起运: ' + r.daYun.startAge + '岁  排法: ' + (r.daYun.shunPai ? '顺排' : '逆排'),
+        dayunText,
+        '',
+        '### 当前流年 (' + curYear + '年)',
+        '干支: ' + curLN.gan + curLN.zhi + '  五行: ' + curLN.wxG + curLN.wxZ + '  纳音: ' + curLN.naYin,
+        '生肖: ' + curLN.shengXiao + '年',
+        '对日主十神: ' + curLN.shiShen + '  十二长生: ' + curLN.changSheng,
+        '流年神煞: ' + Object.entries(curLN.shenSha).map(([k, v]) => k + '(' + (Array.isArray(v) ? v.join('、') : v) + ')').join('、'),
+        '与四柱关系: ' + (curLN.relations || []).map(r => r.pillar + r.zhi + '-' + r.relation).join('、'),
+        '',
+        '### 当前时间',
+        '公历: ' + curYear + '-' + curMonth + '-' + curDay + ' ' + curHour + ':' + (curMinute < 10 ? '0' : '') + curMinute,
+        '日柱: ' + curDP.stem + curDP.branch + '  时柱: ' + curHP.stem + curHP.branch
+      ].join('\n');
+    }
+
+    // ── Streaming API ──
+    async function callAIStream(apiKey, endpoint, model, prompt, onChunk, signal) {
+      const systemPrompt = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n' +
+        '1. **十神力量分析**：先确定各个十神的力量对比（考虑天干通根、地支藏干、月令旺衰、十二长生状态），所处位置（年/月/日/时柱），以及能够发挥作用的程度。\n\n' +
+        '2. **格局判断**：根据十神组合确定格局是否能成立（正格/变格/从格等），如有多种可能的格局，分别评估成立概率。\n\n' +
+        '3. **做功方式分析**：列出原局所有可能的做功方式（如官印相生、食神生财、杀印相生、比劫夺财等），分别评估每种做功方式的成立概率（列出概率百分比），选出最可信的做功方式。\n\n' +
+        '4. **喜用神确定**：根据选定做功方式确定喜用神（喜什么五行、十神），忌神是什么。\n\n' +
+        '5. **大运流年分析**：按照上述步骤重新评估最优做功方式，再论各步大运的喜忌吉凶。当前流年对原局的影响。\n\n' +
+        '6. **格局层次评估**：通过做功的效率和纯粹情况评估命局的整体层次（上等/中等/下等格局）。\n\n' +
+        '请用中文输出，使用Markdown格式，每个步骤用标题分隔（一、二、三、四、五、六）。语言专业但易懂，避免过于绝对的判断。';
+
+      try {
+        const resp = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + apiKey
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: prompt }
+            ],
+            stream: true,
+            temperature: 0.7,
+            max_tokens: 4096
+          }),
+          signal: signal
+        });
+
+        if (!resp.ok) {
+          const errText = await resp.text().catch(() => '');
+          throw new Error('HTTP ' + resp.status + (errText ? ': ' + errText.slice(0, 200) : ''));
+        }
+
+        if (!resp.body) return false;
+
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let hasContent = false;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed || !trimmed.startsWith('data: ')) continue;
+            const data = trimmed.slice(6);
+            if (data === '[DONE]') continue;
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content || parsed.choices?.[0]?.text || '';
+              if (content) {
+                onChunk(content);
+                hasContent = true;
+              }
+            } catch (_) { /* skip parse errors */ }
+          }
+        }
+
+        return hasContent;
+      } catch (err) {
+        if (err.name === 'AbortError') throw err;
+        return false; // fallback to non-stream
+      }
+    }
+
+    // ── Non-Streaming Fallback ──
+    async function callAINonStream(apiKey, endpoint, model, prompt, signal) {
+      const systemPrompt = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n' +
+        '1. **十神力量分析**：先确定各个十神的力量对比（考虑天干通根、地支藏干、月令旺衰、十二长生状态），所处位置（年/月/日/时柱），以及能够发挥作用的程度。\n\n' +
+        '2. **格局判断**：根据十神组合确定格局是否能成立（正格/变格/从格等），如有多种可能的格局，分别评估成立概率。\n\n' +
+        '3. **做功方式分析**：列出原局所有可能的做功方式（如官印相生、食神生财、杀印相生、比劫夺财等），分别评估每种做功方式的成立概率（列出概率百分比），选出最可信的做功方式。\n\n' +
+        '4. **喜用神确定**：根据选定做功方式确定喜用神（喜什么五行、十神），忌神是什么。\n\n' +
+        '5. **大运流年分析**：按照上述步骤重新评估最优做功方式，再论各步大运的喜忌吉凶。当前流年对原局的影响。\n\n' +
+        '6. **格局层次评估**：通过做功的效率和纯粹情况评估命局的整体层次（上等/中等/下等格局）。\n\n' +
+        '请用中文输出，使用Markdown格式，每个步骤用标题分隔（一、二、三、四、五、六）。语言专业但易懂，避免过于绝对的判断。';
+
+      const resp = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiKey
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: prompt }
+          ],
+          stream: false,
+          temperature: 0.7,
+          max_tokens: 4096
+        }),
+        signal: signal
+      });
+
+      if (!resp.ok) {
+        const errText = await resp.text().catch(() => '');
+        throw new Error('HTTP ' + resp.status + (errText ? ': ' + errText.slice(0, 200) : ''));
+      }
+
+      const json = await resp.json();
+      return json.choices?.[0]?.message?.content || json.choices?.[0]?.text || '';
+    }
+
+    // ── Render ──
+    function renderAIResult(text) {
+      // Lightweight Markdown → HTML
+      let html = text
+        .replace(/^#### (.+)$/gm, '<h5>$1</h5>')
+        .replace(/^### (.+)$/gm, '<h5>$1</h5>')
+        .replace(/^## (.+)$/gm, '<h4>$1</h4>')
+        .replace(/^# (.+)$/gm, '<h4>$1</h4>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`(.+?)`/g, '<code>$1</code>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+
+      html = '<p>' + html + '</p>';
+      html = html.replace(/<p><\/p>/g, '').replace(/<br><\/li>/g, '</li>').replace(/<\/ul><br>/g, '</ul>').replace(/<br><ul>/g, '<ul>');
+
+      document.getElementById('aiResultInner').innerHTML = html;
     }
   </script>
 </body>
