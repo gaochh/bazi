@@ -220,14 +220,15 @@
                 <div class="form-group" style="flex:1">
                   <label>接口地址 <span style="color:#5a4a3a;font-weight:400">(默认免费)</span></label>
                   <select id="aiEndpoint" style="font-size:0.78rem;padding:6px 8px">
-                    <option value="https://api.deepseek.com/v1/chat/completions">DeepSeek（免费 · 推荐）</option>
-                    <option value="https://openrouter.ai/api/v1/chat/completions">OpenRouter（备选）</option>
-                    <option value="https://api.openai.com/v1/chat/completions">OpenAI（备选）</option>
+                    <option value="https://api.opencode.ai/v1/chat/completions">OpenCode（免费 · 推荐）</option>
+                    <option value="https://api.deepseek.com/v1/chat/completions">DeepSeek（免费）</option>
+                    <option value="https://openrouter.ai/api/v1/chat/completions">OpenRouter</option>
+                    <option value="https://api.openai.com/v1/chat/completions">OpenAI</option>
                   </select>
                 </div>
                 <div class="form-group" style="flex:1">
                   <label>模型</label>
-                  <input type="text" id="aiModel" value="deepseek-chat" placeholder="模型名" style="font-size:0.78rem;padding:6px 8px">
+                   <input type="text" id="aiModel" value="opencode/deepseek-v4-flash-free" placeholder="模型名" style="font-size:0.78rem;padding:6px 8px">
                 </div>
               </div>
               <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
@@ -669,6 +670,11 @@
       setTimeout(() => { btn.textContent = '保存配置'; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
     }
     (function initAI() { const cfg = loadAIConfig(); document.getElementById('aiApiKey').value = cfg.key; document.getElementById('aiEndpoint').value = cfg.endpoint; document.getElementById('aiModel').value = cfg.model; })();
+    document.getElementById('aiEndpoint').addEventListener('change', function () {
+      const models = { 'api.opencode.ai': 'opencode/deepseek-v4-flash-free', 'api.deepseek.com': 'deepseek-chat', 'openrouter.ai': 'google/gemini-2.0-flash-exp:free', 'api.openai.com': 'gpt-4o-mini' };
+      const m = Object.entries(models).find(([k]) => this.value.includes(k));
+      if (m) document.getElementById('aiModel').value = m[1];
+    });
     document.getElementById('aiSaveKeyBtn').addEventListener('click', saveAIConfig);
     document.getElementById('aiAnalyzeBtn').addEventListener('click', function() { if (!lastResult) { document.getElementById('baziForm').requestSubmit(); return; } startAIAnalysis(); });
     let aiAbortController = null;
