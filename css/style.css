@@ -296,6 +296,20 @@ header p {
 
 .footer-note { text-align: center; padding: 16px 0; color: #5a4a3a; font-size: 0.72rem; letter-spacing: 1px; }
 
+/* ── Calendar Toggle ── */
+.cal-btn {
+  background: rgba(20,10,5,0.8); color: #a08870; border: none;
+  padding: 7px 16px; font-size: 0.82rem; cursor: pointer;
+  font-family: inherit; transition: all 0.25s; letter-spacing: 1px;
+}
+.cal-btn:not(:last-child) { border-right: 1px solid rgba(212,175,55,0.12); }
+.cal-btn:hover { background: rgba(212,175,55,0.1); color: #b89a6a; }
+.cal-btn.active { background: rgba(212,175,55,0.18); color: #d4af37; font-weight: 600; }
+#birthLeap {
+  margin-top: 22px; transform: scale(1.2); accent-color: #d4af37;
+  cursor: pointer;
+}
+
 /* ── 响应式 ── */
 @media (max-width: 640px) {
   .app-container { padding: 10px; }

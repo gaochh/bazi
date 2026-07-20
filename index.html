@@ -86,6 +86,15 @@
     <div class="form-section">
       <h2>◆ 请输入出生信息</h2>
       <form id="baziForm" autocomplete="off">
+        <div class="form-row" style="margin-bottom:12px;gap:0">
+          <div class="form-group" style="flex:0 0 auto;min-width:auto">
+            <label>历法</label>
+            <div id="calendarToggle" style="display:inline-flex;border:1px solid rgba(212,175,55,0.2);border-radius:6px;overflow:hidden">
+              <button type="button" class="cal-btn active" data-cal="solar">公历</button>
+              <button type="button" class="cal-btn" data-cal="lunar">农历</button>
+            </div>
+          </div>
+        </div>
         <div class="form-row">
           <div class="form-group">
             <label>年</label>
@@ -105,6 +114,10 @@
           <div class="form-group">
             <label>日</label>
             <select id="birthDay"></select>
+          </div>
+          <div class="form-group" id="leapGroup" style="display:none">
+            <label>闰月</label>
+            <input type="checkbox" id="birthLeap">
           </div>
         </div>
         <div class="form-row">
@@ -320,11 +333,50 @@
       document.getElementById('birthHour').value = getHourBranchIdx(defaultDate.hour, defaultDate.minute);
     })();
 
+    let isLunar = false;
+    const LUNAR_MONTH_LABELS = ['正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月'];
+    function updateDayOptions() {
+      const cal = isLunar ? 'lunar' : 'solar';
+      const sel = document.getElementById('birthDay');
+      const month = parseInt(document.getElementById('birthMonth').value) || 1;
+      const year = parseInt(document.getElementById('birthYear').value) || 2000;
+      const maxD = cal === 'lunar' ? lunarMonthDays(year, month) : 31;
+      sel.innerHTML = '';
+      for (let d = 1; d <= maxD; d++) {
+        const o = document.createElement('option'); o.value = d;
+        o.textContent = cal === 'lunar' ? LUNAR_DAY_NAMES[d - 1] : d + ' 日';
+        sel.appendChild(o);
+      }
+    }
+    document.querySelectorAll('.cal-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.cal-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        isLunar = this.dataset.cal === 'lunar';
+        document.getElementById('leapGroup').style.display = isLunar ? 'block' : 'none';
+        const ms = document.getElementById('birthMonth');
+        if (isLunar) {
+          ms.innerHTML = LUNAR_MONTH_LABELS.map((l, i) => '<option value="' + (i + 1) + '">' + l + '</option>').join('');
+        } else {
+          ms.innerHTML = [1,2,3,4,5,6,7,8,9,10,11,12].map(m => '<option value="' + m + '">' + m + ' 月</option>').join('');
+          ms.value = defaultDate.month;
+        }
+        updateDayOptions();
+      });
+    });
+    document.getElementById('birthMonth').addEventListener('change', updateDayOptions);
+
     document.getElementById('baziForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const year = parseInt(document.getElementById('birthYear').value);
-      const month = parseInt(document.getElementById('birthMonth').value);
-      const day = parseInt(document.getElementById('birthDay').value);
+      let year = parseInt(document.getElementById('birthYear').value);
+      let month = parseInt(document.getElementById('birthMonth').value);
+      let day = parseInt(document.getElementById('birthDay').value);
+      if (isLunar) {
+        const leap = document.getElementById('birthLeap').checked;
+        const solar = lunarToSolar(year, month, day, leap);
+        if (!solar) { alert('无效的农历日期，请重新选择'); return; }
+        year = solar.year; month = solar.month; day = solar.day;
+      }
       const hourBranch = parseInt(document.getElementById('birthHour').value);
       const gender = document.getElementById('birthGender').value;
       const hourMap = { 0: [23, 0], 1: [1, 0], 2: [3, 0], 3: [5, 0], 4: [7, 0], 5: [9, 0], 6: [11, 0], 7: [13, 0], 8: [15, 0], 9: [17, 0], 10: [19, 0], 11: [21, 0] };
