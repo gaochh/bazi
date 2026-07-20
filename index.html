@@ -202,15 +202,16 @@
                   <input type="password" id="aiApiKey" placeholder="sk-..." style="font-size:0.78rem;padding:6px 8px">
                 </div>
                 <div class="form-group" style="flex:1">
-                  <label>接口地址</label>
+                  <label>接口地址 <span style="color:#5a4a3a;font-weight:400">(默认免费)</span></label>
                   <select id="aiEndpoint" style="font-size:0.78rem;padding:6px 8px">
-                    <option value="https://openrouter.ai/api/v1/chat/completions">OpenRouter</option>
-                    <option value="https://api.openai.com/v1/chat/completions">OpenAI</option>
+                    <option value="https://api.deepseek.com/v1/chat/completions">DeepSeek（免费 · 推荐）</option>
+                    <option value="https://openrouter.ai/api/v1/chat/completions">OpenRouter（备选）</option>
+                    <option value="https://api.openai.com/v1/chat/completions">OpenAI（备选）</option>
                   </select>
                 </div>
                 <div class="form-group" style="flex:1">
                   <label>模型</label>
-                  <input type="text" id="aiModel" value="google/gemini-2.0-flash-exp:free" placeholder="模型名" style="font-size:0.78rem;padding:6px 8px">
+                  <input type="text" id="aiModel" value="deepseek-chat" placeholder="模型名" style="font-size:0.78rem;padding:6px 8px">
                 </div>
               </div>
               <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
@@ -814,7 +815,7 @@
         const raw = localStorage.getItem(AI_STORAGE_KEY);
         if (raw) return JSON.parse(raw);
       } catch (_) {}
-      return { key: '', endpoint: 'https://openrouter.ai/api/v1/chat/completions', model: 'google/gemini-2.0-flash-exp:free' };
+      return { key: '', endpoint: 'https://api.deepseek.com/v1/chat/completions', model: 'deepseek-chat' };
     }
 
     function saveAIConfig() {
