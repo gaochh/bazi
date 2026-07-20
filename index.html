@@ -10,56 +10,58 @@
   <link rel="stylesheet" href="css/style.css">
   <style>
     .cascade-section { margin: 6px 0 3px; }
-    .cascade-section h4 { color: #b89a6a; font-size: 0.68rem; letter-spacing: 1px; margin-bottom: 3px; font-weight: 500; }
+    .cascade-section h4 { color: #8b7355; font-size: 0.68rem; letter-spacing: 1px; margin-bottom: 3px; font-weight: 500; }
     .cascade-grid { display: flex; flex-wrap: wrap; gap: 2px; }
-    .cascade-chip { display: inline-flex; flex-direction: column; align-items: center; padding: 1px 5px; border-radius: 3px; font-size: 0.62rem; cursor: pointer; transition: all 0.12s; border: 1px solid rgba(212,175,55,0.08); background: rgba(40,25,15,0.4); color: #b89a6a; min-width: 32px; }
-    .cascade-chip:hover { border-color: #d4af37; background: rgba(212,175,55,0.08); }
-    .cascade-chip.active { border-color: #d4af37; background: rgba(212,175,55,0.12); color: #d4af37; }
-    .cascade-chip .cc-label { font-size: 0.5rem; color: #5a4a3a; }
-    .cascade-chip .cc-ganzhi { font-size: 0.65rem; font-weight: 600; color: #e8d5c0; }
-    .cascade-chip.active .cc-ganzhi { color: #d4af37; }
+    .cascade-chip { display: inline-flex; flex-direction: column; align-items: center; padding: 1px 5px; border-radius: 3px; font-size: 0.62rem; cursor: pointer; transition: all 0.12s; border: 1px solid #e8ddd0; background: #ffffff; color: #8b7355; min-width: 32px; }
+    .cascade-chip:hover { border-color: #c4a02a; background: #faf6f0; }
+    .cascade-chip.active { border-color: #c4a02a; background: #f5f0e8; color: #b8860b; }
+    .cascade-chip .cc-label { font-size: 0.5rem; color: #a09080; }
+    .cascade-chip .cc-ganzhi { font-size: 0.65rem; font-weight: 600; color: #3d2b1f; }
+    .cascade-chip.active .cc-ganzhi { color: #b8860b; }
 
     /* ── Sticky Overview ── */
     .sticky-overview {
-      background: linear-gradient(145deg, rgba(40,25,15,0.97), rgba(30,18,10,0.99));
-      border: 1px solid rgba(212,175,55,0.15);
+      background: #faf6f0;
+      border: 1px solid #e8ddd0;
       border-radius: 10px;
       padding: 8px 10px;
     }
-    .so-title { color: #d4af37; font-size: 0.72rem; letter-spacing: 2px; margin-bottom: 5px; font-weight: 500; }
+    .so-title { color: #b8860b; font-size: 0.72rem; letter-spacing: 2px; margin-bottom: 5px; font-weight: 500; }
     .so-boxes { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 4px; }
     .so-box {
       text-align: center;
-      min-width: 62px;
-      padding: 5px 6px 4px;
-      border: 1px solid rgba(212,175,55,0.12);
+      min-width: 72px;
+      padding: 6px 8px 5px;
+      border: 1px solid #dccfc0;
       border-radius: 7px;
-      background: rgba(40,25,15,0.5);
+      background: #ffffff;
       flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
-    .so-box.so-box-flow { background: rgba(212,175,55,0.06); border-color: rgba(212,175,55,0.18); }
-    .so-box .sb-label { font-size: 0.55rem; color: #a08870; letter-spacing: 1px; margin-bottom: 2px; }
-    .so-box .sb-gan-row { line-height: 1.15; margin-bottom: 1px; }
-    .so-box .sb-gan-row .sb-gan { font-size: 0.95rem; font-weight: 700; }
-    .so-box .sb-gan-row .sb-gan-ss { font-size: 0.52rem; color: #b89a6a; margin-left: 1px; }
-    .so-box .sb-zhi-row { line-height: 1.15; margin-bottom: 1px; }
-    .so-box .sb-zhi-row .sb-zhi { font-size: 0.95rem; font-weight: 700; }
-    .so-box .sb-zhi-cg { font-size: 0.5rem; color: #6a5a4a; display: inline-flex; flex-wrap: wrap; gap: 0 1px; }
-    .so-box .sb-cg-item { margin-left: 1px; }
-    .so-box .sb-cg-ss { color: #5a4a3a; }
-    .so-box .sb-meta { font-size: 0.52rem; color: #6a5a4a; margin-top: 1px; line-height: 1.15; }
-    .so-box .sb-meta .sm-cs { color: #8a7a6a; }
-    .so-box .sb-meta .sm-sep { color: #5a4a3a; margin: 0 1px; }
-    .so-box .sb-meta .sm-cs-ri { color: #a08870; }
-    .so-pillar-shensha { display: flex; gap: 4px; padding-top: 3px; border-top: 1px solid rgba(212,175,55,0.06); margin-bottom: 3px; }
+    .so-box.so-box-flow { background: #fdfbf8; border-color: #c4a02a; }
+    .so-box .sb-label { font-size: 0.55rem; color: #a09080; letter-spacing: 1px; margin-bottom: 4px; }
+    .so-box .sb-gan-ss { font-size: 0.6rem; color: #b8860b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1px; }
+    .so-box .sb-gan { font-size: 1.1rem; font-weight: 700; line-height: 1.2; }
+    .so-box .sb-divider { width: 60%; height: 1px; margin: 3px auto; background: #e8ddd0; }
+    .so-box .sb-zhi { font-size: 1.1rem; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
+    .so-box .sb-cg-list { margin: 2px 0; }
+    .so-box .sb-cg-item { display: inline-flex; align-items: center; gap: 2px; font-size: 0.58rem; margin: 0 2px; }
+    .so-box .sb-cg-gan { color: #6a5a4a; font-weight: 600; }
+    .so-box .sb-cg-arrow { color: #c4a02a; font-size: 0.5rem; }
+    .so-box .sb-cg-ss { color: #8b7355; }
+    .so-box .sb-meta { font-size: 0.52rem; color: #a09080; margin-top: 2px; line-height: 1.2; }
+    .so-box .sb-meta .sm-cs { color: #8b7355; }
+    .so-box .sb-meta .sm-sep { color: #c4a02a; margin: 0 1px; }
+    .so-box .sb-meta .sm-cs-ri { color: #b8860b; }
+    .so-pillar-shensha { display: flex; gap: 4px; padding-top: 4px; border-top: 1px solid #e8ddd0; margin-bottom: 4px; }
     .so-pillar-shensha .ps-col { flex: 1; text-align: center; min-width: 0; }
-    .so-pillar-shensha .ps-pillar { font-size: 0.52rem; color: #6a5a4a; letter-spacing: 1px; margin-bottom: 1px; }
-    .so-pillar-shensha .ps-item { display: inline-block; font-size: 0.48rem; color: #d4af37; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.1); border-radius: 2px; padding: 0 3px; margin: 1px; }
-    .so-pillar-shensha .ps-none { font-size: 0.48rem; color: #5a4a3a; }
-    .so-shensha { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 3px; border-top: 1px solid rgba(212,175,55,0.06); }
-    .so-shensha-item { font-size: 0.6rem; padding: 0 5px; border-radius: 2px; background: rgba(212,175,55,0.04); color: #a08870; }
-    .so-shensha-item .ss-name { color: #6a5a4a; }
-    .so-shensha-item .ss-val { color: #d4af37; font-weight: 500; }
+    .so-pillar-shensha .ps-pillar { font-size: 0.52rem; color: #a09080; letter-spacing: 1px; margin-bottom: 1px; }
+    .so-pillar-shensha .ps-item { display: inline-block; font-size: 0.48rem; color: #b8860b; background: #faf6f0; border: 1px solid #e8ddd0; border-radius: 2px; padding: 0 3px; margin: 1px; }
+    .so-pillar-shensha .ps-none { font-size: 0.48rem; color: #c0b0a0; }
+    .so-shensha { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 4px; border-top: 1px solid #e8ddd0; }
+    .so-shensha-item { font-size: 0.6rem; padding: 0 5px; border-radius: 2px; background: #faf6f0; color: #8b7355; }
+    .so-shensha-item .ss-name { color: #a09080; }
+    .so-shensha-item .ss-val { color: #b8860b; font-weight: 500; }
     .so-relations { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 2px; }
     .so-rel { font-size: 0.58rem; padding: 0 4px; border-radius: 2px; }
 
@@ -69,22 +71,23 @@
     .ai-loading span:nth-child(2) { animation-delay:0.2s; }
     .ai-loading span:nth-child(3) { animation-delay:0.4s; }
     @keyframes aiPulse { 0%,80%,100% { opacity:0.2; transform:scale(0.8); } 40% { opacity:1; transform:scale(1.2); } }
-    .ai-result-inner { font-size:0.82rem; line-height:1.7; color:#e8d5c0; }
-    .ai-result-inner h4 { color:#d4af37; font-size:0.88rem; margin:14px 0 5px; font-weight:600; letter-spacing:1px; border-bottom:1px solid rgba(212,175,55,0.1); padding-bottom:3px; }
-    .ai-result-inner h5 { color:#b89a6a; font-size:0.8rem; margin:8px 0 3px; font-weight:500; }
+    .ai-result-inner { font-size:0.82rem; line-height:1.7; color:#3d2b1f; }
+    .ai-result-inner h4 { color:#b8860b; font-size:0.88rem; margin:14px 0 5px; font-weight:600; letter-spacing:1px; border-bottom:1px solid #e8ddd0; padding-bottom:3px; }
+    .ai-result-inner h5 { color:#8b7355; font-size:0.8rem; margin:8px 0 3px; font-weight:500; }
     .ai-result-inner p { margin:3px 0; }
     .ai-result-inner ul { margin:3px 0; padding-left:16px; }
-    .ai-result-inner li { margin:1px 0; list-style-type:disc; color:#c8b894; }
-    .ai-result-inner strong { color:#d4af37; }
+    .ai-result-inner li { margin:1px 0; list-style-type:disc; color:#6a5a4a; }
+    .ai-result-inner strong { color:#b8860b; }
     .ai-result-inner .table-wrap { overflow-x:auto; margin:6px 0; }
     .ai-result-inner table { width:100%; border-collapse:collapse; font-size:0.75rem; }
-    .ai-result-inner td, .ai-result-inner th { border:1px solid rgba(212,175,55,0.12); padding:3px 6px; text-align:center; }
-    .ai-result-inner th { background:rgba(212,175,55,0.06); color:#b89a6a; font-weight:500; }
-    .ai-error { color:#e57373; font-size:0.82rem; padding:10px; text-align:center; background:rgba(229,115,115,0.06); border-radius:8px; border:1px solid rgba(229,115,115,0.15); }
+    .ai-result-inner td, .ai-result-inner th { border:1px solid #e8ddd0; padding:3px 6px; text-align:center; }
+    .ai-result-inner th { background:#faf6f0; color:#8b7355; font-weight:500; }
+    .ai-error { color:#c62828; font-size:0.82rem; padding:10px; text-align:center; background:#fef0f0; border-radius:8px; border:1px solid #e0c0c0; }
     @media (max-width: 640px) {
-      .so-box { min-width: 48px; padding: 3px 3px 2px; }
-      .so-box .sb-gan-row .sb-gan, .so-box .sb-zhi-row .sb-zhi { font-size: 0.78rem; }
+      .so-box { min-width: 56px; padding: 4px 4px 3px; }
+      .so-box .sb-gan, .so-box .sb-zhi { font-size: 0.9rem; }
       .so-box .sb-meta { font-size: 0.48rem; }
+      .so-box .sb-gan-ss { font-size: 0.52rem; }
     }
   </style>
 </head>
@@ -101,7 +104,7 @@
         <div class="form-row" style="margin-bottom:12px;gap:0">
           <div class="form-group" style="flex:0 0 auto;min-width:auto">
             <label>历法</label>
-            <div id="calendarToggle" style="display:inline-flex;border:1px solid rgba(212,175,55,0.2);border-radius:6px;overflow:hidden">
+            <div id="calendarToggle" style="display:inline-flex;border:1px solid #d4c5b0;border-radius:6px;overflow:hidden">
               <button type="button" class="cal-btn active" data-cal="solar">公历</button>
               <button type="button" class="cal-btn" data-cal="lunar">农历</button>
             </div>
@@ -179,7 +182,7 @@
             <h3>◆ 日主</h3>
             <div style="text-align:center;padding:6px 0">
               <span class="gan-day-master" id="riGanDisplay"></span>
-              <div style="color:#b89a6a;font-size:0.82rem;margin-top:3px" id="riGanDesc"></div>
+              <div style="color:#8b7355;font-size:0.82rem;margin-top:3px" id="riGanDesc"></div>
             </div>
           </div>
 
@@ -228,7 +231,7 @@
 
           <div class="info-card full-width" id="dayunCard">
             <h3>◆ 大运排布 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem">（点击查看，上方面板同步更新）</span></h3>
-            <div id="dayunInfo" style="margin-bottom:10px;font-size:0.85rem;color:#b89a6a"></div>
+            <div id="dayunInfo" style="margin-bottom:10px;font-size:0.85rem;color:#8b7355"></div>
             <div class="dayun-table-wrap">
               <table class="dayun-table" id="dayunTable"></table>
             </div>
@@ -237,7 +240,7 @@
 
           <div class="info-card full-width" id="aiCard">
             <h3>◆ AI 智能解盘</h3>
-            <div id="aiConfig" style="margin-bottom:12px;font-size:0.78rem;color:#b89a6a">
+            <div id="aiConfig" style="margin-bottom:12px;font-size:0.78rem;color:#8b7355">
               <div class="form-row" style="align-items:end">
                 <div class="form-group" style="flex:2">
                   <label>API Key</label>
@@ -259,10 +262,10 @@
               </div>
               <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
                 <button type="button" class="btn-submit" id="aiAnalyzeBtn" style="padding:8px 20px;font-size:0.85rem;letter-spacing:2px;margin-top:0;flex:1;min-width:120px">开始AI解盘</button>
-                <button type="button" id="aiSaveKeyBtn" style="padding:8px 14px;font-size:0.78rem;background:rgba(212,175,55,0.1);color:#b89a6a;border:1px solid rgba(212,175,55,0.2);border-radius:6px;cursor:pointer;font-family:inherit">保存配置</button>
+                <button type="button" id="aiSaveKeyBtn" style="padding:8px 14px;font-size:0.78rem;background:#faf6f0;color:#8b7355;border:1px solid #e8ddd0;border-radius:6px;cursor:pointer;font-family:inherit">保存配置</button>
               </div>
             </div>
-            <div id="aiStatus" style="display:none;text-align:center;padding:20px 0;color:#a08870;font-size:0.85rem">
+            <div id="aiStatus" style="display:none;text-align:center;padding:20px 0;color:#8b7355;font-size:0.85rem">
               <div class="ai-loading"><span></span><span></span><span></span></div>
               <div id="aiStatusText">AI 正在分析···</div>
             </div>
@@ -456,7 +459,7 @@
       // 神煞
       const sg = document.getElementById('shenshaGrid'); sg.innerHTML = '';
       const se = Object.entries(r.shenSha);
-      if (!se.length) { sg.innerHTML = '<div style="color:#a08870;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; }
+      if (!se.length) { sg.innerHTML = '<div style="color:#a09080;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; }
       else { se.forEach(([name, val]) => { const d = document.createElement('div'); d.className = 'shensha-item'; d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>'; sg.appendChild(d); }); }
 
       // 大运
@@ -467,7 +470,7 @@
       const tb = document.createElement('tbody');
       dy.pillars.forEach((p, i) => {
         const tr = document.createElement('tr'); tr.dataset.dayunIndex = i;
-        tr.innerHTML = '<td>' + p.index + '</td><td>' + p.ageFrom + '-' + p.ageTo + '岁</td><td style="color:' + WU_XING_COLOR[p.wxG] + ';font-weight:500">' + p.gan + '</td><td style="color:' + WU_XING_COLOR[p.wxZ] + ';font-weight:500">' + p.zhi + '</td><td><span class="pillar-wx" style="background:' + WU_XING_COLOR[p.wxG] + '">' + p.wxG + '</span><span class="pillar-wx" style="background:' + WU_XING_COLOR[p.wxZ] + '">' + p.wxZ + '</span></td><td style="color:#a08870">' + p.naYin + '</td>';
+        tr.innerHTML = '<td>' + p.index + '</td><td>' + p.ageFrom + '-' + p.ageTo + '岁</td><td style="color:' + WU_XING_COLOR[p.wxG] + ';font-weight:500">' + p.gan + '</td><td style="color:' + WU_XING_COLOR[p.wxZ] + ';font-weight:500">' + p.zhi + '</td><td><span class="pillar-wx" style="background:' + WU_XING_COLOR[p.wxG] + '">' + p.wxG + '</span><span class="pillar-wx" style="background:' + WU_XING_COLOR[p.wxZ] + '">' + p.wxZ + '</span></td><td style="color:#a09080">' + p.naYin + '</td>';
         tb.appendChild(tr);
       });
       dt.appendChild(tb);
@@ -481,13 +484,16 @@
     function renderBoxes(boxes) {
       document.getElementById('soBoxes').innerHTML = boxes.map(b => {
         const cgHTML = b.cgSS.length
-          ? b.cgSS.map(g => '<span class="sb-cg-item">' + g.gan + '<span class="sb-cg-ss">(' + g.ss + ')</span></span>').join('')
+          ? '<div class="sb-cg-list">' + b.cgSS.map(g => '<span class="sb-cg-item"><span class="sb-cg-gan">' + g.gan + '</span><span class="sb-cg-arrow">→</span><span class="sb-cg-ss">' + g.ss + '</span></span>').join('') + '</div>'
           : '';
         return '<div class="so-box' + (b.flow ? ' so-box-flow' : '') + '">' +
           '<div class="sb-label">' + b.label + '</div>' +
-          '<div class="sb-gan-row"><span class="sb-gan" style="color:' + WU_XING_COLOR[b.wxG] + '">' + b.gan + '</span><span class="sb-gan-ss">(' + b.ganSS + ')</span></div>' +
-          '<div class="sb-zhi-row"><span class="sb-zhi" style="color:' + WU_XING_COLOR[b.wxZ] + '">' + b.zhi + '</span><span class="sb-zhi-cg">' + cgHTML + '</span></div>' +
-          '<div class="sb-meta"><span class="sm-cs">自' + b.ziZuo + '</span><span class="sm-sep">·</span><span class="sm-cs-ri">主' + b.riZhiCS + '</span></div>' +
+          '<div class="sb-gan-ss">' + b.ganSS + '</div>' +
+          '<div class="sb-gan" style="color:' + WU_XING_COLOR[b.wxG] + '">' + b.gan + '</div>' +
+          '<div class="sb-divider"></div>' +
+          '<div class="sb-zhi" style="color:' + WU_XING_COLOR[b.wxZ] + '">' + b.zhi + '</div>' +
+          cgHTML +
+          '<div class="sb-meta"><span class="sm-cs">' + b.ziZuo + '</span><span class="sm-sep">·</span><span class="sm-cs-ri">' + b.riZhiCS + '</span></div>' +
         '</div>';
       }).join('');
     }
@@ -742,7 +748,7 @@
     function buildShenshaGrid(sha) {
       const sg = document.getElementById('shenshaGrid'); sg.innerHTML = '';
       const se = Object.entries(sha);
-      if (!se.length) { sg.innerHTML = '<div style="color:#a08870;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; return; }
+      if (!se.length) { sg.innerHTML = '<div style="color:#a09080;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; return; }
       se.forEach(([name, val]) => { const d = document.createElement('div'); d.className = 'shensha-item'; d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>'; sg.appendChild(d); });
     }
 
