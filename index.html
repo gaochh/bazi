@@ -71,12 +71,21 @@
     </div>
 
     <div class="result-section" id="resultSection">
-      <div class="form-section">
+      <!-- ── Sticky Top Banner ── -->
+      <div class="result-sticky" id="resultSticky">
+        <div class="compact-bazi">
+          <div class="compact-pillars" id="compactPillars"></div>
+          <div class="compact-meta" id="compactMeta"></div>
+        </div>
+      </div>
+
+      <div class="form-section" style="padding-top:4px">
+        <!-- ── Full-size Pillar Cards ── -->
         <h2>◆ 四柱八字</h2>
         <div class="pillars-grid" id="pillarsGrid"></div>
 
         <div class="info-grid">
-          <div class="info-card full-width">
+          <div class="info-card full-width" id="riGanCard">
             <h3>◆ 日主</h3>
             <div style="text-align:center;padding:8px 0">
               <span class="gan-day-master" id="riGanDisplay"></span>
@@ -122,36 +131,22 @@
             <div class="wuxing-bar-total" id="wuxingTags"></div>
           </div>
 
-          <div class="info-card full-width">
+          <div class="info-card full-width" id="shenshaCard">
             <h3>◆ 神煞</h3>
             <div class="shensha-grid" id="shenshaGrid"></div>
           </div>
 
-          <div class="info-card full-width">
-            <h3>◆ 大运排布</h3>
+          <div class="info-card full-width" id="dayunCard">
+            <h3>◆ 大运排布 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem">（点击大运行查看流年）</span></h3>
             <div id="dayunInfo" style="margin-bottom:12px;font-size:0.88rem;color:#b89a6a"></div>
             <div class="dayun-table-wrap">
               <table class="dayun-table" id="dayunTable"></table>
             </div>
           </div>
 
-          <div class="info-card full-width">
-            <h3>◆ 流年运势</h3>
-            <div class="form-row" style="margin-bottom:15px">
-              <div class="form-group" style="flex:0 0 160px">
-                <label>选择流年</label>
-                <select id="flowYear"></select>
-              </div>
-              <div class="form-group" style="flex:0 0 auto;display:flex;align-items:flex-end">
-                <button type="button" class="btn-submit" id="flowYearBtn" style="padding:10px 20px;font-size:0.9rem;letter-spacing:2px;margin-top:0">查看</button>
-              </div>
-            </div>
-            <div id="flowResult" style="display:none">
-              <div class="flow-header" id="flowHeader"></div>
-              <div class="flow-grid" id="flowGrid"></div>
-              <div class="flow-shensha" id="flowShensha"></div>
-              <div class="flow-relations" id="flowRelations"></div>
-            </div>
+          <div class="info-card full-width" id="flowDetailSection" style="display:none">
+            <h3>◆ 流年详情 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem" id="flowYearLabel"></span></h3>
+            <div id="flowDetailContent"></div>
           </div>
         </div>
       </div>
@@ -163,6 +158,9 @@
   <script src="js/bazi.js"></script>
   <script>
     let lastResult = null;
+    let activeFlowYear = null;
+    let originalShenshaHTML = '';
+
     const defaultDate = getDefaultDate();
 
     (function initForm() {
@@ -185,17 +183,6 @@
       document.getElementById('birthHour').value = h;
     })();
 
-    (function initFlowYear() {
-      const sel = document.getElementById('flowYear');
-      const now = new Date().getFullYear();
-      for (let y = now - 10; y <= now + 30; y++) {
-        const opt = document.createElement('option');
-        opt.value = y; opt.textContent = y + ' 年';
-        if (y === now) opt.selected = true;
-        sel.appendChild(opt);
-      }
-    })();
-
     document.getElementById('baziForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const year = parseInt(document.getElementById('birthYear').value);
@@ -207,19 +194,37 @@
       const [hour, minute] = hourMap[hourBranch];
       const result = calcBazi(year, month, day, hour, minute, gender);
       lastResult = result;
+      activeFlowYear = null;
       displayResult(result);
-      displayFlowYear(result);
     });
 
-    document.getElementById('flowYearBtn').addEventListener('click', function() {
-      if (!lastResult) {
-        document.getElementById('baziForm').requestSubmit();
-        return;
-      }
-      displayFlowYear(lastResult);
-    });
+    function getNianZhiIndex(year,month,day){
+      const md=month*100+day;
+      let y=md<204?year-1:year;
+      return ((y-4)%12+12)%12;
+    }
 
     function displayResult(r) {
+      // Compact sticky header
+      const cp = document.getElementById('compactPillars');
+      cp.innerHTML = '';
+      r.pillars.forEach(p => {
+        const wxG = WU_XING_TG[p.gan], wxZ = WU_XING_DZ[p.zhi];
+        const div = document.createElement('div');
+        div.className = 'compact-pillar';
+        div.innerHTML = `
+          <div class="cp-name">${p.name}</div>
+          <div class="cp-gan" style="color:${WU_XING_COLOR[wxG]}">${p.gan}</div>
+          <div class="cp-zhi" style="color:${WU_XING_COLOR[wxZ]}">${p.zhi}</div>
+        `;
+        cp.appendChild(div);
+      });
+      document.getElementById('compactMeta').innerHTML =
+        `<span>日主：<strong>${r.riGan} · ${r.riWx} · ${r.riYinYang}</strong></span>` +
+        `<span>生肖：<strong>${r.shengXiao}</strong></span>` +
+        `<span>${r.gender}</span>`;
+
+      // Pillar cards
       const grid = document.getElementById('pillarsGrid');
       grid.innerHTML = '';
       r.pillars.forEach((p, i) => {
@@ -266,6 +271,7 @@
       document.getElementById('nayinDay').textContent = r.nayin[2];
       document.getElementById('nayinHour').textContent = r.nayin[3];
 
+      // 五行
       const bar = document.getElementById('wuxingBar');
       bar.innerHTML = '';
       const wxOrder = ['木','火','土','金','水'];
@@ -300,6 +306,7 @@
         tags.appendChild(missTag);
       }
 
+      // 神煞
       const sg = document.getElementById('shenshaGrid');
       sg.innerHTML = '';
       const entries = Object.entries(r.shenSha);
@@ -314,7 +321,9 @@
           sg.appendChild(div);
         });
       }
+      originalShenshaHTML = sg.innerHTML;
 
+      // 大运
       const dy = r.daYun;
       document.getElementById('dayunInfo').innerHTML = `起运年龄：<strong>${dy.startAge} 岁</strong> &nbsp;·&nbsp; 排法：<strong>${dy.shunPai ? '顺排' : '逆排'}</strong>`;
       const dt = document.getElementById('dayunTable');
@@ -323,8 +332,9 @@
       thead.innerHTML = '<tr><th>大运</th><th>年龄</th><th>天干</th><th>地支</th><th>五行</th><th>纳音</th></tr>';
       dt.appendChild(thead);
       const tbody = document.createElement('tbody');
-      dy.pillars.forEach(p => {
+      dy.pillars.forEach((p, i) => {
         const tr = document.createElement('tr');
+        tr.dataset.dayunIndex = i;
         tr.innerHTML = `
           <td>${p.index}</td>
           <td>${p.ageFrom}-${p.ageTo}岁</td>
@@ -337,99 +347,209 @@
       });
       dt.appendChild(tbody);
 
+      // Hide flow detail
+      document.getElementById('flowDetailSection').style.display = 'none';
+
+      // Show result
       document.getElementById('resultSection').classList.add('visible');
       document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function getNianZhiIndex(year,month,day){
-      const md=month*100+day;
-      let y=md<204?year-1:year;
-      return ((y-4)%12+12)%12;
+    // ── 大运 Click: toggle flow years ──
+    document.getElementById('dayunTable').addEventListener('click', function(e) {
+      const row = e.target.closest('tr[data-dayun-index]');
+      if (!row) return;
+      if (row.classList.contains('dayun-expand-row')) return;
+      const index = parseInt(row.dataset.dayunIndex);
+      toggleDayunFlow(index);
+    });
+
+    let expandedDayunIdx = -1;
+
+    function toggleDayunFlow(index) {
+      // Remove existing expand
+      const existing = document.querySelector('.dayun-expand-row');
+      if (existing) {
+        existing.remove();
+        document.querySelectorAll('.dayun-table tbody tr').forEach(tr => tr.classList.remove('dayun-active'));
+        if (expandedDayunIdx === index) {
+          expandedDayunIdx = -1;
+          activeFlowYear = null;
+          document.getElementById('flowDetailSection').style.display = 'none';
+          // Restore original shensha
+          document.getElementById('shenshaGrid').innerHTML = originalShenshaHTML;
+          return;
+        }
+      }
+
+      expandedDayunIdx = index;
+      const row = document.querySelector(`.dayun-table tbody tr[data-dayun-index="${index}"]`);
+      if (!row) return;
+      row.classList.add('dayun-active');
+
+      const dy = lastResult.daYun.pillars[index];
+      const birthYear = parseInt(document.getElementById('birthYear').value);
+      const startYear = birthYear + dy.ageFrom;
+
+      const expandRow = document.createElement('tr');
+      expandRow.className = 'dayun-expand-row';
+      expandRow.dataset.dayunIndex = index;
+
+      let yearsHtml = '';
+      for (let i = 0; i < 10; i++) {
+        const y = startYear + i;
+        const ganIdx = ((y - 4) % 10 + 10) % 10;
+        const zhiIdx = ((y - 4) % 12 + 12) % 12;
+        const isActive = activeFlowYear === y;
+        yearsHtml += `<span class="flow-year-chip${isActive ? ' active' : ''}" data-year="${y}">
+          <span class="fy-year">${y}</span>
+          <span class="fy-ganzhi">${TIAN_GAN[ganIdx]}${DI_ZHI[zhiIdx]}</span>
+        </span>`;
+      }
+
+      expandRow.innerHTML = `<td colspan="6">
+        <div class="dayun-flow-wrap">
+          <div style="color:#a08870;font-size:0.72rem;margin-bottom:4px">点击流年查看详情</div>
+          <div class="dayun-flow-years">${yearsHtml}</div>
+        </div>
+      </td>`;
+      row.after(expandRow);
     }
 
-    function displayFlowYear(r) {
-      const ly = parseInt(document.getElementById('flowYear').value);
-      const nianZhi = DI_ZHI[getNianZhiIndex(
-        parseInt(document.getElementById('birthYear').value),
-        parseInt(document.getElementById('birthMonth').value),
-        parseInt(document.getElementById('birthDay').value)
-      )];
-      const lr = calcLiuNian(ly, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
+    // ── 流年 Chip Click ──
+    document.addEventListener('click', function(e) {
+      const chip = e.target.closest('.flow-year-chip');
+      if (!chip) return;
+      const year = parseInt(chip.dataset.year);
+      if (!lastResult) return;
+      showFlowDetail(year);
+    });
 
-      const hdr = document.getElementById('flowHeader');
-      hdr.style.textAlign = 'center';
-      hdr.style.padding = '8px 0';
-      hdr.style.fontSize = '1rem';
-      const bgColor = WU_XING_COLOR[lr.wxG] || '#888';
-      hdr.innerHTML = `
-        <span style="font-size:1.4rem;font-weight:700;color:${bgColor}">${lr.gan}${lr.zhi}</span>
-        <span style="color:#a08870;margin-left:8px">${lr.year}年</span>
-        <span style="display:inline-block;margin:0 4px">·</span>
-        <span style="color:#b89a6a">${lr.wxG}${lr.wxZ}</span>
-        <span style="display:inline-block;margin:0 4px">·</span>
-        <span style="color:#a08870">${lr.naYin}</span>
-        <span style="display:inline-block;margin:0 4px">·</span>
-        <span style="color:#b89a6a">${lr.shengXiao}年</span>
-      `;
+    function showFlowDetail(year) {
+      activeFlowYear = year;
 
-      const fg = document.getElementById('flowGrid');
-      fg.innerHTML = '';
-      fg.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0';
-      const items = [
-        {label:'对日主',val:`${lr.shiShen} · ${lr.changSheng}`,desc:`日主${r.riGan}遇${lr.gan}${lr.zhi}`},
-        {label:'流年干支',val:`${lr.gan}${lr.zhi}`,desc:`${lr.wxG}${lr.wxZ} · ${lr.naYin}`},
-      ];
-      items.forEach(item => {
-        const d = document.createElement('div');
-        d.style.cssText = 'background:rgba(40,25,15,0.9);border:1px solid rgba(212,175,55,0.1);border-radius:8px;padding:10px 14px';
-        d.innerHTML = `<div style="color:#a08870;font-size:0.78rem">${item.label}</div><div style="color:#d4af37;font-weight:500;font-size:0.95rem;margin-top:2px">${item.val}</div><div style="color:#5a4a3a;font-size:0.72rem;margin-top:2px">${item.desc}</div>`;
-        fg.appendChild(d);
+      // Update active chip
+      document.querySelectorAll('.flow-year-chip').forEach(ch => {
+        ch.classList.toggle('active', parseInt(ch.dataset.year) === year);
       });
 
-      const fs = document.getElementById('flowShensha');
-      fs.innerHTML = '';
+      const r = lastResult;
+      const birthY = parseInt(document.getElementById('birthYear').value);
+      const birthM = parseInt(document.getElementById('birthMonth').value);
+      const birthD = parseInt(document.getElementById('birthDay').value);
+      const nianZhi = DI_ZHI[getNianZhiIndex(birthY, birthM, birthD)];
+      const lr = calcLiuNian(year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
+
+      // Update 神煞 with flow year shensha
+      const sg = document.getElementById('shenshaGrid');
+      sg.innerHTML = '';
       const shenshaEntries = Object.entries(lr.shenSha);
       if (shenshaEntries.length) {
-        fs.style.cssText = 'margin:10px 0';
-        const title = document.createElement('div');
-        title.style.cssText = 'color:#b89a6a;font-size:0.78rem;margin-bottom:6px';
-        title.textContent = '流年神煞';
-        fs.appendChild(title);
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
-        shenshaEntries.forEach(([name, val]) => {
-          const tag = document.createElement('span');
-          tag.style.cssText = 'background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.1);border-radius:6px;padding:3px 10px;font-size:0.78rem';
+        const idx = lr.ganIdx !== undefined ? lr.ganIdx : TIAN_GAN.indexOf(lr.gan);
+        const guiRen = calcTianYiGuiRen(lr.gan).slice(0,2);
+        const wc = calcWenChang(lr.gan);
+        const ym = calcYiMa(lr.zhi);
+        const th = calcTaoHua(lr.zhi);
+        const hg = calcHuaGai(lr.zhi);
+        const allShensha = {};
+        if (guiRen.length) allShensha['天乙贵人'] = guiRen;
+        if (wc) allShensha['文昌贵人'] = wc;
+        if (ym) allShensha['驿马'] = ym;
+        if (th) allShensha['桃花'] = th;
+        if (hg) allShensha['华盖'] = hg;
+        mergeObj(allShensha, lr.shenSha);
+        Object.entries(allShensha).forEach(([name, val]) => {
+          const div = document.createElement('div');
+          div.className = 'shensha-item';
           const vStr = Array.isArray(val) ? val.join('、') : val;
-          tag.innerHTML = `<span style="color:#a08870">${name}</span> <span style="color:#d4af37;font-weight:500">${vStr}</span>`;
-          wrap.appendChild(tag);
+          div.innerHTML = `<span class="shensha-name">${name}</span><span class="shensha-val">${vStr}</span>`;
+          sg.appendChild(div);
         });
-        fs.appendChild(wrap);
+      } else {
+        sg.innerHTML = '<div style="color:#a08870;font-size:0.85rem;text-align:center;padding:8px 0">无流年神煞</div>';
       }
 
-      const fr = document.getElementById('flowRelations');
-      fr.innerHTML = '';
-      if (lr.relations.length) {
-        fr.style.cssText = 'margin:10px 0';
-        const title = document.createElement('div');
-        title.style.cssText = 'color:#b89a6a;font-size:0.78rem;margin-bottom:6px';
-        title.textContent = '与四柱关系';
-        fr.appendChild(title);
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
-        lr.relations.forEach(rel => {
-          const tag = document.createElement('span');
-          tag.style.cssText = 'background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.1);border-radius:6px;padding:3px 10px;font-size:0.78rem';
-          const isBad = ['六冲','六害','三刑','相刑','自刑'].includes(rel.relation);
-          const isGood = ['六合','三合','半合'].includes(rel.relation);
-          const clr = isBad ? '#e57373' : isGood ? '#81c784' : '#d4af37';
-          tag.innerHTML = `<span style="color:#a08870">${rel.pillar}${rel.zhi}</span> <span style="color:${clr};font-weight:500">${rel.relation}</span>`;
-          wrap.appendChild(tag);
-        });
-        fr.appendChild(wrap);
-      }
+      // Show 流年详情
+      const detailSection = document.getElementById('flowDetailSection');
+      detailSection.style.display = 'block';
+      document.getElementById('flowYearLabel').textContent = `· ${year}年`;
 
-      document.getElementById('flowResult').style.display = 'block';
+      const bgColor = WU_XING_COLOR[lr.wxG] || '#888';
+      const content = document.getElementById('flowDetailContent');
+
+      // Recalculate full shensha for display
+      const allShenshaEntries = [];
+      const ssFull = {};
+      const guiRen2 = calcTianYiGuiRen(lr.gan).slice(0,2);
+      if (guiRen2.length) ssFull['天乙贵人'] = guiRen2;
+      const wc2 = calcWenChang(lr.gan);
+      if (wc2) ssFull['文昌贵人'] = wc2;
+      const ym2 = calcYiMa(lr.zhi);
+      if (ym2) ssFull['驿马'] = ym2;
+      const th2 = calcTaoHua(lr.zhi);
+      if (th2) ssFull['桃花'] = th2;
+      const hg2 = calcHuaGai(lr.zhi);
+      if (hg2) ssFull['华盖'] = hg2;
+      mergeObj(ssFull, lr.shenSha);
+      Object.entries(ssFull).forEach(([name, val]) => allShenshaEntries.push({name, val: Array.isArray(val) ? val.join('、') : val}));
+
+      content.innerHTML = `
+        <div class="flow-detail-content">
+          <div class="flow-detail-item">
+            <div class="fd-label">流年干支</div>
+            <div class="fd-value" style="color:${bgColor};font-size:1.2rem">${lr.gan}${lr.zhi}</div>
+            <div style="color:#a08870;font-size:0.75rem">${lr.year}年 · ${lr.shengXiao}年</div>
+          </div>
+          <div class="flow-detail-item">
+            <div class="fd-label">五行纳音</div>
+            <div class="fd-value">${lr.wxG}${lr.wxZ}</div>
+            <div style="color:#a08870;font-size:0.75rem">${lr.naYin}</div>
+          </div>
+          <div class="flow-detail-item">
+            <div class="fd-label">对日主十神</div>
+            <div class="fd-value">${lr.shiShen}</div>
+            <div style="color:#a08870;font-size:0.75rem">日主${r.riGan}遇${lr.gan}</div>
+          </div>
+          <div class="flow-detail-item">
+            <div class="fd-label">十二长生</div>
+            <div class="fd-value">${lr.changSheng}</div>
+            <div style="color:#a08870;font-size:0.75rem">日主${r.riGan}遇${lr.zhi}</div>
+          </div>
+          <div class="flow-detail-item">
+            <div class="fd-label">流年神煞</div>
+            <div class="fd-chips">
+              ${allShenshaEntries.map(s => `<span class="fd-chip"><span style="color:#a08870">${s.name}</span> <span style="color:#d4af37;font-weight:500">${s.val}</span></span>`).join('')}
+            </div>
+          </div>
+          <div class="flow-detail-item">
+            <div class="fd-label">与四柱关系</div>
+            <div class="fd-chips">
+              ${(lr.relations || []).map(rel => {
+                const isBad = ['六冲','六害','三刑','相刑','自刑'].includes(rel.relation);
+                const isGood = ['六合','三合','半合'].includes(rel.relation);
+                const clr = isBad ? '#e57373' : isGood ? '#81c784' : '#d4af37';
+                return `<span class="fd-chip"><span style="color:#a08870">${rel.pillar}${rel.zhi}</span> <span style="color:${clr};font-weight:500">${rel.relation}</span></span>`;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Scroll into view smoothly
+      detailSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function mergeObj(target, source) {
+      for (const [k, v] of Object.entries(source)) {
+        if (target[k]) {
+          const existing = Array.isArray(target[k]) ? target[k] : [target[k]];
+          const add = Array.isArray(v) ? v : [v];
+          add.forEach(item => { if (!existing.includes(item)) existing.push(item); });
+          target[k] = existing;
+        } else {
+          target[k] = v;
+        }
+      }
     }
   </script>
 </body>
