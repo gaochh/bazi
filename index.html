@@ -134,6 +134,25 @@
               <table class="dayun-table" id="dayunTable"></table>
             </div>
           </div>
+
+          <div class="info-card full-width">
+            <h3>◆ 流年运势</h3>
+            <div class="form-row" style="margin-bottom:15px">
+              <div class="form-group" style="flex:0 0 160px">
+                <label>选择流年</label>
+                <select id="flowYear"></select>
+              </div>
+              <div class="form-group" style="flex:0 0 auto;display:flex;align-items:flex-end">
+                <button type="button" class="btn-submit" id="flowYearBtn" style="padding:10px 20px;font-size:0.9rem;letter-spacing:2px;margin-top:0">查看</button>
+              </div>
+            </div>
+            <div id="flowResult" style="display:none">
+              <div class="flow-header" id="flowHeader"></div>
+              <div class="flow-grid" id="flowGrid"></div>
+              <div class="flow-shensha" id="flowShensha"></div>
+              <div class="flow-relations" id="flowRelations"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -143,6 +162,7 @@
 
   <script src="js/bazi.js"></script>
   <script>
+    let lastResult = null;
     const defaultDate = getDefaultDate();
 
     (function initForm() {
@@ -165,6 +185,17 @@
       document.getElementById('birthHour').value = h;
     })();
 
+    (function initFlowYear() {
+      const sel = document.getElementById('flowYear');
+      const now = new Date().getFullYear();
+      for (let y = now - 10; y <= now + 30; y++) {
+        const opt = document.createElement('option');
+        opt.value = y; opt.textContent = y + ' 年';
+        if (y === now) opt.selected = true;
+        sel.appendChild(opt);
+      }
+    })();
+
     document.getElementById('baziForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const year = parseInt(document.getElementById('birthYear').value);
@@ -175,7 +206,17 @@
       const hourMap = { 0:[23,0],1:[1,0],2:[3,0],3:[5,0],4:[7,0],5:[9,0],6:[11,0],7:[13,0],8:[15,0],9:[17,0],10:[19,0],11:[21,0] };
       const [hour, minute] = hourMap[hourBranch];
       const result = calcBazi(year, month, day, hour, minute, gender);
+      lastResult = result;
       displayResult(result);
+      displayFlowYear(result);
+    });
+
+    document.getElementById('flowYearBtn').addEventListener('click', function() {
+      if (!lastResult) {
+        document.getElementById('baziForm').requestSubmit();
+        return;
+      }
+      displayFlowYear(lastResult);
     });
 
     function displayResult(r) {
@@ -298,6 +339,97 @@
 
       document.getElementById('resultSection').classList.add('visible');
       document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function getNianZhiIndex(year,month,day){
+      const md=month*100+day;
+      let y=md<204?year-1:year;
+      return ((y-4)%12+12)%12;
+    }
+
+    function displayFlowYear(r) {
+      const ly = parseInt(document.getElementById('flowYear').value);
+      const nianZhi = DI_ZHI[getNianZhiIndex(
+        parseInt(document.getElementById('birthYear').value),
+        parseInt(document.getElementById('birthMonth').value),
+        parseInt(document.getElementById('birthDay').value)
+      )];
+      const lr = calcLiuNian(ly, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
+
+      const hdr = document.getElementById('flowHeader');
+      hdr.style.textAlign = 'center';
+      hdr.style.padding = '8px 0';
+      hdr.style.fontSize = '1rem';
+      const bgColor = WU_XING_COLOR[lr.wxG] || '#888';
+      hdr.innerHTML = `
+        <span style="font-size:1.4rem;font-weight:700;color:${bgColor}">${lr.gan}${lr.zhi}</span>
+        <span style="color:#a08870;margin-left:8px">${lr.year}年</span>
+        <span style="display:inline-block;margin:0 4px">·</span>
+        <span style="color:#b89a6a">${lr.wxG}${lr.wxZ}</span>
+        <span style="display:inline-block;margin:0 4px">·</span>
+        <span style="color:#a08870">${lr.naYin}</span>
+        <span style="display:inline-block;margin:0 4px">·</span>
+        <span style="color:#b89a6a">${lr.shengXiao}年</span>
+      `;
+
+      const fg = document.getElementById('flowGrid');
+      fg.innerHTML = '';
+      fg.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0';
+      const items = [
+        {label:'对日主',val:`${lr.shiShen} · ${lr.changSheng}`,desc:`日主${r.riGan}遇${lr.gan}${lr.zhi}`},
+        {label:'流年干支',val:`${lr.gan}${lr.zhi}`,desc:`${lr.wxG}${lr.wxZ} · ${lr.naYin}`},
+      ];
+      items.forEach(item => {
+        const d = document.createElement('div');
+        d.style.cssText = 'background:rgba(40,25,15,0.9);border:1px solid rgba(212,175,55,0.1);border-radius:8px;padding:10px 14px';
+        d.innerHTML = `<div style="color:#a08870;font-size:0.78rem">${item.label}</div><div style="color:#d4af37;font-weight:500;font-size:0.95rem;margin-top:2px">${item.val}</div><div style="color:#5a4a3a;font-size:0.72rem;margin-top:2px">${item.desc}</div>`;
+        fg.appendChild(d);
+      });
+
+      const fs = document.getElementById('flowShensha');
+      fs.innerHTML = '';
+      const shenshaEntries = Object.entries(lr.shenSha);
+      if (shenshaEntries.length) {
+        fs.style.cssText = 'margin:10px 0';
+        const title = document.createElement('div');
+        title.style.cssText = 'color:#b89a6a;font-size:0.78rem;margin-bottom:6px';
+        title.textContent = '流年神煞';
+        fs.appendChild(title);
+        const wrap = document.createElement('div');
+        wrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
+        shenshaEntries.forEach(([name, val]) => {
+          const tag = document.createElement('span');
+          tag.style.cssText = 'background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.1);border-radius:6px;padding:3px 10px;font-size:0.78rem';
+          const vStr = Array.isArray(val) ? val.join('、') : val;
+          tag.innerHTML = `<span style="color:#a08870">${name}</span> <span style="color:#d4af37;font-weight:500">${vStr}</span>`;
+          wrap.appendChild(tag);
+        });
+        fs.appendChild(wrap);
+      }
+
+      const fr = document.getElementById('flowRelations');
+      fr.innerHTML = '';
+      if (lr.relations.length) {
+        fr.style.cssText = 'margin:10px 0';
+        const title = document.createElement('div');
+        title.style.cssText = 'color:#b89a6a;font-size:0.78rem;margin-bottom:6px';
+        title.textContent = '与四柱关系';
+        fr.appendChild(title);
+        const wrap = document.createElement('div');
+        wrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
+        lr.relations.forEach(rel => {
+          const tag = document.createElement('span');
+          tag.style.cssText = 'background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.1);border-radius:6px;padding:3px 10px;font-size:0.78rem';
+          const isBad = ['六冲','六害','三刑','相刑','自刑'].includes(rel.relation);
+          const isGood = ['六合','三合','半合'].includes(rel.relation);
+          const clr = isBad ? '#e57373' : isGood ? '#81c784' : '#d4af37';
+          tag.innerHTML = `<span style="color:#a08870">${rel.pillar}${rel.zhi}</span> <span style="color:${clr};font-weight:500">${rel.relation}</span>`;
+          wrap.appendChild(tag);
+        });
+        fr.appendChild(wrap);
+      }
+
+      document.getElementById('flowResult').style.display = 'block';
     }
   </script>
 </body>

@@ -285,6 +285,66 @@ function calcBazi(year,month,day,hour,minute,gender){
   };
 }
 
+function calcBranchRelation(b1,b2){
+  if(b1===b2) return '伏吟';
+  const i1=DI_ZHI.indexOf(b1),i2=DI_ZHI.indexOf(b2);
+  if(i1===-1||i2===-1) return '';
+  const liuHe=[[0,1],[11,2],[10,3],[9,4],[8,5],[7,6]];
+  if(liuHe.some(([a,b])=>(a===i1&&b===i2)||(a===i2&&b===i1))) return '六合';
+  if(Math.abs(i1-i2)===6) return '六冲';
+  const liuHai=[[0,7],[6,1],[5,2],[4,3],[8,11],[9,10]];
+  if(liuHai.some(([a,b])=>(a===i1&&b===i2)||(a===i2&&b===i1))) return '六害';
+  const yinShenSi=[2,5,8],chouWeiXu=[1,7,10],ziMao=[0,3];
+  if(yinShenSi.includes(i1)&&yinShenSi.includes(i2)) return '三刑';
+  if(chouWeiXu.includes(i1)&&chouWeiXu.includes(i2)) return '三刑';
+  if(ziMao.includes(i1)&&ziMao.includes(i2)) return '相刑';
+  if(i1===i2&&[4,6,9,11].includes(i1)) return '自刑';
+  const sanHe=[[0,4,8],[2,6,10],[3,7,11],[1,5,9]];
+  for(const sh of sanHe) if(sh.includes(i1)&&sh.includes(i2)&&i1!==i2) return '三合';
+  const banHe=[[0,4],[4,8],[0,8],[2,6],[6,10],[2,10],[3,7],[7,11],[3,11],[1,5],[5,9],[1,9]];
+  if(banHe.some(([a,b])=>(a===i1&&b===i2)||(a===i2&&b===i1))) return '半合';
+  return '';
+}
+
+function calcLiuNianShenSha(nianZhi,liuNianZhi){
+  const off=((DI_ZHI.indexOf(liuNianZhi)-DI_ZHI.indexOf(nianZhi))%12+12)%12;
+  const m={0:'值太岁',1:'太阳',2:'丧门',3:'太阴',4:'五鬼',5:'死符',6:'岁破(冲太岁)',7:'龙德',8:'白虎',9:'福德',10:'天狗',11:'病符'};
+  return m[off]||'';
+}
+
+function calcLiuNian(ly,riGan,riGanIdx,pillars,nianZhi,monthZhi){
+  const liuNianStem=((ly-4)%10+10)%10;
+  const liuNianBranch=((ly-4)%12+12)%12;
+  const gan=TIAN_GAN[liuNianStem],zhi=DI_ZHI[liuNianBranch];
+  const shenSha={};
+  const lnss=calcLiuNianShenSha(nianZhi,zhi);
+  if(lnss) shenSha[lnss]='✓';
+
+  const guiRen=calcTianYiGuiRen(gan).slice(0,2);
+  if(guiRen.length) shenSha['天乙贵人']=guiRen;
+
+  const th=calcTaoHua(zhi);
+  if(th&&nianZhi!==zhi){
+    for(const p of pillars) if(p.zhi===th){shenSha['桃花']=p.name;break;}
+  }
+
+  const ny=calcNaYin(gan,zhi);
+  const wzG=WU_XING_TG[gan],wzZ=WU_XING_DZ[zhi];
+  const cs=calcChangSheng(riGan,liuNianBranch);
+  const ss=calcShiShen(riGan,gan);
+  const sx=SHENG_XIAO[liuNianBranch];
+
+  const relations=pillars.map(p=>({
+    pillar:p.name,zhi:p.zhi,relation:calcBranchRelation(zhi,p.zhi)
+  })).filter(r=>r.relation);
+
+  return {
+    year:ly,gan,zhi,naYin:ny,wxG:wzG,wxZ:wzZ,
+    shengXiao:sx,changSheng:cs,shiShen:ss,
+    shenSha,relations
+  };
+}
+
 function getDefaultDate(){
   const now=new Date();
   return{year:now.getFullYear(),month:now.getMonth()+1,day:now.getDate(),hour:now.getHours(),minute:now.getMinutes()};
