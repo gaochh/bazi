@@ -181,6 +181,35 @@ function calcShenSha(gan,zhiAll,monthZhi){
   return sha;
 }
 
+function calcPillarShenSha(gan,pillars,monthZhi){
+  const allZhi=pillars.map(p=>p.zhi);
+  return pillars.map(p=>{
+    const sha={};
+    const zi=p.zhi;
+    const guiRen=calcTianYiGuiRen(gan);
+    if(guiRen.includes(zi)) sha['天乙贵人']='✓';
+    const wc=calcWenChang(gan);
+    if(wc===zi) sha['文昌贵人']='✓';
+    const ym=calcYiMa(allZhi[0]);
+    if(ym&&ym===zi) sha['驿马']='✓';
+    const th=calcTaoHua(allZhi[0]);
+    if(th&&th===zi) sha['桃花']='✓';
+    const hg=calcHuaGai(allZhi[0]);
+    if(hg&&hg===zi) sha['华盖']='✓';
+    const js=calcJieSha(allZhi[0]);
+    if(js&&js===zi) sha['劫煞']='✓';
+    const st=calcSanTai(allZhi[0]);
+    if(st&&st===zi) sha['三台']='✓';
+    const jx=calcJiangXing(allZhi[0]);
+    if(jx&&jx===zi) sha['将星']='✓';
+    const td=calcTianDe(monthZhi);
+    if(td&&td===zi) sha['天德贵人']='✓';
+    const yd=calcYueDe(monthZhi);
+    if(yd&&yd===zi) sha['月德贵人']='✓';
+    return sha;
+  });
+}
+
 function calcDaysBetween(d1,d2){
   return Math.round((d2-d1)/(24*60*60*1000));
 }
@@ -266,7 +295,9 @@ function calcBazi(year,month,day,hour,minute,gender){
   const hourRange=SHI_CHEN_RANGE[hourBranchIdx];
 
   const changSheng=pillars.map(p=>calcChangSheng(dayP.stem,DI_ZHI.indexOf(p.zhi)));
+  const ziZuo=pillars.map(p=>calcChangSheng(p.gan,DI_ZHI.indexOf(p.zhi)));
   const shenSha=calcShenSha(dayP.stem,pillars.map(p=>p.zhi),monthP.branch);
+  const pillarShenSha=calcPillarShenSha(dayP.stem,pillars,monthP.branch);
   const daYun=calcDaYun(year,month,day,hour,minute,yearP.stem,gender,monthP.stemIdx,monthP.branchIdx);
 
   const shiShenZhi=pillars.map(p=>{
@@ -281,7 +312,7 @@ function calcBazi(year,month,day,hour,minute,gender){
     wuxingCount,wuxingPercent,missingWx,maxWx,
     riGan,riZhi,riWx,riYinYang,
     shengXiao,hourRange,gender,
-    changSheng,shenSha,daYun
+    changSheng,ziZuo,shenSha,pillarShenSha,daYun
   };
 }
 

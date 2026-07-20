@@ -38,12 +38,24 @@
       flex-shrink: 0;
     }
     .so-box.so-box-flow { background: rgba(212,175,55,0.06); border-color: rgba(212,175,55,0.18); }
-    .so-box .sb-label { font-size: 0.55rem; color: #a08870; letter-spacing: 1px; margin-bottom: 1px; }
-    .so-box .sb-gan { font-size: 1.05rem; font-weight: 700; line-height: 1.15; }
-    .so-box .sb-zhi { font-size: 1.05rem; font-weight: 700; line-height: 1.15; }
-    .so-box .sb-meta { font-size: 0.55rem; color: #6a5a4a; margin-top: 1px; line-height: 1.2; }
-    .so-box .sb-meta .sm-ss { color: #b89a6a; }
-    .so-box .sb-meta .sm-cs { color: #a08870; }
+    .so-box .sb-label { font-size: 0.55rem; color: #a08870; letter-spacing: 1px; margin-bottom: 2px; }
+    .so-box .sb-gan-row { line-height: 1.15; margin-bottom: 1px; }
+    .so-box .sb-gan-row .sb-gan { font-size: 0.95rem; font-weight: 700; }
+    .so-box .sb-gan-row .sb-gan-ss { font-size: 0.52rem; color: #b89a6a; margin-left: 1px; }
+    .so-box .sb-zhi-row { line-height: 1.15; margin-bottom: 1px; }
+    .so-box .sb-zhi-row .sb-zhi { font-size: 0.95rem; font-weight: 700; }
+    .so-box .sb-zhi-cg { font-size: 0.5rem; color: #6a5a4a; display: inline-flex; flex-wrap: wrap; gap: 0 1px; }
+    .so-box .sb-cg-item { margin-left: 1px; }
+    .so-box .sb-cg-ss { color: #5a4a3a; }
+    .so-box .sb-meta { font-size: 0.52rem; color: #6a5a4a; margin-top: 1px; line-height: 1.15; }
+    .so-box .sb-meta .sm-cs { color: #8a7a6a; }
+    .so-box .sb-meta .sm-sep { color: #5a4a3a; margin: 0 1px; }
+    .so-box .sb-meta .sm-cs-ri { color: #a08870; }
+    .so-pillar-shensha { display: flex; gap: 4px; padding-top: 3px; border-top: 1px solid rgba(212,175,55,0.06); margin-bottom: 3px; }
+    .so-pillar-shensha .ps-col { flex: 1; text-align: center; min-width: 0; }
+    .so-pillar-shensha .ps-pillar { font-size: 0.52rem; color: #6a5a4a; letter-spacing: 1px; margin-bottom: 1px; }
+    .so-pillar-shensha .ps-item { display: inline-block; font-size: 0.48rem; color: #d4af37; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.1); border-radius: 2px; padding: 0 3px; margin: 1px; }
+    .so-pillar-shensha .ps-none { font-size: 0.48rem; color: #5a4a3a; }
     .so-shensha { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 3px; border-top: 1px solid rgba(212,175,55,0.06); }
     .so-shensha-item { font-size: 0.6rem; padding: 0 5px; border-radius: 2px; background: rgba(212,175,55,0.04); color: #a08870; }
     .so-shensha-item .ss-name { color: #6a5a4a; }
@@ -70,9 +82,9 @@
     .ai-result-inner th { background:rgba(212,175,55,0.06); color:#b89a6a; font-weight:500; }
     .ai-error { color:#e57373; font-size:0.82rem; padding:10px; text-align:center; background:rgba(229,115,115,0.06); border-radius:8px; border:1px solid rgba(229,115,115,0.15); }
     @media (max-width: 640px) {
-      .so-box { min-width: 52px; padding: 4px 4px 3px; }
-      .so-box .sb-gan, .so-box .sb-zhi { font-size: 0.85rem; }
-      .so-box .sb-meta { font-size: 0.5rem; }
+      .so-box { min-width: 48px; padding: 3px 3px 2px; }
+      .so-box .sb-gan-row .sb-gan, .so-box .sb-zhi-row .sb-zhi { font-size: 0.78rem; }
+      .so-box .sb-meta { font-size: 0.48rem; }
     }
   </style>
 </head>
@@ -155,6 +167,7 @@
         <div class="sticky-overview">
           <div class="so-title">◆ 八字总览</div>
           <div class="so-boxes" id="soBoxes"></div>
+          <div class="so-pillar-shensha" id="soPillarShensha"></div>
           <div class="so-shensha" id="soShensha"></div>
           <div class="so-relations" id="soRelations"></div>
         </div>
@@ -388,15 +401,27 @@
     });
 
     // ── Display ──
+    function makeBox(label, gan, zhi, riGan, flow) {
+      const cg = CANG_GAN[zhi] || [];
+      return {
+        label, gan, zhi,
+        wxG: WU_XING_TG[gan], wxZ: WU_XING_DZ[zhi],
+        ganSS: calcShiShen(riGan, gan),
+        cgList: cg,
+        cgSS: cg.map(g => ({ gan: g, ss: calcShiShenFromZhi(riGan, g) })),
+        ziZuo: calcChangSheng(gan, DI_ZHI.indexOf(zhi)),
+        riZhiCS: calcChangSheng(riGan, DI_ZHI.indexOf(zhi)),
+        flow: !!flow
+      };
+    }
+    function buildMainBoxes(r) {
+      return r.pillars.map((p, i) => makeBox(p.name, p.gan, p.zhi, r.riGan, false));
+    }
+
     function displayResult(r) {
-      // Overview boxes: original 4 pillars
-      const boxes = r.pillars.map((p, i) => ({
-        label: p.name, gan: p.gan, zhi: p.zhi,
-        wxG: WU_XING_TG[p.gan], wxZ: WU_XING_DZ[p.zhi],
-        ss: r.shiShen[i], cs: r.changSheng[i],
-        flow: false
-      }));
+      const boxes = buildMainBoxes(r);
       renderBoxes(boxes);
+      renderPillarShensha(r.pillarShenSha);
       updateShenshaRelations(r.shenSha, []);
 
       // Info cards
@@ -454,14 +479,29 @@
 
     // ── Overview Panel ──
     function renderBoxes(boxes) {
-      document.getElementById('soBoxes').innerHTML = boxes.map(b =>
-        '<div class="so-box' + (b.flow ? ' so-box-flow' : '') + '">' +
+      document.getElementById('soBoxes').innerHTML = boxes.map(b => {
+        const cgHTML = b.cgSS.length
+          ? b.cgSS.map(g => '<span class="sb-cg-item">' + g.gan + '<span class="sb-cg-ss">(' + g.ss + ')</span></span>').join('')
+          : '';
+        return '<div class="so-box' + (b.flow ? ' so-box-flow' : '') + '">' +
           '<div class="sb-label">' + b.label + '</div>' +
-          '<div class="sb-gan" style="color:' + WU_XING_COLOR[b.wxG] + '">' + b.gan + '</div>' +
-          '<div class="sb-zhi" style="color:' + WU_XING_COLOR[b.wxZ] + '">' + b.zhi + '</div>' +
-          '<div class="sb-meta"><span class="sm-ss">' + b.ss + '</span> · <span class="sm-cs">' + b.cs + '</span></div>' +
-        '</div>'
-      ).join('');
+          '<div class="sb-gan-row"><span class="sb-gan" style="color:' + WU_XING_COLOR[b.wxG] + '">' + b.gan + '</span><span class="sb-gan-ss">(' + b.ganSS + ')</span></div>' +
+          '<div class="sb-zhi-row"><span class="sb-zhi" style="color:' + WU_XING_COLOR[b.wxZ] + '">' + b.zhi + '</span><span class="sb-zhi-cg">' + cgHTML + '</span></div>' +
+          '<div class="sb-meta"><span class="sm-cs">自' + b.ziZuo + '</span><span class="sm-sep">·</span><span class="sm-cs-ri">主' + b.riZhiCS + '</span></div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function renderPillarShensha(pillarShensha) {
+      const el = document.getElementById('soPillarShensha');
+      const hasAny = pillarShensha && pillarShensha.some(s => Object.keys(s).length > 0);
+      if (!hasAny) { el.innerHTML = ''; return; }
+      el.innerHTML = pillarShensha.map((sha, i) => {
+        const entries = Object.entries(sha);
+        return '<div class="ps-col"><div class="ps-pillar">' + lastResult.pillars[i].name + '</div>' +
+          (entries.length ? entries.map(([n]) => '<span class="ps-item">' + n + '</span>').join('') : '<span class="ps-none">—</span>') +
+        '</div>';
+      }).join('');
     }
 
     function updateShenshaRelations(shensha, relations) {
@@ -498,8 +538,8 @@
           expandedDayunIdx = -1; flow = { year: null, monthIdx: null, day: null, hourIdx: null, daYunIdx: null };
           document.getElementById('flowCascadeArea').innerHTML = '';
           const r = lastResult;
-          const boxes = r.pillars.map((p, i) => ({ label: p.name, gan: p.gan, zhi: p.zhi, wxG: WU_XING_TG[p.gan], wxZ: WU_XING_DZ[p.zhi], ss: r.shiShen[i], cs: r.changSheng[i], flow: false }));
-          renderBoxes(boxes);
+          renderBoxes(buildMainBoxes(r));
+          renderPillarShensha(r.pillarShenSha);
           updateShenshaRelations(r.shenSha, []);
           return;
         }
@@ -525,12 +565,10 @@
 
       // Update overview: original 4 + 大运 box
       const r = lastResult;
-      const riGan = r.riGan;
-      const ss = calcShiShen(riGan, dy.gan);
-      const cs = calcChangSheng(riGan, DI_ZHI.indexOf(dy.zhi));
-      const boxes = r.pillars.map((p, i) => ({ label: p.name, gan: p.gan, zhi: p.zhi, wxG: WU_XING_TG[p.gan], wxZ: WU_XING_DZ[p.zhi], ss: r.shiShen[i], cs: r.changSheng[i], flow: false }));
-      boxes.push({ label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: ss, cs: cs, flow: true });
+      const boxes = buildMainBoxes(r);
+      boxes.push(makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true));
       renderBoxes(boxes);
+      renderPillarShensha(r.pillarShenSha);
 
       const dySha = calcSimpleShensha(dy.gan, dy.zhi);
       updateShenshaRelations(dySha, []);
@@ -560,9 +598,10 @@
 
     function rebuildBoxesWithFlow(extraBoxes, shensha, relations) {
       const r = lastResult;
-      const boxes = r.pillars.map((p, i) => ({ label: p.name, gan: p.gan, zhi: p.zhi, wxG: WU_XING_TG[p.gan], wxZ: WU_XING_DZ[p.zhi], ss: r.shiShen[i], cs: r.changSheng[i], flow: false }));
+      const boxes = buildMainBoxes(r);
       extraBoxes.forEach(b => boxes.push(b));
       renderBoxes(boxes);
+      renderPillarShensha(r.pillarShenSha);
       updateShenshaRelations(shensha, relations);
     }
 
@@ -576,8 +615,8 @@
       mergeObj(allSha, lr.shenSha);
 
       rebuildBoxesWithFlow([
-        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: calcShiShen(r.riGan, dy.gan), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dy.zhi)), flow: true },
-        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ, ss: lr.shiShen, cs: lr.changSheng, flow: true }
+        makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
+        makeBox('流年', lr.gan, lr.zhi, r.riGan, true)
       ], allSha, (lr.relations || []).map(r => ({ pillar: r.pillar + r.zhi, rel: r.relation })));
 
       showCascade('month', calcLiuYueByYear(lr.gan).map(m =>
@@ -594,14 +633,13 @@
       const ysi = TIAN_GAN.indexOf(lr.gan);
       const ms = (ysi % 5 * 2 + monthIdx + 1) % 10, mb = (monthIdx + 2) % 12;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[mb];
-      const mSs = calcShiShen(r.riGan, mGan), mCs = calcChangSheng(r.riGan, mb);
       const mSha = calcSimpleShensha(mGan, mZhi);
       const dy = r.daYun.pillars[expandedDayunIdx];
 
       rebuildBoxesWithFlow([
-        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: calcShiShen(r.riGan, dy.gan), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dy.zhi)), flow: true },
-        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ, ss: lr.shiShen, cs: lr.changSheng, flow: true },
-        { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi], ss: mSs, cs: mCs, flow: true }
+        makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
+        makeBox('流年', lr.gan, lr.zhi, r.riGan, true),
+        makeBox('流月', mGan, mZhi, r.riGan, true)
       ], mSha, []);
 
       const calM = monthIdx + 2 <= 12 ? monthIdx + 2 : monthIdx + 2 - 12;
@@ -623,7 +661,6 @@
       const calM = flow.monthIdx + 2 <= 12 ? flow.monthIdx + 2 : flow.monthIdx + 2 - 12;
       const calY = flow.monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
       const dp = calcDayPillar(calY, calM, day);
-      const dSs = calcShiShen(r.riGan, dp.stem), dCs = calcChangSheng(r.riGan, DI_ZHI.indexOf(dp.branch));
       const dSha = calcSimpleShensha(dp.stem, dp.branch);
       const dy = r.daYun.pillars[expandedDayunIdx];
       const ysi = TIAN_GAN.indexOf(lr.gan);
@@ -631,10 +668,10 @@
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
       rebuildBoxesWithFlow([
-        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: calcShiShen(r.riGan, dy.gan), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dy.zhi)), flow: true },
-        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ, ss: lr.shiShen, cs: lr.changSheng, flow: true },
-        { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi], ss: calcShiShen(r.riGan, mGan), cs: calcChangSheng(r.riGan, (flow.monthIdx + 2) % 12), flow: true },
-        { label: '流日', gan: dp.stem, zhi: dp.branch, wxG: WU_XING_TG[dp.stem], wxZ: WU_XING_DZ[dp.branch], ss: dSs, cs: dCs, flow: true }
+        makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
+        makeBox('流年', lr.gan, lr.zhi, r.riGan, true),
+        makeBox('流月', mGan, mZhi, r.riGan, true),
+        makeBox('流日', dp.stem, dp.branch, r.riGan, true)
       ], dSha, []);
 
       const hours = calcLiuShiByDay(dp.stem);
@@ -660,7 +697,6 @@
       const dp = calcDayPillar(calY, calM, flow.day);
       const hours = calcLiuShiByDay(dp.stem);
       const h = hours[hourIdx];
-      const hSs = calcShiShen(r.riGan, h.gan), hCs = calcChangSheng(r.riGan, hourIdx);
       const hSha = calcSimpleShensha(h.gan, h.zhi);
       const dy = r.daYun.pillars[expandedDayunIdx];
       const ysi = TIAN_GAN.indexOf(lr.gan);
@@ -668,11 +704,11 @@
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
       rebuildBoxesWithFlow([
-        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: calcShiShen(r.riGan, dy.gan), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dy.zhi)), flow: true },
-        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ, ss: lr.shiShen, cs: lr.changSheng, flow: true },
-        { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi], ss: calcShiShen(r.riGan, mGan), cs: calcChangSheng(r.riGan, (flow.monthIdx + 2) % 12), flow: true },
-        { label: '流日', gan: dp.stem, zhi: dp.branch, wxG: WU_XING_TG[dp.stem], wxZ: WU_XING_DZ[dp.branch], ss: calcShiShen(r.riGan, dp.stem), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dp.branch)), flow: true },
-        { label: '流时', gan: h.gan, zhi: h.zhi, wxG: WU_XING_TG[h.gan], wxZ: WU_XING_DZ[h.zhi], ss: hSs, cs: hCs, flow: true }
+        makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
+        makeBox('流年', lr.gan, lr.zhi, r.riGan, true),
+        makeBox('流月', mGan, mZhi, r.riGan, true),
+        makeBox('流日', dp.stem, dp.branch, r.riGan, true),
+        makeBox('流时', h.gan, h.zhi, r.riGan, true)
       ], hSha, []);
 
       const ly = calcLiuYueByYear(lr.gan);
