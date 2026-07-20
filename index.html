@@ -9,57 +9,47 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .compact-flow { margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(212,175,55,0.12); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-    .compact-flow-pillar { display: flex; align-items: center; gap: 4px; padding: 2px 8px 2px 6px; border: 1px solid rgba(212,175,55,0.12); border-radius: 5px; background: rgba(40,25,15,0.5); font-size: 0.78rem; }
-    .compact-flow-pillar .cfp-label { color: #a08870; font-size: 0.6rem; }
-    .compact-flow-pillar .cfp-gan { font-weight: 600; }
-    .compact-flow-pillar .cfp-zhi { font-weight: 600; }
-    .cascade-section { margin: 8px 0 4px; }
-    .cascade-section h4 { color: #b89a6a; font-size: 0.72rem; letter-spacing: 1px; margin-bottom: 4px; font-weight: 500; }
-    .cascade-grid { display: flex; flex-wrap: wrap; gap: 3px; }
-    .cascade-chip { display: inline-flex; flex-direction: column; align-items: center; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; cursor: pointer; transition: all 0.15s; border: 1px solid rgba(212,175,55,0.08); background: rgba(40,25,15,0.4); color: #b89a6a; min-width: 38px; }
+    .cascade-section { margin: 6px 0 3px; }
+    .cascade-section h4 { color: #b89a6a; font-size: 0.68rem; letter-spacing: 1px; margin-bottom: 3px; font-weight: 500; }
+    .cascade-grid { display: flex; flex-wrap: wrap; gap: 2px; }
+    .cascade-chip { display: inline-flex; flex-direction: column; align-items: center; padding: 1px 5px; border-radius: 3px; font-size: 0.62rem; cursor: pointer; transition: all 0.12s; border: 1px solid rgba(212,175,55,0.08); background: rgba(40,25,15,0.4); color: #b89a6a; min-width: 32px; }
     .cascade-chip:hover { border-color: #d4af37; background: rgba(212,175,55,0.08); }
     .cascade-chip.active { border-color: #d4af37; background: rgba(212,175,55,0.12); color: #d4af37; }
-    .cascade-chip .cc-label { font-size: 0.55rem; color: #5a4a3a; }
-    .cascade-chip .cc-ganzhi { font-size: 0.72rem; font-weight: 600; color: #e8d5c0; }
+    .cascade-chip .cc-label { font-size: 0.5rem; color: #5a4a3a; }
+    .cascade-chip .cc-ganzhi { font-size: 0.65rem; font-weight: 600; color: #e8d5c0; }
     .cascade-chip.active .cc-ganzhi { color: #d4af37; }
 
-    /* ── Sticky Overview Panel ── */
+    /* ── Sticky Overview ── */
     .sticky-overview {
       background: linear-gradient(145deg, rgba(40,25,15,0.97), rgba(30,18,10,0.99));
       border: 1px solid rgba(212,175,55,0.15);
       border-radius: 10px;
-      padding: 10px 14px;
+      padding: 8px 10px;
     }
-    .so-title { color: #d4af37; font-size: 0.78rem; letter-spacing: 2px; margin-bottom: 6px; font-weight: 500; }
-    .so-pillars { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
-    .so-pillar { text-align: center; min-width: 52px; padding: 3px 6px; border: 1px solid rgba(212,175,55,0.1); border-radius: 6px; background: rgba(40,25,15,0.5); }
-    .so-pillar .so-p-name { font-size: 0.55rem; color: #a08870; letter-spacing: 1px; }
-    .so-pillar .so-p-gan { font-size: 1.1rem; font-weight: 700; line-height: 1.2; }
-    .so-pillar .so-p-zhi { font-size: 1.1rem; font-weight: 700; line-height: 1.2; }
-    .so-flow { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 5px; }
-    .so-flow-item { display: flex; align-items: center; gap: 2px; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.08); }
-    .so-flow-item .sf-label { color: #6a5a4a; font-size: 0.58rem; }
-    .so-flow-item .sf-gan { font-weight: 600; }
-    .so-flow-item .sf-zhi { font-weight: 600; }
-    .so-path { display: flex; align-items: center; gap: 3px; flex-wrap: wrap; font-size: 0.72rem; color: #a08870; margin-bottom: 4px; }
-    .so-path .sp-sep { color: #5a4a3a; }
-    .so-path .sp-item { color: #b89a6a; }
-    .so-path .sp-item strong { color: #d4af37; }
-    .so-stats { display: flex; flex-wrap: wrap; gap: 0; margin: 0 -4px; }
-    .so-stat { padding: 2px 8px; font-size: 0.72rem; border-right: 1px solid rgba(212,175,55,0.08); }
-    .so-stat:last-child { border-right: none; }
-    .so-stat .ss-label { color: #6a5a4a; font-size: 0.6rem; }
-    .so-stat .ss-val { color: #e8d5c0; font-weight: 500; }
-    .so-stat .ss-val strong { color: #d4af37; }
-    .so-shensha { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 3px; padding-top: 4px; border-top: 1px solid rgba(212,175,55,0.06); }
-    .so-shensha-item { font-size: 0.65rem; padding: 1px 6px; border-radius: 3px; background: rgba(212,175,55,0.05); color: #a08870; }
+    .so-title { color: #d4af37; font-size: 0.72rem; letter-spacing: 2px; margin-bottom: 5px; font-weight: 500; }
+    .so-boxes { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 4px; }
+    .so-box {
+      text-align: center;
+      min-width: 62px;
+      padding: 5px 6px 4px;
+      border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 7px;
+      background: rgba(40,25,15,0.5);
+      flex-shrink: 0;
+    }
+    .so-box.so-box-flow { background: rgba(212,175,55,0.06); border-color: rgba(212,175,55,0.18); }
+    .so-box .sb-label { font-size: 0.55rem; color: #a08870; letter-spacing: 1px; margin-bottom: 1px; }
+    .so-box .sb-gan { font-size: 1.05rem; font-weight: 700; line-height: 1.15; }
+    .so-box .sb-zhi { font-size: 1.05rem; font-weight: 700; line-height: 1.15; }
+    .so-box .sb-meta { font-size: 0.55rem; color: #6a5a4a; margin-top: 1px; line-height: 1.2; }
+    .so-box .sb-meta .sm-ss { color: #b89a6a; }
+    .so-box .sb-meta .sm-cs { color: #a08870; }
+    .so-shensha { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 3px; border-top: 1px solid rgba(212,175,55,0.06); }
+    .so-shensha-item { font-size: 0.6rem; padding: 0 5px; border-radius: 2px; background: rgba(212,175,55,0.04); color: #a08870; }
     .so-shensha-item .ss-name { color: #6a5a4a; }
     .so-shensha-item .ss-val { color: #d4af37; font-weight: 500; }
-    .so-relations { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 3px; }
-    .so-rel { font-size: 0.62rem; padding: 1px 5px; border-radius: 3px; }
-    .so-rel .sr-pillar { color: #6a5a4a; }
-    .so-rel .sr-rel { font-weight: 600; }
+    .so-relations { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 2px; }
+    .so-rel { font-size: 0.58rem; padding: 0 4px; border-radius: 2px; }
 
     /* ── AI ── */
     .ai-loading { display:flex; justify-content:center; gap:8px; margin-bottom:10px; }
@@ -67,25 +57,22 @@
     .ai-loading span:nth-child(2) { animation-delay:0.2s; }
     .ai-loading span:nth-child(3) { animation-delay:0.4s; }
     @keyframes aiPulse { 0%,80%,100% { opacity:0.2; transform:scale(0.8); } 40% { opacity:1; transform:scale(1.2); } }
-    .ai-result-inner { font-size:0.85rem; line-height:1.8; color:#e8d5c0; }
-    .ai-result-inner h4 { color:#d4af37; font-size:0.9rem; margin:16px 0 6px; font-weight:600; letter-spacing:1px; border-bottom:1px solid rgba(212,175,55,0.1); padding-bottom:4px; }
-    .ai-result-inner h5 { color:#b89a6a; font-size:0.82rem; margin:10px 0 4px; font-weight:500; }
-    .ai-result-inner p { margin:4px 0; }
-    .ai-result-inner ul { margin:4px 0; padding-left:18px; }
-    .ai-result-inner li { margin:2px 0; list-style-type:disc; color:#c8b894; }
+    .ai-result-inner { font-size:0.82rem; line-height:1.7; color:#e8d5c0; }
+    .ai-result-inner h4 { color:#d4af37; font-size:0.88rem; margin:14px 0 5px; font-weight:600; letter-spacing:1px; border-bottom:1px solid rgba(212,175,55,0.1); padding-bottom:3px; }
+    .ai-result-inner h5 { color:#b89a6a; font-size:0.8rem; margin:8px 0 3px; font-weight:500; }
+    .ai-result-inner p { margin:3px 0; }
+    .ai-result-inner ul { margin:3px 0; padding-left:16px; }
+    .ai-result-inner li { margin:1px 0; list-style-type:disc; color:#c8b894; }
     .ai-result-inner strong { color:#d4af37; }
-    .ai-result-inner .highlight { color:#81c784; }
-    .ai-result-inner .warning { color:#e57373; }
-    .ai-result-inner .table-wrap { overflow-x:auto; margin:8px 0; }
-    .ai-result-inner table { width:100%; border-collapse:collapse; font-size:0.78rem; }
-    .ai-result-inner td, .ai-result-inner th { border:1px solid rgba(212,175,55,0.12); padding:4px 8px; text-align:center; }
+    .ai-result-inner .table-wrap { overflow-x:auto; margin:6px 0; }
+    .ai-result-inner table { width:100%; border-collapse:collapse; font-size:0.75rem; }
+    .ai-result-inner td, .ai-result-inner th { border:1px solid rgba(212,175,55,0.12); padding:3px 6px; text-align:center; }
     .ai-result-inner th { background:rgba(212,175,55,0.06); color:#b89a6a; font-weight:500; }
-    .ai-error { color:#e57373; font-size:0.85rem; padding:12px; text-align:center; background:rgba(229,115,115,0.06); border-radius:8px; border:1px solid rgba(229,115,115,0.15); }
+    .ai-error { color:#e57373; font-size:0.82rem; padding:10px; text-align:center; background:rgba(229,115,115,0.06); border-radius:8px; border:1px solid rgba(229,115,115,0.15); }
     @media (max-width: 640px) {
-      .so-pillars { gap: 3px; }
-      .so-pillar { min-width: 44px; padding: 2px 4px; }
-      .so-pillar .so-p-gan, .so-pillar .so-p-zhi { font-size: 0.9rem; }
-      .so-stat { padding: 2px 5px; font-size: 0.65rem; }
+      .so-box { min-width: 52px; padding: 4px 4px 3px; }
+      .so-box .sb-gan, .so-box .sb-zhi { font-size: 0.85rem; }
+      .so-box .sb-meta { font-size: 0.5rem; }
     }
   </style>
 </head>
@@ -154,14 +141,9 @@
       <div class="result-sticky" id="resultSticky">
         <div class="sticky-overview">
           <div class="so-title">◆ 八字总览</div>
-          <div class="so-pillars" id="soPillars"></div>
-          <div class="so-flow" id="soFlow"></div>
-          <div class="so-detail-area" id="soDetailArea" style="display:none">
-            <div class="so-path" id="soPath"></div>
-            <div class="so-stats" id="soStats"></div>
-            <div class="so-shensha" id="soShensha"></div>
-            <div class="so-relations" id="soRelations"></div>
-          </div>
+          <div class="so-boxes" id="soBoxes"></div>
+          <div class="so-shensha" id="soShensha"></div>
+          <div class="so-relations" id="soRelations"></div>
         </div>
       </div>
 
@@ -272,11 +254,9 @@
   <script>
     const MONTH_NAMES = ['寅月','卯月','辰月','巳月','午月','未月','申月','酉月','戌月','亥月','子月','丑月'];
     const HOUR_NAMES = ['子时','丑时','寅时','卯时','辰时','巳时','午时','未时','申时','酉时','戌时','亥时'];
-
     let lastResult = null;
     let flow = { year: null, monthIdx: null, day: null, hourIdx: null, daYunIdx: null };
     let expandedDayunIdx = -1;
-
     const defaultDate = getDefaultDate();
 
     function calcLiuYueByYear(yearGan) {
@@ -289,7 +269,6 @@
       }
       return arr;
     }
-
     function calcLiuRiByMonth(yr, mo) {
       const days = new Date(yr, mo, 0).getDate();
       const arr = [];
@@ -299,7 +278,6 @@
       }
       return arr;
     }
-
     function calcLiuShiByDay(dayGan) {
       const dsi = TIAN_GAN.indexOf(dayGan);
       const arr = [];
@@ -309,7 +287,6 @@
       }
       return arr;
     }
-
     function calcSimpleShensha(gan, zhi) {
       const o = {};
       const gr = calcTianYiGuiRen(gan).slice(0, 2);
@@ -320,18 +297,12 @@
       const hg = calcHuaGai(zhi); if (hg) o['华盖'] = hg;
       return o;
     }
-
     function mergeObj(t, s) {
       for (const [k, v] of Object.entries(s)) {
-        if (t[k]) {
-          const e = Array.isArray(t[k]) ? t[k] : [t[k]];
-          const a = Array.isArray(v) ? v : [v];
-          a.forEach(i => { if (!e.includes(i)) e.push(i); });
-          t[k] = e;
-        } else t[k] = v;
+        if (t[k]) { const e = Array.isArray(t[k]) ? t[k] : [t[k]]; const a = Array.isArray(v) ? v : [v]; a.forEach(i => { if (!e.includes(i)) e.push(i); }); t[k] = e; }
+        else t[k] = v;
       }
     }
-
     function getNianZhiIndex(year, month, day) {
       const md = month * 100 + day;
       const y = md < 204 ? year - 1 : year;
@@ -341,20 +312,10 @@
     // ── Init ──
     (function initForm() {
       const ys = document.getElementById('birthYear');
-      for (let y = 1900; y <= 2100; y++) {
-        const o = document.createElement('option');
-        o.value = y; o.textContent = y + ' 年';
-        if (y === defaultDate.year) o.selected = true;
-        ys.appendChild(o);
-      }
+      for (let y = 1900; y <= 2100; y++) { const o = document.createElement('option'); o.value = y; o.textContent = y + ' 年'; if (y === defaultDate.year) o.selected = true; ys.appendChild(o); }
       document.getElementById('birthMonth').value = defaultDate.month;
       const ds = document.getElementById('birthDay');
-      for (let d = 1; d <= 31; d++) {
-        const o = document.createElement('option');
-        o.value = d; o.textContent = d + ' 日';
-        if (d === defaultDate.day) o.selected = true;
-        ds.appendChild(o);
-      }
+      for (let d = 1; d <= 31; d++) { const o = document.createElement('option'); o.value = d; o.textContent = d + ' 日'; if (d === defaultDate.day) o.selected = true; ds.appendChild(o); }
       document.getElementById('birthHour').value = getHourBranchIdx(defaultDate.hour, defaultDate.minute);
     })();
 
@@ -375,18 +336,15 @@
 
     // ── Display ──
     function displayResult(r) {
-      // Overview pillars
-      const sp = document.getElementById('soPillars');
-      sp.innerHTML = '';
-      r.pillars.forEach(p => {
-        const wxG = WU_XING_TG[p.gan], wxZ = WU_XING_DZ[p.zhi];
-        const d = document.createElement('div');
-        d.className = 'so-pillar';
-        d.innerHTML = '<div class="so-p-name">' + p.name + '</div><div class="so-p-gan" style="color:' + WU_XING_COLOR[wxG] + '">' + p.gan + '</div><div class="so-p-zhi" style="color:' + WU_XING_COLOR[wxZ] + '">' + p.zhi + '</div>';
-        sp.appendChild(d);
-      });
-      document.getElementById('soFlow').innerHTML = '<div class="so-flow-item" style="background:transparent;border:none;color:#a08870;font-size:0.65rem">日主 ' + r.riGan + '(' + r.riWx + '·' + r.riYinYang + ') 生肖 ' + r.shengXiao + ' ' + r.gender + '</div>';
-      clearDetailArea();
+      // Overview boxes: original 4 pillars
+      const boxes = r.pillars.map((p, i) => ({
+        label: p.name, gan: p.gan, zhi: p.zhi,
+        wxG: WU_XING_TG[p.gan], wxZ: WU_XING_DZ[p.zhi],
+        ss: r.shiShen[i], cs: r.changSheng[i],
+        flow: false
+      }));
+      renderBoxes(boxes);
+      updateShenshaRelations(r.shenSha, []);
 
       // Info cards
       document.getElementById('shengXiao').textContent = r.shengXiao;
@@ -407,52 +365,30 @@
       document.getElementById('nayinHour').textContent = r.nayin[3];
 
       // 五行 bar
-      const bar = document.getElementById('wuxingBar');
-      bar.innerHTML = '';
+      const bar = document.getElementById('wuxingBar'); bar.innerHTML = '';
       ['木','火','土','金','水'].forEach(wx => {
-        if (r.wuxingCount[wx] > 0) {
-          const seg = document.createElement('div');
-          seg.className = 'wuxing-bar-seg';
-          seg.style.width = r.wuxingPercent[wx] + '%';
-          seg.style.background = WU_XING_COLOR[wx];
-          seg.textContent = r.wuxingPercent[wx] >= 10 ? wx : '';
-          bar.appendChild(seg);
-        }
+        if (r.wuxingCount[wx] > 0) { const seg = document.createElement('div'); seg.className = 'wuxing-bar-seg'; seg.style.width = r.wuxingPercent[wx] + '%'; seg.style.background = WU_XING_COLOR[wx]; seg.textContent = r.wuxingPercent[wx] >= 10 ? wx : ''; bar.appendChild(seg); }
       });
-      const tags = document.getElementById('wuxingTags');
-      tags.innerHTML = '';
+      const tags = document.getElementById('wuxingTags'); tags.innerHTML = '';
       ['木','火','土','金','水'].forEach(wx => {
-        const tag = document.createElement('span');
-        tag.className = 'wuxing-tag';
-        tag.style.background = WU_XING_COLOR[wx] + '33';
-        tag.style.color = WU_XING_COLOR[wx];
-        tag.innerHTML = wx + ' ' + r.wuxingCount[wx] + ' (' + r.wuxingPercent[wx] + '%)';
-        tags.appendChild(tag);
+        const tag = document.createElement('span'); tag.className = 'wuxing-tag'; tag.style.background = WU_XING_COLOR[wx] + '33'; tag.style.color = WU_XING_COLOR[wx]; tag.innerHTML = wx + ' ' + r.wuxingCount[wx] + ' (' + r.wuxingPercent[wx] + '%)'; tags.appendChild(tag);
       });
-      if (r.missingWx.length > 0) {
-        const mt = document.createElement('span');
-        mt.className = 'wuxing-tag';
-        mt.style.background = '#555';
-        mt.style.color = '#ccc';
-        mt.textContent = '缺: ' + r.missingWx.join('、');
-        tags.appendChild(mt);
-      }
+      if (r.missingWx.length > 0) { const mt = document.createElement('span'); mt.className = 'wuxing-tag'; mt.style.background = '#555'; mt.style.color = '#ccc'; mt.textContent = '缺: ' + r.missingWx.join('、'); tags.appendChild(mt); }
 
       // 神煞
-      buildShensha(r.shenSha);
+      const sg = document.getElementById('shenshaGrid'); sg.innerHTML = '';
+      const se = Object.entries(r.shenSha);
+      if (!se.length) { sg.innerHTML = '<div style="color:#a08870;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; }
+      else { se.forEach(([name, val]) => { const d = document.createElement('div'); d.className = 'shensha-item'; d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>'; sg.appendChild(d); }); }
 
       // 大运
       const dy = r.daYun;
       document.getElementById('dayunInfo').innerHTML = '起运年龄：<strong>' + dy.startAge + ' 岁</strong> &nbsp;·&nbsp; 排法：<strong>' + (dy.shunPai ? '顺排' : '逆排') + '</strong>';
-      const dt = document.getElementById('dayunTable');
-      dt.innerHTML = '';
-      const th = document.createElement('thead');
-      th.innerHTML = '<tr><th>大运</th><th>年龄</th><th>天干</th><th>地支</th><th>五行</th><th>纳音</th></tr>';
-      dt.appendChild(th);
+      const dt = document.getElementById('dayunTable'); dt.innerHTML = '';
+      const th = document.createElement('thead'); th.innerHTML = '<tr><th>大运</th><th>年龄</th><th>天干</th><th>地支</th><th>五行</th><th>纳音</th></tr>'; dt.appendChild(th);
       const tb = document.createElement('tbody');
       dy.pillars.forEach((p, i) => {
-        const tr = document.createElement('tr');
-        tr.dataset.dayunIndex = i;
+        const tr = document.createElement('tr'); tr.dataset.dayunIndex = i;
         tr.innerHTML = '<td>' + p.index + '</td><td>' + p.ageFrom + '-' + p.ageTo + '岁</td><td style="color:' + WU_XING_COLOR[p.wxG] + ';font-weight:500">' + p.gan + '</td><td style="color:' + WU_XING_COLOR[p.wxZ] + ';font-weight:500">' + p.zhi + '</td><td><span class="pillar-wx" style="background:' + WU_XING_COLOR[p.wxG] + '">' + p.wxG + '</span><span class="pillar-wx" style="background:' + WU_XING_COLOR[p.wxZ] + '">' + p.wxZ + '</span></td><td style="color:#a08870">' + p.naYin + '</td>';
         tb.appendChild(tr);
       });
@@ -463,74 +399,34 @@
       document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function buildShensha(sha) {
-      const sg = document.getElementById('shenshaGrid');
-      sg.innerHTML = '';
-      const entries = Object.entries(sha);
-      if (!entries.length) {
-        sg.innerHTML = '<div style="color:#a08870;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>';
-        return;
-      }
-      entries.forEach(([name, val]) => {
-        const d = document.createElement('div');
-        d.className = 'shensha-item';
-        d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>';
-        sg.appendChild(d);
-      });
+    // ── Overview Panel ──
+    function renderBoxes(boxes) {
+      document.getElementById('soBoxes').innerHTML = boxes.map(b =>
+        '<div class="so-box' + (b.flow ? ' so-box-flow' : '') + '">' +
+          '<div class="sb-label">' + b.label + '</div>' +
+          '<div class="sb-gan" style="color:' + WU_XING_COLOR[b.wxG] + '">' + b.gan + '</div>' +
+          '<div class="sb-zhi" style="color:' + WU_XING_COLOR[b.wxZ] + '">' + b.zhi + '</div>' +
+          '<div class="sb-meta"><span class="sm-ss">' + b.ss + '</span> · <span class="sm-cs">' + b.cs + '</span></div>' +
+        '</div>'
+      ).join('');
     }
 
-    // ── Overview Panel Update ──
-    function clearDetailArea() {
-      document.getElementById('soDetailArea').style.display = 'none';
-      document.getElementById('soPath').innerHTML = '';
-      document.getElementById('soStats').innerHTML = '';
-      document.getElementById('soShensha').innerHTML = '';
-      document.getElementById('soRelations').innerHTML = '';
-    }
+    function updateShenshaRelations(shensha, relations) {
+      const ssEl = document.getElementById('soShensha');
+      const ssEntries = Object.entries(shensha);
+      ssEl.innerHTML = ssEntries.length
+        ? ssEntries.map(([n, v]) => '<span class="so-shensha-item"><span class="ss-name">' + n + '</span> <span class="ss-val">' + (Array.isArray(v) ? v.join('、') : v) + '</span></span>').join('')
+        : '';
 
-    function updateOverview(data) {
-      const area = document.getElementById('soDetailArea');
-      area.style.display = 'block';
-
-      // Path
-      if (data.path) {
-        document.getElementById('soPath').innerHTML = data.path.map(p => '<span class="sp-item">' + p + '</span>').join('<span class="sp-sep"> → </span>');
-      }
-
-      // Stats row
-      if (data.stats) {
-        document.getElementById('soStats').innerHTML = data.stats.map(s =>
-          '<div class="so-stat"><div class="ss-label">' + s.label + '</div><div class="ss-val">' + s.val + '</div></div>'
-        ).join('');
-      }
-
-      // Flow pillars
-      if (data.flowItems) {
-        document.getElementById('soFlow').innerHTML = data.flowItems.map(f =>
-          '<div class="so-flow-item"><span class="sf-label">' + f.label + '</span> <span class="sf-gan" style="color:' + WU_XING_COLOR[f.wxG] + '">' + f.gan + '</span><span class="sf-zhi" style="color:' + WU_XING_COLOR[f.wxZ] + '">' + f.zhi + '</span></div>'
-        ).join('');
-      }
-
-      // Shensha
-      if (data.shensha) {
-        const entries = Object.entries(data.shensha);
-        document.getElementById('soShensha').innerHTML = entries.length
-          ? entries.map(([n, v]) => '<span class="so-shensha-item"><span class="ss-name">' + n + '</span> <span class="ss-val">' + (Array.isArray(v) ? v.join('、') : v) + '</span></span>').join('')
-          : '';
-      }
-
-      // Relations
-      if (data.relations) {
-        document.getElementById('soRelations').innerHTML = data.relations.map(r => {
-          const bad = ['六冲', '六害', '三刑', '相刑', '自刑'].includes(r.rel);
-          const good = ['六合', '三合', '半合'].includes(r.rel);
-          const clr = bad ? '#e57373' : good ? '#81c784' : '#d4af37';
-          return '<span class="so-rel"><span class="sr-pillar">' + r.pillar + '</span> <span class="sr-rel" style="color:' + clr + '">' + r.rel + '</span></span>';
-        }).join('');
-      }
-
-      // Scroll sticky into view
-      document.getElementById('resultSticky').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const relEl = document.getElementById('soRelations');
+      relEl.innerHTML = relations.length
+        ? relations.map(r => {
+            const bad = ['六冲', '六害', '三刑', '相刑', '自刑'].includes(r.rel);
+            const good = ['六合', '三合', '半合'].includes(r.rel);
+            const clr = bad ? '#e57373' : good ? '#81c784' : '#d4af37';
+            return '<span class="so-rel"><span style="color:#6a5a4a">' + r.pillar + '</span> <span style="color:' + clr + ';font-weight:600">' + r.rel + '</span></span>';
+          }).join('')
+        : '';
     }
 
     // ── 大运 Click ──
@@ -546,15 +442,16 @@
         exist.remove();
         document.querySelectorAll('.dayun-table tbody tr').forEach(r => r.classList.remove('dayun-active'));
         if (expandedDayunIdx === idx) {
-          expandedDayunIdx = -1;
-          flow = { year: null, monthIdx: null, day: null, hourIdx: null, daYunIdx: null };
+          expandedDayunIdx = -1; flow = { year: null, monthIdx: null, day: null, hourIdx: null, daYunIdx: null };
           document.getElementById('flowCascadeArea').innerHTML = '';
-          clearDetailArea();
+          const r = lastResult;
+          const boxes = r.pillars.map((p, i) => ({ label: p.name, gan: p.gan, zhi: p.zhi, wxG: WU_XING_TG[p.gan], wxZ: WU_XING_DZ[p.zhi], ss: r.shiShen[i], cs: r.changSheng[i], flow: false }));
+          renderBoxes(boxes);
+          updateShenshaRelations(r.shenSha, []);
           return;
         }
       }
-      expandedDayunIdx = idx;
-      flow.daYunIdx = idx;
+      expandedDayunIdx = idx; flow.daYunIdx = idx;
       const row = document.querySelector('.dayun-table tbody tr[data-dayun-index="' + idx + '"]');
       if (!row) return;
       row.classList.add('dayun-active');
@@ -562,44 +459,32 @@
       const dy = lastResult.daYun.pillars[idx];
       const birthYear = parseInt(document.getElementById('birthYear').value);
       const startYear = birthYear + dy.ageFrom;
-
       let html = '';
       for (let i = 0; i < 10; i++) {
         const y = startYear + i;
-        const gi = ((y - 4) % 10 + 10) % 10;
-        const bi = ((y - 4) % 12 + 12) % 12;
+        const gi = ((y - 4) % 10 + 10) % 10, bi = ((y - 4) % 12 + 12) % 12;
         const act = flow.year === y ? ' active' : '';
         html += '<span class="flow-year-chip' + act + '" data-flow="year" data-year="' + y + '"><span class="fy-year">' + y + '</span><span class="fy-ganzhi">' + TIAN_GAN[gi] + DI_ZHI[bi] + '</span></span>';
       }
-      const er = document.createElement('tr');
-      er.className = 'dayun-expand-row';
+      const er = document.createElement('tr'); er.className = 'dayun-expand-row';
       er.innerHTML = '<td colspan="6"><div class="dayun-flow-wrap"><div class="dayun-flow-years">' + html + '</div></div></td>';
       row.after(er);
 
-      // Update overview with 大运 info
-      const riGan = lastResult.riGan;
+      // Update overview: original 4 + 大运 box
+      const r = lastResult;
+      const riGan = r.riGan;
       const ss = calcShiShen(riGan, dy.gan);
       const cs = calcChangSheng(riGan, DI_ZHI.indexOf(dy.zhi));
-      const ny = calcNaYin(dy.gan, dy.zhi);
+      const boxes = r.pillars.map((p, i) => ({ label: p.name, gan: p.gan, zhi: p.zhi, wxG: WU_XING_TG[p.gan], wxZ: WU_XING_DZ[p.zhi], ss: r.shiShen[i], cs: r.changSheng[i], flow: false }));
+      boxes.push({ label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: ss, cs: cs, flow: true });
+      renderBoxes(boxes);
+
       const dySha = calcSimpleShensha(dy.gan, dy.zhi);
-      updateOverview({
-        path: ['大运' + dy.index + ' (' + dy.ageFrom + '-' + dy.ageTo + '岁)'],
-        flowItems: [
-          { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ }
-        ],
-        stats: [
-          { label: '十神', val: ss },
-          { label: '长生', val: cs },
-          { label: '纳音', val: ny },
-          { label: '五行', val: dy.wxG + dy.wxZ }
-        ],
-        shensha: dySha,
-        relations: []
-      });
+      updateShenshaRelations(dySha, []);
       document.getElementById('flowCascadeArea').innerHTML = '';
     }
 
-    // ── Flow Cascade Click Delegation ──
+    // ── Flow Cascade Click ──
     document.addEventListener('click', function(e) {
       const chip = e.target.closest('[data-flow]');
       if (!chip) return;
@@ -620,83 +505,52 @@
       return calcLiuNian(year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
     }
 
-    // ── Select Flow Year ──
+    function rebuildBoxesWithFlow(extraBoxes, shensha, relations) {
+      const r = lastResult;
+      const boxes = r.pillars.map((p, i) => ({ label: p.name, gan: p.gan, zhi: p.zhi, wxG: WU_XING_TG[p.gan], wxZ: WU_XING_DZ[p.zhi], ss: r.shiShen[i], cs: r.changSheng[i], flow: false }));
+      extraBoxes.forEach(b => boxes.push(b));
+      renderBoxes(boxes);
+      updateShenshaRelations(shensha, relations);
+    }
+
     function selectFlowYear(year) {
       flow.year = year; flow.monthIdx = null; flow.day = null; flow.hourIdx = null;
       document.querySelectorAll('.flow-year-chip').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.year) === year); });
-
       const lr = getLiuNianResult(year);
       const r = lastResult;
-
-      // Update overview
-      const dy = lastResult.daYun.pillars[expandedDayunIdx];
-      const path = ['大运' + dy.index + '(' + dy.ageFrom + '-' + dy.ageTo + '岁)', year + '年 ' + lr.gan + lr.zhi];
-      const flowItems = [
-        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ },
-        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ }
-      ];
+      const dy = r.daYun.pillars[expandedDayunIdx];
       const allSha = calcSimpleShensha(lr.gan, lr.zhi);
       mergeObj(allSha, lr.shenSha);
 
-      updateOverview({
-        path: path,
-        flowItems: flowItems,
-        stats: [
-          { label: '十神', val: lr.shiShen },
-          { label: '长生', val: lr.changSheng },
-          { label: '纳音', val: lr.naYin },
-          { label: '五行', val: lr.wxG + lr.wxZ }
-        ],
-        shensha: allSha,
-        relations: (lr.relations || []).map(r => ({ pillar: r.pillar + r.zhi, rel: r.relation }))
-      });
+      rebuildBoxesWithFlow([
+        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: calcShiShen(r.riGan, dy.gan), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dy.zhi)), flow: true },
+        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ, ss: lr.shiShen, cs: lr.changSheng, flow: true }
+      ], allSha, (lr.relations || []).map(r => ({ pillar: r.pillar + r.zhi, rel: r.relation })));
 
-      // Show 流月 cascade
-      const ly = calcLiuYueByYear(lr.gan);
-      showCascade('month', ly.map(m =>
+      showCascade('month', calcLiuYueByYear(lr.gan).map(m =>
         ({ idx: m.idx, label: m.label, gan: m.gan, zhi: m.zhi, cls: flow.monthIdx === m.idx ? ' active' : '', data: 'data-flow="month" data-month-idx="' + m.idx + '"' })
       ));
-
-      // Update 神煞 grid
-      buildShensha(allSha);
+      buildShenshaGrid(allSha);
     }
 
-    // ── Select Flow Month ──
     function selectFlowMonth(monthIdx) {
       flow.monthIdx = monthIdx; flow.day = null; flow.hourIdx = null;
       document.querySelectorAll('[data-flow="month"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.monthIdx) === monthIdx); });
-
       const lr = getLiuNianResult(flow.year);
       const r = lastResult;
       const ysi = TIAN_GAN.indexOf(lr.gan);
-      const ms = (ysi % 5 * 2 + monthIdx + 1) % 10;
-      const mb = (monthIdx + 2) % 12;
+      const ms = (ysi % 5 * 2 + monthIdx + 1) % 10, mb = (monthIdx + 2) % 12;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[mb];
-      const mwxG = WU_XING_TG[mGan], mwxZ = WU_XING_DZ[mZhi];
-      const mSs = calcShiShen(r.riGan, mGan);
-      const mCs = calcChangSheng(r.riGan, mb);
-      const mNy = calcNaYin(mGan, mZhi);
+      const mSs = calcShiShen(r.riGan, mGan), mCs = calcChangSheng(r.riGan, mb);
       const mSha = calcSimpleShensha(mGan, mZhi);
+      const dy = r.daYun.pillars[expandedDayunIdx];
 
-      const dy = lastResult.daYun.pillars[expandedDayunIdx];
-      updateOverview({
-        path: ['大运' + dy.index, flow.year + '年 ' + lr.gan + lr.zhi, MONTH_NAMES[monthIdx] + ' ' + mGan + mZhi],
-        flowItems: [
-          { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ },
-          { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
-          { label: '流月', gan: mGan, zhi: mZhi, wxG: mwxG, wxZ: mwxZ }
-        ],
-        stats: [
-          { label: '十神', val: mSs },
-          { label: '长生', val: mCs },
-          { label: '纳音', val: mNy },
-          { label: '五行', val: mwxG + mwxZ }
-        ],
-        shensha: mSha,
-        relations: []
-      });
+      rebuildBoxesWithFlow([
+        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: calcShiShen(r.riGan, dy.gan), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dy.zhi)), flow: true },
+        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ, ss: lr.shiShen, cs: lr.changSheng, flow: true },
+        { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi], ss: mSs, cs: mCs, flow: true }
+      ], mSha, []);
 
-      // Show 流日 cascade
       const calM = monthIdx + 2 <= 12 ? monthIdx + 2 : monthIdx + 2 - 12;
       const calY = monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
       const days = calcLiuRiByMonth(calY, calM);
@@ -705,53 +559,32 @@
       ), 'day', days.map(d =>
         ({ idx: d.day, label: d.day + '日', gan: d.gan, zhi: d.zhi, cls: flow.day === d.day ? ' active' : '', data: 'data-flow="day" data-day="' + d.day + '"' })
       ));
-
-      buildShensha(mSha);
+      buildShenshaGrid(mSha);
     }
 
-    // ── Select Flow Day ──
     function selectFlowDay(day) {
       flow.day = day; flow.hourIdx = null;
       document.querySelectorAll('[data-flow="day"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.day) === day); });
-
       const lr = getLiuNianResult(flow.year);
       const r = lastResult;
       const calM = flow.monthIdx + 2 <= 12 ? flow.monthIdx + 2 : flow.monthIdx + 2 - 12;
       const calY = flow.monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
       const dp = calcDayPillar(calY, calM, day);
-      const dGan = dp.stem, dZhi = dp.branch;
-      const dwxG = WU_XING_TG[dGan], dwxZ = WU_XING_DZ[dZhi];
-      const dSs = calcShiShen(r.riGan, dGan);
-      const dCs = calcChangSheng(r.riGan, DI_ZHI.indexOf(dZhi));
-      const dNy = calcNaYin(dGan, dZhi);
-      const dSha = calcSimpleShensha(dGan, dZhi);
-
-      // Month info for header
+      const dSs = calcShiShen(r.riGan, dp.stem), dCs = calcChangSheng(r.riGan, DI_ZHI.indexOf(dp.branch));
+      const dSha = calcSimpleShensha(dp.stem, dp.branch);
+      const dy = r.daYun.pillars[expandedDayunIdx];
       const ysi = TIAN_GAN.indexOf(lr.gan);
       const ms = (ysi % 5 * 2 + flow.monthIdx + 1) % 10;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
-      const dy = lastResult.daYun.pillars[expandedDayunIdx];
-      updateOverview({
-        path: ['大运' + dy.index, flow.year + '年 ' + lr.gan + lr.zhi, MONTH_NAMES[flow.monthIdx] + ' ' + mGan + mZhi, day + '日 ' + dGan + dZhi],
-        flowItems: [
-          { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ },
-          { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
-          { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi] },
-          { label: '流日', gan: dGan, zhi: dZhi, wxG: dwxG, wxZ: dwxZ }
-        ],
-        stats: [
-          { label: '十神', val: dSs },
-          { label: '长生', val: dCs },
-          { label: '纳音', val: dNy },
-          { label: '五行', val: dwxG + dwxZ }
-        ],
-        shensha: dSha,
-        relations: []
-      });
+      rebuildBoxesWithFlow([
+        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: calcShiShen(r.riGan, dy.gan), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dy.zhi)), flow: true },
+        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ, ss: lr.shiShen, cs: lr.changSheng, flow: true },
+        { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi], ss: calcShiShen(r.riGan, mGan), cs: calcChangSheng(r.riGan, (flow.monthIdx + 2) % 12), flow: true },
+        { label: '流日', gan: dp.stem, zhi: dp.branch, wxG: WU_XING_TG[dp.stem], wxZ: WU_XING_DZ[dp.branch], ss: dSs, cs: dCs, flow: true }
+      ], dSha, []);
 
-      // Show 流时 cascade
-      const hours = calcLiuShiByDay(dGan);
+      const hours = calcLiuShiByDay(dp.stem);
       const ly = calcLiuYueByYear(lr.gan);
       const days = calcLiuRiByMonth(calY, calM);
       showCascade('month', ly.map(m =>
@@ -761,15 +594,12 @@
       ), 'hour', hours.map(h =>
         ({ idx: h.idx, label: h.label, gan: h.gan, zhi: h.zhi, cls: flow.hourIdx === h.idx ? ' active' : '', data: 'data-flow="hour" data-hour-idx="' + h.idx + '"' })
       ));
-
-      buildShensha(dSha);
+      buildShenshaGrid(dSha);
     }
 
-    // ── Select Flow Hour ──
     function selectFlowHour(hourIdx) {
       flow.hourIdx = hourIdx;
       document.querySelectorAll('[data-flow="hour"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.hourIdx) === hourIdx); });
-
       const lr = getLiuNianResult(flow.year);
       const r = lastResult;
       const calM = flow.monthIdx + 2 <= 12 ? flow.monthIdx + 2 : flow.monthIdx + 2 - 12;
@@ -777,38 +607,21 @@
       const dp = calcDayPillar(calY, calM, flow.day);
       const hours = calcLiuShiByDay(dp.stem);
       const h = hours[hourIdx];
-      const hGan = h.gan, hZhi = h.zhi;
-      const hwxG = WU_XING_TG[hGan], hwxZ = WU_XING_DZ[hZhi];
-      const hSs = calcShiShen(r.riGan, hGan);
-      const hCs = calcChangSheng(r.riGan, hourIdx);
-      const hNy = calcNaYin(hGan, hZhi);
-      const hSha = calcSimpleShensha(hGan, hZhi);
-
+      const hSs = calcShiShen(r.riGan, h.gan), hCs = calcChangSheng(r.riGan, hourIdx);
+      const hSha = calcSimpleShensha(h.gan, h.zhi);
+      const dy = r.daYun.pillars[expandedDayunIdx];
       const ysi = TIAN_GAN.indexOf(lr.gan);
       const ms = (ysi % 5 * 2 + flow.monthIdx + 1) % 10;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
-      const dy = lastResult.daYun.pillars[expandedDayunIdx];
-      updateOverview({
-        path: ['大运' + dy.index, flow.year + '年 ' + lr.gan + lr.zhi, MONTH_NAMES[flow.monthIdx] + ' ' + mGan + mZhi, flow.day + '日 ' + dp.stem + dp.branch, HOUR_NAMES[hourIdx] + ' ' + hGan + hZhi],
-        flowItems: [
-          { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ },
-          { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
-          { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi] },
-          { label: '流日', gan: dp.stem, zhi: dp.branch, wxG: WU_XING_TG[dp.stem], wxZ: WU_XING_DZ[dp.branch] },
-          { label: '流时', gan: hGan, zhi: hZhi, wxG: hwxG, wxZ: hwxZ }
-        ],
-        stats: [
-          { label: '十神', val: hSs },
-          { label: '长生', val: hCs },
-          { label: '纳音', val: hNy },
-          { label: '五行', val: hwxG + hwxZ }
-        ],
-        shensha: hSha,
-        relations: []
-      });
+      rebuildBoxesWithFlow([
+        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ, ss: calcShiShen(r.riGan, dy.gan), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dy.zhi)), flow: true },
+        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ, ss: lr.shiShen, cs: lr.changSheng, flow: true },
+        { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi], ss: calcShiShen(r.riGan, mGan), cs: calcChangSheng(r.riGan, (flow.monthIdx + 2) % 12), flow: true },
+        { label: '流日', gan: dp.stem, zhi: dp.branch, wxG: WU_XING_TG[dp.stem], wxZ: WU_XING_DZ[dp.branch], ss: calcShiShen(r.riGan, dp.stem), cs: calcChangSheng(r.riGan, DI_ZHI.indexOf(dp.branch)), flow: true },
+        { label: '流时', gan: h.gan, zhi: h.zhi, wxG: WU_XING_TG[h.gan], wxZ: WU_XING_DZ[h.zhi], ss: hSs, cs: hCs, flow: true }
+      ], hSha, []);
 
-      // Keep all cascade levels
       const ly = calcLiuYueByYear(lr.gan);
       const days = calcLiuRiByMonth(calY, calM);
       showCascade('month', ly.map(m =>
@@ -818,11 +631,10 @@
       ), 'hour', hours.map(h =>
         ({ idx: h.idx, label: h.label, gan: h.gan, zhi: h.zhi, cls: flow.hourIdx === h.idx ? ' active' : '', data: 'data-flow="hour" data-hour-idx="' + h.idx + '"' })
       ));
-
-      buildShensha(hSha);
+      buildShenshaGrid(hSha);
     }
 
-    // ── Cascade Display ──
+    // ── Helpers ──
     function showCascade() {
       const levels = Array.from(arguments);
       let html = '';
@@ -838,131 +650,69 @@
       document.getElementById('flowCascadeArea').innerHTML = html;
     }
 
+    function buildShenshaGrid(sha) {
+      const sg = document.getElementById('shenshaGrid'); sg.innerHTML = '';
+      const se = Object.entries(sha);
+      if (!se.length) { sg.innerHTML = '<div style="color:#a08870;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; return; }
+      se.forEach(([name, val]) => { const d = document.createElement('div'); d.className = 'shensha-item'; d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>'; sg.appendChild(d); });
+    }
+
     // ═══════════════════════════════════════════
     //  AI 智能解盘
     // ═══════════════════════════════════════════
-
     const AI_STORAGE_KEY = 'bazi_ai_config';
-
-    function loadAIConfig() {
-      try {
-        const raw = localStorage.getItem(AI_STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
-      } catch (_) {}
-      return { key: '', endpoint: 'https://api.deepseek.com/v1/chat/completions', model: 'deepseek-chat' };
-    }
-
+    function loadAIConfig() { try { const raw = localStorage.getItem(AI_STORAGE_KEY); if (raw) return JSON.parse(raw); } catch (_) {} return { key: '', endpoint: 'https://api.deepseek.com/v1/chat/completions', model: 'deepseek-chat' }; }
     function saveAIConfig() {
-      const cfg = {
-        key: document.getElementById('aiApiKey').value.trim(),
-        endpoint: document.getElementById('aiEndpoint').value,
-        model: document.getElementById('aiModel').value.trim()
-      };
+      const cfg = { key: document.getElementById('aiApiKey').value.trim(), endpoint: document.getElementById('aiEndpoint').value, model: document.getElementById('aiModel').value.trim() };
       localStorage.setItem(AI_STORAGE_KEY, JSON.stringify(cfg));
-      const btn = document.getElementById('aiSaveKeyBtn');
-      btn.textContent = '已保存 ✓';
-      btn.style.borderColor = '#81c784';
-      btn.style.color = '#81c784';
+      const btn = document.getElementById('aiSaveKeyBtn'); btn.textContent = '已保存 ✓'; btn.style.borderColor = '#81c784'; btn.style.color = '#81c784';
       setTimeout(() => { btn.textContent = '保存配置'; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
     }
-
-    (function initAI() {
-      const cfg = loadAIConfig();
-      document.getElementById('aiApiKey').value = cfg.key;
-      document.getElementById('aiEndpoint').value = cfg.endpoint;
-      document.getElementById('aiModel').value = cfg.model;
-    })();
-
+    (function initAI() { const cfg = loadAIConfig(); document.getElementById('aiApiKey').value = cfg.key; document.getElementById('aiEndpoint').value = cfg.endpoint; document.getElementById('aiModel').value = cfg.model; })();
     document.getElementById('aiSaveKeyBtn').addEventListener('click', saveAIConfig);
-
-    document.getElementById('aiAnalyzeBtn').addEventListener('click', function() {
-      if (!lastResult) { document.getElementById('baziForm').requestSubmit(); return; }
-      startAIAnalysis();
-    });
-
+    document.getElementById('aiAnalyzeBtn').addEventListener('click', function() { if (!lastResult) { document.getElementById('baziForm').requestSubmit(); return; } startAIAnalysis(); });
     let aiAbortController = null;
 
     async function startAIAnalysis() {
       const cfg = loadAIConfig();
       const keyInput = document.getElementById('aiApiKey').value.trim();
       if (!keyInput && !cfg.key) { showAIError('请先输入 API Key'); return; }
-      const apiKey = keyInput || cfg.key;
-      const endpoint = document.getElementById('aiEndpoint').value;
-      const model = document.getElementById('aiModel').value.trim() || cfg.model;
-      const r = lastResult;
-      const prompt = buildAIPrompt(r);
-
-      document.getElementById('aiResult').style.display = 'none';
-      document.getElementById('aiResultInner').innerHTML = '';
-      document.getElementById('aiStatus').style.display = 'block';
-      document.getElementById('aiStatusText').textContent = 'AI 正在分析···';
+      const apiKey = keyInput || cfg.key, endpoint = document.getElementById('aiEndpoint').value, model = document.getElementById('aiModel').value.trim() || cfg.model;
+      const r = lastResult, prompt = buildAIPrompt(r);
+      document.getElementById('aiResult').style.display = 'none'; document.getElementById('aiResultInner').innerHTML = '';
+      document.getElementById('aiStatus').style.display = 'block'; document.getElementById('aiStatusText').textContent = 'AI 正在分析···';
       document.getElementById('aiCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
       if (aiAbortController) aiAbortController.abort();
       aiAbortController = new AbortController();
-
       try {
         let fullText = '';
-        const streamOk = await callAIStream(apiKey, endpoint, model, prompt, (chunk) => {
-          fullText += chunk;
-          document.getElementById('aiStatusText').textContent = 'AI 思考中··· (' + fullText.length + '字)';
-        }, aiAbortController.signal);
-
-        if (!streamOk || !fullText.trim()) {
-          fullText = await callAINonStream(apiKey, endpoint, model, prompt, aiAbortController.signal);
-        }
-
-        document.getElementById('aiStatus').style.display = 'none';
-        document.getElementById('aiResult').style.display = 'block';
+        const streamOk = await callAIStream(apiKey, endpoint, model, prompt, (chunk) => { fullText += chunk; document.getElementById('aiStatusText').textContent = 'AI 思考中··· (' + fullText.length + '字)'; }, aiAbortController.signal);
+        if (!streamOk || !fullText.trim()) fullText = await callAINonStream(apiKey, endpoint, model, prompt, aiAbortController.signal);
+        document.getElementById('aiStatus').style.display = 'none'; document.getElementById('aiResult').style.display = 'block';
         renderAIResult(fullText);
-      } catch (err) {
-        if (err.name === 'AbortError') return;
-        document.getElementById('aiStatus').style.display = 'none';
-        showAIError('请求失败: ' + err.message);
-      }
+      } catch (err) { if (err.name === 'AbortError') return; document.getElementById('aiStatus').style.display = 'none'; showAIError('请求失败: ' + err.message); }
     }
-
-    function showAIError(msg) {
-      document.getElementById('aiResult').style.display = 'block';
-      document.getElementById('aiResultInner').innerHTML = '<div class="ai-error">' + escapeHtml(msg) + '</div>';
-    }
-
-    function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function showAIError(msg) { document.getElementById('aiResult').style.display = 'block'; document.getElementById('aiResultInner').innerHTML = '<div class="ai-error">' + msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>'; }
 
     function buildAIPrompt(r) {
       const now = new Date();
       const curYear = now.getFullYear(), curMonth = now.getMonth() + 1, curDay = now.getDate();
       const curHour = now.getHours(), curMinute = now.getMinutes();
-      const curHB = getHourBranchIdx(curHour, curMinute);
       const curDP = calcDayPillar(curYear, curMonth, curDay);
       const curHP = calcHourPillar(curDP.stemIdx, curHour, curMinute);
       const nZhi = DI_ZHI[getNianZhiIndex(parseInt(document.getElementById('birthYear').value), parseInt(document.getElementById('birthMonth').value), parseInt(document.getElementById('birthDay').value))];
       const curLN = calcLiuNian(curYear, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nZhi, r.pillars[1].zhi);
-
-      let dayunText = '';
-      r.daYun.pillars.forEach((p, i) => { dayunText += '\n    大运' + (i+1) + ': ' + p.gan + p.zhi + ' (' + p.wxG + p.wxZ + ' · ' + p.naYin + ')  ' + p.ageFrom + '-' + p.ageTo + '岁'; });
-
-      let cangText = '';
-      r.pillars.forEach((p, i) => { const cg = r.cangGan[i]; if (cg.length) cangText += '\n    ' + p.name + '藏干: ' + cg.join('、'); });
-
-      let ssZhiText = '';
-      r.pillars.forEach((p, i) => { const sz = r.shiShenZhi[i]; if (sz && sz.length) ssZhiText += '\n    ' + p.name + '藏干十神: ' + sz.join('、'); });
-
-      return [
-        '## 八字命盘信息',
-        '### 基本信息',
-        '出生: ' + document.getElementById('birthYear').value + '年' + document.getElementById('birthMonth').value + '月' + document.getElementById('birthDay').value + '日 ' + SHI_CHEN[parseInt(document.getElementById('birthHour').value)] + ' 性别: ' + r.gender,
-        '### 四柱',
-        r.pillars.map((p, i) => '  柱: ' + p.gan + p.zhi + '  五行: ' + WU_XING_TG[p.gan] + WU_XING_DZ[p.zhi] + '  纳音: ' + r.nayin[i] + '  十神: ' + r.shiShen[i] + '  十二长生: ' + r.changSheng[i] + '  阴阳: ' + r.yinyang[i].gan + r.yinyang[i].zhi).join('\n'),
-        cangText, ssZhiText,
-        '### 日主', '日干: ' + r.riGan + ' (' + r.riWx + ' · ' + r.riYinYang + ')', '日支: ' + r.riZhi + '  藏干: ' + r.cangGan[2].join('、'),
-        '### 五行分布',
-        Object.entries(r.wuxingCount).map(([k, v]) => '  ' + k + ': ' + v + ' (' + r.wuxingPercent[k] + '%)').join('\n'),
+      let dayunText = ''; r.daYun.pillars.forEach((p, i) => { dayunText += '\n    大运' + (i+1) + ': ' + p.gan + p.zhi + ' (' + p.wxG + p.wxZ + ' · ' + p.naYin + ')  ' + p.ageFrom + '-' + p.ageTo + '岁'; });
+      let cangText = ''; r.pillars.forEach((p, i) => { const cg = r.cangGan[i]; if (cg.length) cangText += '\n    ' + p.name + '藏干: ' + cg.join('、'); });
+      let ssZhiText = ''; r.pillars.forEach((p, i) => { const sz = r.shiShenZhi[i]; if (sz && sz.length) ssZhiText += '\n    ' + p.name + '藏干十神: ' + sz.join('、'); });
+      return ['## 八字命盘信息', '### 基本信息', '出生: ' + document.getElementById('birthYear').value + '年' + document.getElementById('birthMonth').value + '月' + document.getElementById('birthDay').value + '日 ' + SHI_CHEN[parseInt(document.getElementById('birthHour').value)] + ' 性别: ' + r.gender,
+        '### 四柱', r.pillars.map((p, i) => '  柱: ' + p.gan + p.zhi + '  五行: ' + WU_XING_TG[p.gan] + WU_XING_DZ[p.zhi] + '  纳音: ' + r.nayin[i] + '  十神: ' + r.shiShen[i] + '  十二长生: ' + r.changSheng[i] + '  阴阳: ' + r.yinyang[i].gan + r.yinyang[i].zhi).join('\n'),
+        cangText, ssZhiText, '### 日主', '日干: ' + r.riGan + ' (' + r.riWx + ' · ' + r.riYinYang + ')', '日支: ' + r.riZhi + '  藏干: ' + r.cangGan[2].join('、'),
+        '### 五行分布', Object.entries(r.wuxingCount).map(([k, v]) => '  ' + k + ': ' + v + ' (' + r.wuxingPercent[k] + '%)').join('\n'),
         '缺: ' + (r.missingWx.length ? r.missingWx.join('、') : '无') + '  旺: ' + (r.maxWx.length ? r.maxWx[0][0] : ''),
         '### 神煞', Object.entries(r.shenSha).map(([k, v]) => '  ' + k + ': ' + (Array.isArray(v) ? v.join('、') : v)).join('\n') || '  无显著神煞',
         '### 大运', '起运: ' + r.daYun.startAge + '岁  排法: ' + (r.daYun.shunPai ? '顺排' : '逆排'), dayunText,
-        '### 当前流年 (' + curYear + '年)',
-        '干支: ' + curLN.gan + curLN.zhi + '  五行: ' + curLN.wxG + curLN.wxZ + '  纳音: ' + curLN.naYin,
+        '### 当前流年 (' + curYear + '年)', '干支: ' + curLN.gan + curLN.zhi + '  五行: ' + curLN.wxG + curLN.wxZ + '  纳音: ' + curLN.naYin,
         '生肖: ' + curLN.shengXiao + '年', '对日主十神: ' + curLN.shiShen + '  十二长生: ' + curLN.changSheng,
         '流年神煞: ' + Object.entries(curLN.shenSha).map(([k, v]) => k + '(' + (Array.isArray(v) ? v.join('、') : v) + ')').join('、'),
         '与四柱关系: ' + (curLN.relations || []).map(r => r.pillar + r.zhi + '-' + r.relation).join('、'),
@@ -972,84 +722,27 @@
     }
 
     async function callAIStream(apiKey, endpoint, model, prompt, onChunk, signal) {
-      const sp = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n' +
-        '1. **十神力量分析**：先确定各个十神的力量对比（考虑天干通根、地支藏干、月令旺衰、十二长生状态），所处位置（年/月/日/时柱），以及能够发挥作用的程度。\n\n' +
-        '2. **格局判断**：根据十神组合确定格局是否能成立（正格/变格/从格等），如有多种可能的格局，分别评估成立概率。\n\n' +
-        '3. **做功方式分析**：列出原局所有可能的做功方式（如官印相生、食神生财、杀印相生、比劫夺财等），分别评估每种做功方式的成立概率（列出概率百分比），选出最可信的做功方式。\n\n' +
-        '4. **喜用神确定**：根据选定做功方式确定喜用神（喜什么五行、十神），忌神是什么。\n\n' +
-        '5. **大运流年分析**：按照上述步骤重新评估最优做功方式，再论各步大运的喜忌吉凶。当前流年对原局的影响。\n\n' +
-        '6. **格局层次评估**：通过做功的效率和纯粹情况评估命局的整体层次（上等/中等/下等格局）。\n\n' +
-        '请用中文输出，使用Markdown格式，每个步骤用标题分隔（一、二、三、四、五、六）。语言专业但易懂，避免过于绝对的判断。';
+      const sp = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n1. **十神力量分析**：先确定各个十神的力量对比（考虑天干通根、地支藏干、月令旺衰、十二长生状态），所处位置（年/月/日/时柱），以及能够发挥作用的程度。\n\n2. **格局判断**：根据十神组合确定格局是否能成立（正格/变格/从格等），如有多种可能的格局，分别评估成立概率。\n\n3. **做功方式分析**：列出原局所有可能的做功方式（如官印相生、食神生财、杀印相生、比劫夺财等），分别评估每种做功方式的成立概率（列出概率百分比），选出最可信的做功方式。\n\n4. **喜用神确定**：根据选定做功方式确定喜用神（喜什么五行、十神），忌神是什么。\n\n5. **大运流年分析**：按照上述步骤重新评估最优做功方式，再论各步大运的喜忌吉凶。当前流年对原局的影响。\n\n6. **格局层次评估**：通过做功的效率和纯粹情况评估命局的整体层次（上等/中等/下等格局）。\n\n请用中文输出，使用Markdown格式，每个步骤用标题分隔（一、二、三、四、五、六）。语言专业但易懂，避免过于绝对的判断。';
       try {
-        const resp = await fetch(endpoint, {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-          body: JSON.stringify({ model: model, messages: [{ role: 'system', content: sp }, { role: 'user', content: prompt }], stream: true, temperature: 0.7, max_tokens: 4096 }),
-          signal: signal
-        });
+        const resp = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey }, body: JSON.stringify({ model: model, messages: [{ role: 'system', content: sp }, { role: 'user', content: prompt }], stream: true, temperature: 0.7, max_tokens: 4096 }), signal: signal });
         if (!resp.ok) { const et = await resp.text().catch(() => ''); throw new Error('HTTP ' + resp.status + (et ? ': ' + et.slice(0, 200) : '')); }
         if (!resp.body) return false;
-        const reader = resp.body.getReader();
-        const decoder = new TextDecoder();
-        let buf = '';
-        let has = false;
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          buf += decoder.decode(value, { stream: true });
-          const lines = buf.split('\n');
-          buf = lines.pop() || '';
-          for (const line of lines) {
-            const t = line.trim();
-            if (!t || !t.startsWith('data: ')) continue;
-            const d = t.slice(6);
-            if (d === '[DONE]') continue;
-            try {
-              const p = JSON.parse(d);
-              const c = p.choices?.[0]?.delta?.content || p.choices?.[0]?.text || '';
-              if (c) { onChunk(c); has = true; }
-            } catch (_) {}
-          }
-        }
+        const reader = resp.body.getReader(); const decoder = new TextDecoder(); let buf = ''; let has = false;
+        while (true) { const { done, value } = await reader.read(); if (done) break; buf += decoder.decode(value, { stream: true }); const lines = buf.split('\n'); buf = lines.pop() || ''; for (const line of lines) { const t = line.trim(); if (!t || !t.startsWith('data: ')) continue; const d = t.slice(6); if (d === '[DONE]') continue; try { const p = JSON.parse(d); const c = p.choices?.[0]?.delta?.content || p.choices?.[0]?.text || ''; if (c) { onChunk(c); has = true; } } catch (_) {} } }
         return has;
-      } catch (err) {
-        if (err.name === 'AbortError') throw err;
-        return false;
-      }
+      } catch (err) { if (err.name === 'AbortError') throw err; return false; }
     }
 
     async function callAINonStream(apiKey, endpoint, model, prompt, signal) {
-      const sp = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n' +
-        '1. **十神力量分析**：先确定各个十神的力量对比（考虑天干通根、地支藏干、月令旺衰、十二长生状态），所处位置（年/月/日/时柱），以及能够发挥作用的程度。\n\n' +
-        '2. **格局判断**：根据十神组合确定格局是否能成立（正格/变格/从格等），如有多种可能的格局，分别评估成立概率。\n\n' +
-        '3. **做功方式分析**：列出原局所有可能的做功方式（如官印相生、食神生财、杀印相生、比劫夺财等），分别评估每种做功方式的成立概率（列出概率百分比），选出最可信的做功方式。\n\n' +
-        '4. **喜用神确定**：根据选定做功方式确定喜用神（喜什么五行、十神），忌神是什么。\n\n' +
-        '5. **大运流年分析**：按照上述步骤重新评估最优做功方式，再论各步大运的喜忌吉凶。当前流年对原局的影响。\n\n' +
-        '6. **格局层次评估**：通过做功的效率和纯粹情况评估命局的整体层次（上等/中等/下等格局）。\n\n' +
-        '请用中文输出，使用Markdown格式，每个步骤用标题分隔（一、二、三、四、五、六）。语言专业但易懂，避免过于绝对的判断。';
-      const resp = await fetch(endpoint, {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-        body: JSON.stringify({ model: model, messages: [{ role: 'system', content: sp }, { role: 'user', content: prompt }], stream: false, temperature: 0.7, max_tokens: 4096 }),
-        signal: signal
-      });
+      const sp = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n1. **十神力量分析**：先确定各个十神的力量对比（考虑天干通根、地支藏干、月令旺衰、十二长生状态），所处位置（年/月/日/时柱），以及能够发挥作用的程度。\n\n2. **格局判断**：根据十神组合确定格局是否能成立（正格/变格/从格等），如有多种可能的格局，分别评估成立概率。\n\n3. **做功方式分析**：列出原局所有可能的做功方式（如官印相生、食神生财、杀印相生、比劫夺财等），分别评估每种做功方式的成立概率（列出概率百分比），选出最可信的做功方式。\n\n4. **喜用神确定**：根据选定做功方式确定喜用神（喜什么五行、十神），忌神是什么。\n\n5. **大运流年分析**：按照上述步骤重新评估最优做功方式，再论各步大运的喜忌吉凶。当前流年对原局的影响。\n\n6. **格局层次评估**：通过做功的效率和纯粹情况评估命局的整体层次（上等/中等/下等格局）。\n\n请用中文输出，使用Markdown格式，每个步骤用标题分隔（一、二、三、四、五、六）。语言专业但易懂，避免过于绝对的判断。';
+      const resp = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey }, body: JSON.stringify({ model: model, messages: [{ role: 'system', content: sp }, { role: 'user', content: prompt }], stream: false, temperature: 0.7, max_tokens: 4096 }), signal: signal });
       if (!resp.ok) { const et = await resp.text().catch(() => ''); throw new Error('HTTP ' + resp.status + (et ? ': ' + et.slice(0, 200) : '')); }
-      const json = await resp.json();
-      return json.choices?.[0]?.message?.content || json.choices?.[0]?.text || '';
+      const json = await resp.json(); return json.choices?.[0]?.message?.content || json.choices?.[0]?.text || '';
     }
 
     function renderAIResult(text) {
-      let html = text
-        .replace(/^#### (.+)$/gm, '<h5>$1</h5>')
-        .replace(/^### (.+)$/gm, '<h5>$1</h5>')
-        .replace(/^## (.+)$/gm, '<h4>$1</h4>')
-        .replace(/^# (.+)$/gm, '<h4>$1</h4>')
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/`(.+?)`/g, '<code>$1</code>')
-        .replace(/^- (.+)$/gm, '<li>$1</li>')
-        .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-        .replace(/\n\n/g, '</p><p>')
-        .replace(/\n/g, '<br>');
-      html = '<p>' + html + '</p>';
-      html = html.replace(/<p><\/p>/g, '').replace(/<br><\/li>/g, '</li>').replace(/<\/ul><br>/g, '</ul>').replace(/<br><ul>/g, '<ul>');
+      let html = text.replace(/^#### (.+)$/gm, '<h5>$1</h5>').replace(/^### (.+)$/gm, '<h5>$1</h5>').replace(/^## (.+)$/gm, '<h4>$1</h4>').replace(/^# (.+)$/gm, '<h4>$1</h4>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`(.+?)`/g, '<code>$1</code>').replace(/^- (.+)$/gm, '<li>$1</li>').replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+      html = '<p>' + html + '</p>'.replace(/<p><\/p>/g, '').replace(/<br><\/li>/g, '</li>').replace(/<\/ul><br>/g, '</ul>').replace(/<br><ul>/g, '<ul>');
       document.getElementById('aiResultInner').innerHTML = html;
     }
   </script>
