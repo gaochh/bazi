@@ -464,13 +464,13 @@
 
       // 大运
       const dy = r.daYun;
-      document.getElementById('dayunInfo').innerHTML = '起运年龄：<strong>' + dy.startAge + ' 岁</strong> &nbsp;·&nbsp; 排法：<strong>' + (dy.shunPai ? '顺排' : '逆排') + '</strong>';
+      document.getElementById('dayunInfo').innerHTML = '起运 <strong>' + dy.startAge + ' 岁</strong> · 排法 <strong>' + (dy.shunPai ? '顺排' : '逆排') + '</strong>';
       const dt = document.getElementById('dayunTable'); dt.innerHTML = '';
-      const th = document.createElement('thead'); th.innerHTML = '<tr><th>大运</th><th>年龄</th><th>天干</th><th>地支</th><th>五行</th><th>纳音</th></tr>'; dt.appendChild(th);
+      const th = document.createElement('thead'); th.innerHTML = '<tr><th>大运</th><th>年龄</th><th>干支</th><th>纳音</th></tr>'; dt.appendChild(th);
       const tb = document.createElement('tbody');
       dy.pillars.forEach((p, i) => {
         const tr = document.createElement('tr'); tr.dataset.dayunIndex = i;
-        tr.innerHTML = '<td>' + p.index + '</td><td>' + p.ageFrom + '-' + p.ageTo + '岁</td><td style="color:' + WU_XING_COLOR[p.wxG] + ';font-weight:500">' + p.gan + '</td><td style="color:' + WU_XING_COLOR[p.wxZ] + ';font-weight:500">' + p.zhi + '</td><td><span class="pillar-wx" style="background:' + WU_XING_COLOR[p.wxG] + '">' + p.wxG + '</span><span class="pillar-wx" style="background:' + WU_XING_COLOR[p.wxZ] + '">' + p.wxZ + '</span></td><td style="color:#a09080">' + p.naYin + '</td>';
+        tr.innerHTML = '<td>' + p.index + '</td><td>' + p.ageFrom + '-' + p.ageTo + '岁</td><td style="white-space:nowrap"><span style="color:' + WU_XING_COLOR[p.wxG] + ';font-weight:600">' + p.gan + '</span><span style="color:' + WU_XING_COLOR[p.wxZ] + ';font-weight:600">' + p.zhi + '</span></td><td style="color:#a09080;font-size:0.78rem">' + p.naYin + '</td>';
         tb.appendChild(tr);
       });
       dt.appendChild(tb);
