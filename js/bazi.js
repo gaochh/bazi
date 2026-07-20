@@ -39,11 +39,11 @@ function calcShiShen(riGan,otherGan){
   const ri=TIAN_GAN.indexOf(riGan),ot=TIAN_GAN.indexOf(otherGan);
   const rw=Math.floor(ri/2),ow=Math.floor(ot/2),ry=ri%2===0,oy=ot%2===0;
   if(rw===ow) return ry===oy?'比肩':'劫财';
-  const sr=(rw+3)%5,kr=(rw+2)%5,rs=(rw+1)%5,rk=(rw+4)%5;
-  if(ow===sr) return ry===oy?'偏印':'正印';
-  if(ow===rs) return ry===oy?'食神':'伤官';
-  if(ow===kr) return ry===oy?'偏官(七杀)':'正官';
-  if(ow===rk) return ry===oy?'偏财':'正财';
+  const woSheng=(rw+1)%5,shengWo=(rw+4)%5,woKe=(rw+2)%5,keWo=(rw+3)%5;
+  if(ow===shengWo) return ry===oy?'偏印':'正印';
+  if(ow===woSheng) return ry===oy?'食神':'伤官';
+  if(ow===keWo) return ry===oy?'偏官(七杀)':'正官';
+  if(ow===woKe) return ry===oy?'偏财':'正财';
   return '';
 }
 function calcShiShenFromZhi(riGan,otherGan){
@@ -51,11 +51,11 @@ function calcShiShenFromZhi(riGan,otherGan){
   if(ot===-1) return '';
   const rw=Math.floor(ri/2),ow=Math.floor(ot/2),ry=ri%2===0,oy=ot%2===0;
   if(rw===ow) return ry===oy?'比肩':'劫财';
-  const sr=(rw+3)%5,kr=(rw+2)%5,rs=(rw+1)%5,rk=(rw+4)%5;
-  if(ow===sr) return ry===oy?'偏印':'正印';
-  if(ow===rs) return ry===oy?'食神':'伤官';
-  if(ow===kr) return ry===oy?'偏官(七杀)':'正官';
-  if(ow===rk) return ry===oy?'偏财':'正财';
+  const woSheng=(rw+1)%5,shengWo=(rw+4)%5,woKe=(rw+2)%5,keWo=(rw+3)%5;
+  if(ow===shengWo) return ry===oy?'偏印':'正印';
+  if(ow===woSheng) return ry===oy?'食神':'伤官';
+  if(ow===keWo) return ry===oy?'偏官(七杀)':'正官';
+  if(ow===woKe) return ry===oy?'偏财':'正财';
   return '';
 }
 
