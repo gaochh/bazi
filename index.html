@@ -14,21 +14,54 @@
     .compact-flow-pillar .cfp-label { color: #a08870; font-size: 0.6rem; }
     .compact-flow-pillar .cfp-gan { font-weight: 600; }
     .compact-flow-pillar .cfp-zhi { font-weight: 600; }
-    .cascade-section { margin: 12px 0 8px; }
-    .cascade-section h4 { color: #b89a6a; font-size: 0.78rem; letter-spacing: 1px; margin-bottom: 6px; font-weight: 500; }
-    .cascade-grid { display: flex; flex-wrap: wrap; gap: 4px; }
-    .cascade-chip { display: inline-flex; flex-direction: column; align-items: center; padding: 3px 7px; border-radius: 5px; font-size: 0.72rem; cursor: pointer; transition: all 0.2s; border: 1px solid rgba(212,175,55,0.08); background: rgba(40,25,15,0.4); color: #b89a6a; min-width: 44px; }
+    .cascade-section { margin: 8px 0 4px; }
+    .cascade-section h4 { color: #b89a6a; font-size: 0.72rem; letter-spacing: 1px; margin-bottom: 4px; font-weight: 500; }
+    .cascade-grid { display: flex; flex-wrap: wrap; gap: 3px; }
+    .cascade-chip { display: inline-flex; flex-direction: column; align-items: center; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; cursor: pointer; transition: all 0.15s; border: 1px solid rgba(212,175,55,0.08); background: rgba(40,25,15,0.4); color: #b89a6a; min-width: 38px; }
     .cascade-chip:hover { border-color: #d4af37; background: rgba(212,175,55,0.08); }
     .cascade-chip.active { border-color: #d4af37; background: rgba(212,175,55,0.12); color: #d4af37; }
-    .cascade-chip .cc-label { font-size: 0.6rem; color: #5a4a3a; }
-    .cascade-chip .cc-ganzhi { font-size: 0.8rem; font-weight: 600; color: #e8d5c0; }
+    .cascade-chip .cc-label { font-size: 0.55rem; color: #5a4a3a; }
+    .cascade-chip .cc-ganzhi { font-size: 0.72rem; font-weight: 600; color: #e8d5c0; }
     .cascade-chip.active .cc-ganzhi { color: #d4af37; }
-    .flow-detail-content { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .flow-detail-item { background: rgba(40,25,15,0.6); border: 1px solid rgba(212,175,55,0.08); border-radius: 8px; padding: 8px 12px; }
-    .flow-detail-item .fd-label { color: #a08870; font-size: 0.7rem; }
-    .flow-detail-item .fd-value { color: #d4af37; font-weight: 500; font-size: 0.85rem; margin-top: 1px; }
-    .fd-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
-    .fd-chip { font-size: 0.7rem; padding: 1px 6px; border-radius: 3px; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.08); }
+
+    /* ── Sticky Overview Panel ── */
+    .sticky-overview {
+      background: linear-gradient(145deg, rgba(40,25,15,0.97), rgba(30,18,10,0.99));
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+    .so-title { color: #d4af37; font-size: 0.78rem; letter-spacing: 2px; margin-bottom: 6px; font-weight: 500; }
+    .so-pillars { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
+    .so-pillar { text-align: center; min-width: 52px; padding: 3px 6px; border: 1px solid rgba(212,175,55,0.1); border-radius: 6px; background: rgba(40,25,15,0.5); }
+    .so-pillar .so-p-name { font-size: 0.55rem; color: #a08870; letter-spacing: 1px; }
+    .so-pillar .so-p-gan { font-size: 1.1rem; font-weight: 700; line-height: 1.2; }
+    .so-pillar .so-p-zhi { font-size: 1.1rem; font-weight: 700; line-height: 1.2; }
+    .so-flow { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 5px; }
+    .so-flow-item { display: flex; align-items: center; gap: 2px; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.08); }
+    .so-flow-item .sf-label { color: #6a5a4a; font-size: 0.58rem; }
+    .so-flow-item .sf-gan { font-weight: 600; }
+    .so-flow-item .sf-zhi { font-weight: 600; }
+    .so-path { display: flex; align-items: center; gap: 3px; flex-wrap: wrap; font-size: 0.72rem; color: #a08870; margin-bottom: 4px; }
+    .so-path .sp-sep { color: #5a4a3a; }
+    .so-path .sp-item { color: #b89a6a; }
+    .so-path .sp-item strong { color: #d4af37; }
+    .so-stats { display: flex; flex-wrap: wrap; gap: 0; margin: 0 -4px; }
+    .so-stat { padding: 2px 8px; font-size: 0.72rem; border-right: 1px solid rgba(212,175,55,0.08); }
+    .so-stat:last-child { border-right: none; }
+    .so-stat .ss-label { color: #6a5a4a; font-size: 0.6rem; }
+    .so-stat .ss-val { color: #e8d5c0; font-weight: 500; }
+    .so-stat .ss-val strong { color: #d4af37; }
+    .so-shensha { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 3px; padding-top: 4px; border-top: 1px solid rgba(212,175,55,0.06); }
+    .so-shensha-item { font-size: 0.65rem; padding: 1px 6px; border-radius: 3px; background: rgba(212,175,55,0.05); color: #a08870; }
+    .so-shensha-item .ss-name { color: #6a5a4a; }
+    .so-shensha-item .ss-val { color: #d4af37; font-weight: 500; }
+    .so-relations { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 3px; }
+    .so-rel { font-size: 0.62rem; padding: 1px 5px; border-radius: 3px; }
+    .so-rel .sr-pillar { color: #6a5a4a; }
+    .so-rel .sr-rel { font-weight: 600; }
+
+    /* ── AI ── */
     .ai-loading { display:flex; justify-content:center; gap:8px; margin-bottom:10px; }
     .ai-loading span { width:10px; height:10px; border-radius:50%; background:#d4af37; animation:aiPulse 1.2s ease-in-out infinite; }
     .ai-loading span:nth-child(2) { animation-delay:0.2s; }
@@ -49,7 +82,10 @@
     .ai-result-inner th { background:rgba(212,175,55,0.06); color:#b89a6a; font-weight:500; }
     .ai-error { color:#e57373; font-size:0.85rem; padding:12px; text-align:center; background:rgba(229,115,115,0.06); border-radius:8px; border:1px solid rgba(229,115,115,0.15); }
     @media (max-width: 640px) {
-      .flow-detail-content { grid-template-columns: 1fr; }
+      .so-pillars { gap: 3px; }
+      .so-pillar { min-width: 44px; padding: 2px 4px; }
+      .so-pillar .so-p-gan, .so-pillar .so-p-zhi { font-size: 0.9rem; }
+      .so-stat { padding: 2px 5px; font-size: 0.65rem; }
     }
   </style>
 </head>
@@ -116,23 +152,26 @@
 
     <div class="result-section" id="resultSection">
       <div class="result-sticky" id="resultSticky">
-        <div class="compact-bazi">
-          <div class="compact-pillars" id="compactPillars"></div>
-          <div class="compact-meta" id="compactMeta"></div>
+        <div class="sticky-overview">
+          <div class="so-title">◆ 八字总览</div>
+          <div class="so-pillars" id="soPillars"></div>
+          <div class="so-flow" id="soFlow"></div>
+          <div class="so-detail-area" id="soDetailArea" style="display:none">
+            <div class="so-path" id="soPath"></div>
+            <div class="so-stats" id="soStats"></div>
+            <div class="so-shensha" id="soShensha"></div>
+            <div class="so-relations" id="soRelations"></div>
+          </div>
         </div>
-        <div class="compact-flow" id="compactFlow"></div>
       </div>
 
       <div class="form-section" style="padding-top:4px">
-        <h2>◆ 四柱八字</h2>
-        <div class="pillars-grid" id="pillarsGrid"></div>
-
         <div class="info-grid">
-          <div class="info-card full-width" id="riGanCard">
+          <div class="info-card full-width" id="riGanCard" style="display:none">
             <h3>◆ 日主</h3>
-            <div style="text-align:center;padding:8px 0">
+            <div style="text-align:center;padding:6px 0">
               <span class="gan-day-master" id="riGanDisplay"></span>
-              <div style="color:#b89a6a;font-size:0.85rem;margin-top:4px" id="riGanDesc"></div>
+              <div style="color:#b89a6a;font-size:0.82rem;margin-top:3px" id="riGanDesc"></div>
             </div>
           </div>
 
@@ -180,17 +219,12 @@
           </div>
 
           <div class="info-card full-width" id="dayunCard">
-            <h3>◆ 大运排布 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem">（点击大运展开流年 · 逐级深入流月/流日/流时）</span></h3>
-            <div id="dayunInfo" style="margin-bottom:12px;font-size:0.88rem;color:#b89a6a"></div>
+            <h3>◆ 大运排布 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem">（点击查看，上方面板同步更新）</span></h3>
+            <div id="dayunInfo" style="margin-bottom:10px;font-size:0.85rem;color:#b89a6a"></div>
             <div class="dayun-table-wrap">
               <table class="dayun-table" id="dayunTable"></table>
             </div>
-          </div>
-
-          <div class="info-card full-width" id="flowDetailSection" style="display:none">
-            <h3>◆ 流时详览 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem" id="flowDetailSubtitle"></span></h3>
-            <div id="flowDetailContent"></div>
-            <div id="flowCascade"></div>
+            <div id="flowCascadeArea"></div>
           </div>
 
           <div class="info-card full-width" id="aiCard">
@@ -240,8 +274,8 @@
     const HOUR_NAMES = ['子时','丑时','寅时','卯时','辰时','巳时','午时','未时','申时','酉时','戌时','亥时'];
 
     let lastResult = null;
-    let originalShenshaHTML = '';
-    let flow = { year: null, monthIdx: null, day: null, hourIdx: null };
+    let flow = { year: null, monthIdx: null, day: null, hourIdx: null, daYunIdx: null };
+    let expandedDayunIdx = -1;
 
     const defaultDate = getDefaultDate();
 
@@ -335,38 +369,26 @@
       const [hour, minute] = hourMap[hourBranch];
       const result = calcBazi(year, month, day, hour, minute, gender);
       lastResult = result;
-      flow = { year: null, monthIdx: null, day: null, hourIdx: null };
+      flow = { year: null, monthIdx: null, day: null, hourIdx: null, daYunIdx: null };
       displayResult(result);
     });
 
     // ── Display ──
     function displayResult(r) {
-      // Compact header
-      const cp = document.getElementById('compactPillars');
-      cp.innerHTML = '';
+      // Overview pillars
+      const sp = document.getElementById('soPillars');
+      sp.innerHTML = '';
       r.pillars.forEach(p => {
         const wxG = WU_XING_TG[p.gan], wxZ = WU_XING_DZ[p.zhi];
         const d = document.createElement('div');
-        d.className = 'compact-pillar';
-        d.innerHTML = `<div class="cp-name">${p.name}</div><div class="cp-gan" style="color:${WU_XING_COLOR[wxG]}">${p.gan}</div><div class="cp-zhi" style="color:${WU_XING_COLOR[wxZ]}">${p.zhi}</div>`;
-        cp.appendChild(d);
+        d.className = 'so-pillar';
+        d.innerHTML = '<div class="so-p-name">' + p.name + '</div><div class="so-p-gan" style="color:' + WU_XING_COLOR[wxG] + '">' + p.gan + '</div><div class="so-p-zhi" style="color:' + WU_XING_COLOR[wxZ] + '">' + p.zhi + '</div>';
+        sp.appendChild(d);
       });
-      document.getElementById('compactMeta').innerHTML = `<span>日主：<strong>${r.riGan} · ${r.riWx} · ${r.riYinYang}</strong></span><span>生肖：<strong>${r.shengXiao}</strong></span><span>${r.gender}</span>`;
-      document.getElementById('compactFlow').innerHTML = '';
+      document.getElementById('soFlow').innerHTML = '<div class="so-flow-item" style="background:transparent;border:none;color:#a08870;font-size:0.65rem">日主 ' + r.riGan + '(' + r.riWx + '·' + r.riYinYang + ') 生肖 ' + r.shengXiao + ' ' + r.gender + '</div>';
+      clearDetailArea();
 
-      // Pillar cards
-      const grid = document.getElementById('pillarsGrid');
-      grid.innerHTML = '';
-      r.pillars.forEach((p, i) => {
-        const wxG = WU_XING_TG[p.gan], wxZ = WU_XING_DZ[p.zhi];
-        const card = document.createElement('div');
-        card.className = 'pillar-card';
-        card.innerHTML = `<div class="pillar-name">${p.name}</div><div class="pillar-gan">${p.gan}</div><div class="pillar-zhi">${p.zhi}</div><div><span class="pillar-wx" style="background:${WU_XING_COLOR[wxG]}">${wxG}</span><span class="pillar-wx" style="background:${WU_XING_COLOR[wxZ]}">${wxZ}</span></div><div class="pillar-nayin">${r.nayin[i]}</div><div class="pillar-detail"><span>${r.yinyang[i].gan}</span>·<span>${r.yinyang[i].zhi}</span></div><div class="pillar-changsheng">${r.changSheng[i]}</div>`;
-        grid.appendChild(card);
-      });
-
-      document.getElementById('riGanDisplay').textContent = r.riGan + ' (' + r.riWx + ' · ' + r.riYinYang + ')';
-      document.getElementById('riGanDesc').textContent = '日主为' + r.riYinYang + r.riWx + ' · 生于' + r.riZhi + '日 · ' + r.hourRange + '出生';
+      // Info cards
       document.getElementById('shengXiao').textContent = r.shengXiao;
       document.getElementById('genderDisplay').textContent = r.gender;
       document.getElementById('riWxDisplay').textContent = r.riWx;
@@ -384,7 +406,7 @@
       document.getElementById('nayinDay').textContent = r.nayin[2];
       document.getElementById('nayinHour').textContent = r.nayin[3];
 
-      // 五行
+      // 五行 bar
       const bar = document.getElementById('wuxingBar');
       bar.innerHTML = '';
       ['木','火','土','金','水'].forEach(wx => {
@@ -418,7 +440,6 @@
 
       // 神煞
       buildShensha(r.shenSha);
-      originalShenshaHTML = document.getElementById('shenshaGrid').innerHTML;
 
       // 大运
       const dy = r.daYun;
@@ -437,7 +458,7 @@
       });
       dt.appendChild(tb);
 
-      document.getElementById('flowDetailSection').style.display = 'none';
+      document.getElementById('flowCascadeArea').innerHTML = '';
       document.getElementById('resultSection').classList.add('visible');
       document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -453,10 +474,63 @@
       entries.forEach(([name, val]) => {
         const d = document.createElement('div');
         d.className = 'shensha-item';
-        const v = Array.isArray(val) ? val.join('、') : val;
-        d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + v + '</span>';
+        d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>';
         sg.appendChild(d);
       });
+    }
+
+    // ── Overview Panel Update ──
+    function clearDetailArea() {
+      document.getElementById('soDetailArea').style.display = 'none';
+      document.getElementById('soPath').innerHTML = '';
+      document.getElementById('soStats').innerHTML = '';
+      document.getElementById('soShensha').innerHTML = '';
+      document.getElementById('soRelations').innerHTML = '';
+    }
+
+    function updateOverview(data) {
+      const area = document.getElementById('soDetailArea');
+      area.style.display = 'block';
+
+      // Path
+      if (data.path) {
+        document.getElementById('soPath').innerHTML = data.path.map(p => '<span class="sp-item">' + p + '</span>').join('<span class="sp-sep"> → </span>');
+      }
+
+      // Stats row
+      if (data.stats) {
+        document.getElementById('soStats').innerHTML = data.stats.map(s =>
+          '<div class="so-stat"><div class="ss-label">' + s.label + '</div><div class="ss-val">' + s.val + '</div></div>'
+        ).join('');
+      }
+
+      // Flow pillars
+      if (data.flowItems) {
+        document.getElementById('soFlow').innerHTML = data.flowItems.map(f =>
+          '<div class="so-flow-item"><span class="sf-label">' + f.label + '</span> <span class="sf-gan" style="color:' + WU_XING_COLOR[f.wxG] + '">' + f.gan + '</span><span class="sf-zhi" style="color:' + WU_XING_COLOR[f.wxZ] + '">' + f.zhi + '</span></div>'
+        ).join('');
+      }
+
+      // Shensha
+      if (data.shensha) {
+        const entries = Object.entries(data.shensha);
+        document.getElementById('soShensha').innerHTML = entries.length
+          ? entries.map(([n, v]) => '<span class="so-shensha-item"><span class="ss-name">' + n + '</span> <span class="ss-val">' + (Array.isArray(v) ? v.join('、') : v) + '</span></span>').join('')
+          : '';
+      }
+
+      // Relations
+      if (data.relations) {
+        document.getElementById('soRelations').innerHTML = data.relations.map(r => {
+          const bad = ['六冲', '六害', '三刑', '相刑', '自刑'].includes(r.rel);
+          const good = ['六合', '三合', '半合'].includes(r.rel);
+          const clr = bad ? '#e57373' : good ? '#81c784' : '#d4af37';
+          return '<span class="so-rel"><span class="sr-pillar">' + r.pillar + '</span> <span class="sr-rel" style="color:' + clr + '">' + r.rel + '</span></span>';
+        }).join('');
+      }
+
+      // Scroll sticky into view
+      document.getElementById('resultSticky').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     // ── 大运 Click ──
@@ -466,8 +540,6 @@
       toggleDayunFlow(parseInt(row.dataset.dayunIndex));
     });
 
-    let expandedDayunIdx = -1;
-
     function toggleDayunFlow(idx) {
       const exist = document.querySelector('.dayun-expand-row');
       if (exist) {
@@ -475,11 +547,14 @@
         document.querySelectorAll('.dayun-table tbody tr').forEach(r => r.classList.remove('dayun-active'));
         if (expandedDayunIdx === idx) {
           expandedDayunIdx = -1;
-          clearFlow();
+          flow = { year: null, monthIdx: null, day: null, hourIdx: null, daYunIdx: null };
+          document.getElementById('flowCascadeArea').innerHTML = '';
+          clearDetailArea();
           return;
         }
       }
       expandedDayunIdx = idx;
+      flow.daYunIdx = idx;
       const row = document.querySelector('.dayun-table tbody tr[data-dayun-index="' + idx + '"]');
       if (!row) return;
       row.classList.add('dayun-active');
@@ -498,8 +573,30 @@
       }
       const er = document.createElement('tr');
       er.className = 'dayun-expand-row';
-      er.innerHTML = '<td colspan="6"><div class="dayun-flow-wrap"><div style="color:#a08870;font-size:0.72rem;margin-bottom:4px"><span class="cascade-label">流年</span> — 点击进入流月/流日/流时</div><div class="dayun-flow-years">' + html + '</div></div></td>';
+      er.innerHTML = '<td colspan="6"><div class="dayun-flow-wrap"><div class="dayun-flow-years">' + html + '</div></div></td>';
       row.after(er);
+
+      // Update overview with 大运 info
+      const riGan = lastResult.riGan;
+      const ss = calcShiShen(riGan, dy.gan);
+      const cs = calcChangSheng(riGan, DI_ZHI.indexOf(dy.zhi));
+      const ny = calcNaYin(dy.gan, dy.zhi);
+      const dySha = calcSimpleShensha(dy.gan, dy.zhi);
+      updateOverview({
+        path: ['大运' + dy.index + ' (' + dy.ageFrom + '-' + dy.ageTo + '岁)'],
+        flowItems: [
+          { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ }
+        ],
+        stats: [
+          { label: '十神', val: ss },
+          { label: '长生', val: cs },
+          { label: '纳音', val: ny },
+          { label: '五行', val: dy.wxG + dy.wxZ }
+        ],
+        shensha: dySha,
+        relations: []
+      });
+      document.getElementById('flowCascadeArea').innerHTML = '';
     }
 
     // ── Flow Cascade Click Delegation ──
@@ -508,192 +605,173 @@
       if (!chip) return;
       const type = chip.dataset.flow;
       if (!lastResult) return;
-
       if (type === 'year') selectFlowYear(parseInt(chip.dataset.year));
       else if (type === 'month') selectFlowMonth(parseInt(chip.dataset.monthIdx));
       else if (type === 'day') selectFlowDay(parseInt(chip.dataset.day));
       else if (type === 'hour') selectFlowHour(parseInt(chip.dataset.hourIdx));
     });
 
-    function clearFlow() {
-      flow = { year: null, monthIdx: null, day: null, hourIdx: null };
-      document.getElementById('flowDetailSection').style.display = 'none';
-      document.getElementById('compactFlow').innerHTML = '';
-      document.getElementById('shenshaGrid').innerHTML = originalShenshaHTML;
-      document.querySelectorAll('.dayun-table tbody tr').forEach(r => r.classList.remove('dayun-active'));
-      document.querySelectorAll('.flow-year-chip').forEach(c => c.classList.remove('active'));
+    function getLiuNianResult(year) {
+      const r = lastResult;
+      const by = parseInt(document.getElementById('birthYear').value);
+      const bm = parseInt(document.getElementById('birthMonth').value);
+      const bd = parseInt(document.getElementById('birthDay').value);
+      const nianZhi = DI_ZHI[getNianZhiIndex(by, bm, bd)];
+      return calcLiuNian(year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
     }
 
     // ── Select Flow Year ──
     function selectFlowYear(year) {
-      flow = { year: year, monthIdx: null, day: null, hourIdx: null };
+      flow.year = year; flow.monthIdx = null; flow.day = null; flow.hourIdx = null;
       document.querySelectorAll('.flow-year-chip').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.year) === year); });
 
+      const lr = getLiuNianResult(year);
       const r = lastResult;
-      const by = parseInt(document.getElementById('birthYear').value);
-      const bm = parseInt(document.getElementById('birthMonth').value);
-      const bd = parseInt(document.getElementById('birthDay').value);
-      const nianZhi = DI_ZHI[getNianZhiIndex(by, bm, bd)];
-      const lr = calcLiuNian(year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
 
-      // Header
-      updateFlowHeader([{ label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ }]);
+      // Update overview
+      const dy = lastResult.daYun.pillars[expandedDayunIdx];
+      const path = ['大运' + dy.index + '(' + dy.ageFrom + '-' + dy.ageTo + '岁)', year + '年 ' + lr.gan + lr.zhi];
+      const flowItems = [
+        { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ },
+        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ }
+      ];
+      const allSha = calcSimpleShensha(lr.gan, lr.zhi);
+      mergeObj(allSha, lr.shenSha);
 
-      // Detail cards
-      const detail = buildFlowDetailCards(lr, r.riGan);
-      document.getElementById('flowDetailContent').innerHTML = detail;
-      document.getElementById('flowDetailSubtitle').textContent = '· ' + year + '年 ' + lr.gan + lr.zhi;
-
-      // 流月 cascade
-      const ly = calcLiuYueByYear(lr.gan);
-      let mHtml = '';
-      ly.forEach(m => {
-        const act = flow.monthIdx === m.idx ? ' active' : '';
-        mHtml += '<span class="cascade-chip' + act + '" data-flow="month" data-month-idx="' + m.idx + '"><span class="cc-label">' + m.label + '</span><span class="cc-ganzhi">' + m.gan + m.zhi + '</span></span>';
+      updateOverview({
+        path: path,
+        flowItems: flowItems,
+        stats: [
+          { label: '十神', val: lr.shiShen },
+          { label: '长生', val: lr.changSheng },
+          { label: '纳音', val: lr.naYin },
+          { label: '五行', val: lr.wxG + lr.wxZ }
+        ],
+        shensha: allSha,
+        relations: (lr.relations || []).map(r => ({ pillar: r.pillar + r.zhi, rel: r.relation }))
       });
-      document.getElementById('flowCascade').innerHTML = '<div class="cascade-section"><h4>◆ 流月</h4><div class="cascade-grid">' + mHtml + '</div></div>';
 
-      document.getElementById('flowDetailSection').style.display = 'block';
-      updateShensha(lr.gan, lr.zhi, lr.shenSha);
+      // Show 流月 cascade
+      const ly = calcLiuYueByYear(lr.gan);
+      showCascade('month', ly.map(m =>
+        ({ idx: m.idx, label: m.label, gan: m.gan, zhi: m.zhi, cls: flow.monthIdx === m.idx ? ' active' : '', data: 'data-flow="month" data-month-idx="' + m.idx + '"' })
+      ));
+
+      // Update 神煞 grid
+      buildShensha(allSha);
     }
 
     // ── Select Flow Month ──
     function selectFlowMonth(monthIdx) {
-      flow.monthIdx = monthIdx;
-      flow.day = null;
-      flow.hourIdx = null;
-
+      flow.monthIdx = monthIdx; flow.day = null; flow.hourIdx = null;
       document.querySelectorAll('[data-flow="month"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.monthIdx) === monthIdx); });
 
+      const lr = getLiuNianResult(flow.year);
       const r = lastResult;
-      const by = parseInt(document.getElementById('birthYear').value);
-      const bm = parseInt(document.getElementById('birthMonth').value);
-      const bd = parseInt(document.getElementById('birthDay').value);
-      const nianZhi = DI_ZHI[getNianZhiIndex(by, bm, bd)];
-      const lr = calcLiuNian(flow.year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
-
-      // Month stem-branch
       const ysi = TIAN_GAN.indexOf(lr.gan);
       const ms = (ysi % 5 * 2 + monthIdx + 1) % 10;
       const mb = (monthIdx + 2) % 12;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[mb];
       const mwxG = WU_XING_TG[mGan], mwxZ = WU_XING_DZ[mZhi];
-
-      // Header
-      updateFlowHeader([
-        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
-        { label: '流月', gan: mGan, zhi: mZhi, wxG: mwxG, wxZ: mwxZ }
-      ]);
-
-      // Detail
       const mSs = calcShiShen(r.riGan, mGan);
       const mCs = calcChangSheng(r.riGan, mb);
       const mNy = calcNaYin(mGan, mZhi);
-      const detail = buildFlowDetailCards(lr, r.riGan);
-      document.getElementById('flowDetailContent').innerHTML = detail + '<div style="grid-column:1/-1;border-top:1px solid rgba(212,175,55,0.1);padding-top:8px;margin-top:2px">' + buildFlowMiniCards('流月', monthIdx, mGan, mZhi, mwxG, mwxZ, mNy, mSs, mCs, r.riGan, flow.year, MONTH_NAMES[monthIdx]) + '</div>';
-      document.getElementById('flowDetailSubtitle').textContent = '· ' + flow.year + '年 ' + lr.gan + lr.zhi + ' → ' + MONTH_NAMES[monthIdx] + ' ' + mGan + mZhi;
+      const mSha = calcSimpleShensha(mGan, mZhi);
 
-      // 流日 cascade
-      const y = flow.year;
-      const m = monthIdx + 2; // monthIdx 0=寅月(2月), 1=卯月(3月), etc
-      const calMonth = m > 12 ? m - 12 : m;
-      // Find the actual calendar month that corresponds to this lunar month
-      // Approximate: 寅月≈2月, 卯月≈3月, etc.
-      // For simplicity, use the approximate mapping: monthIdx 0->2, 1->3, ... 11->1
-      const calM = monthIdx + 2 <= 12 ? monthIdx + 2 : monthIdx + 2 - 12;
-      const calY = monthIdx + 2 <= 12 ? y : y + 1;
-      const days = calcLiuRiByMonth(calY, calM);
-      let dHtml = '';
-      days.forEach(d => {
-        const act = flow.day === d.day ? ' active' : '';
-        dHtml += '<span class="cascade-chip' + act + '" data-flow="day" data-day="' + d.day + '"><span class="cc-label">' + d.day + '日</span><span class="cc-ganzhi">' + d.gan + d.zhi + '</span></span>';
+      const dy = lastResult.daYun.pillars[expandedDayunIdx];
+      updateOverview({
+        path: ['大运' + dy.index, flow.year + '年 ' + lr.gan + lr.zhi, MONTH_NAMES[monthIdx] + ' ' + mGan + mZhi],
+        flowItems: [
+          { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ },
+          { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
+          { label: '流月', gan: mGan, zhi: mZhi, wxG: mwxG, wxZ: mwxZ }
+        ],
+        stats: [
+          { label: '十神', val: mSs },
+          { label: '长生', val: mCs },
+          { label: '纳音', val: mNy },
+          { label: '五行', val: mwxG + mwxZ }
+        ],
+        shensha: mSha,
+        relations: []
       });
-      document.getElementById('flowCascade').innerHTML =
-        '<div class="cascade-section"><h4>◆ 流月</h4><div class="cascade-grid">' +
-        calcLiuYueByYear(lr.gan).map(m => '<span class="cascade-chip' + (flow.monthIdx === m.idx ? ' active' : '') + '" data-flow="month" data-month-idx="' + m.idx + '"><span class="cc-label">' + m.label + '</span><span class="cc-ganzhi">' + m.gan + m.zhi + '</span></span>').join('') +
-        '</div></div><div class="cascade-section"><h4>◆ 流日</h4><div class="cascade-grid">' + dHtml + '</div></div>';
 
-      updateShenshaFromGanZhi(mGan, mZhi);
+      // Show 流日 cascade
+      const calM = monthIdx + 2 <= 12 ? monthIdx + 2 : monthIdx + 2 - 12;
+      const calY = monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
+      const days = calcLiuRiByMonth(calY, calM);
+      showCascade('month', calcLiuYueByYear(lr.gan).map(m =>
+        ({ idx: m.idx, label: m.label, gan: m.gan, zhi: m.zhi, cls: flow.monthIdx === m.idx ? ' active' : '', data: 'data-flow="month" data-month-idx="' + m.idx + '"' })
+      ), 'day', days.map(d =>
+        ({ idx: d.day, label: d.day + '日', gan: d.gan, zhi: d.zhi, cls: flow.day === d.day ? ' active' : '', data: 'data-flow="day" data-day="' + d.day + '"' })
+      ));
+
+      buildShensha(mSha);
     }
 
     // ── Select Flow Day ──
     function selectFlowDay(day) {
-      flow.day = day;
-      flow.hourIdx = null;
-
+      flow.day = day; flow.hourIdx = null;
       document.querySelectorAll('[data-flow="day"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.day) === day); });
 
+      const lr = getLiuNianResult(flow.year);
       const r = lastResult;
-      const by = parseInt(document.getElementById('birthYear').value);
-      const bm = parseInt(document.getElementById('birthMonth').value);
-      const bd = parseInt(document.getElementById('birthDay').value);
-      const nianZhi = DI_ZHI[getNianZhiIndex(by, bm, bd)];
-      const lr = calcLiuNian(flow.year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
-
       const calM = flow.monthIdx + 2 <= 12 ? flow.monthIdx + 2 : flow.monthIdx + 2 - 12;
       const calY = flow.monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
       const dp = calcDayPillar(calY, calM, day);
       const dGan = dp.stem, dZhi = dp.branch;
       const dwxG = WU_XING_TG[dGan], dwxZ = WU_XING_DZ[dZhi];
+      const dSs = calcShiShen(r.riGan, dGan);
+      const dCs = calcChangSheng(r.riGan, DI_ZHI.indexOf(dZhi));
+      const dNy = calcNaYin(dGan, dZhi);
+      const dSha = calcSimpleShensha(dGan, dZhi);
 
+      // Month info for header
       const ysi = TIAN_GAN.indexOf(lr.gan);
       const ms = (ysi % 5 * 2 + flow.monthIdx + 1) % 10;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
-      updateFlowHeader([
-        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
-        { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi] },
-        { label: '流日', gan: dGan, zhi: dZhi, wxG: dwxG, wxZ: dwxZ }
-      ]);
-
-      const dSs = calcShiShen(r.riGan, dGan);
-      const dCs = calcChangSheng(r.riGan, DI_ZHI.indexOf(dZhi));
-      const dNy = calcNaYin(dGan, dZhi);
-
-      const monthIdx = flow.monthIdx;
-      const mSs = calcShiShen(r.riGan, mGan);
-      const mCs = calcChangSheng(r.riGan, (monthIdx + 2) % 12);
-      const mNy = calcNaYin(mGan, mZhi);
-
-      let detail = buildFlowDetailCards(lr, r.riGan);
-      detail += '<div style="grid-column:1/-1;border-top:1px solid rgba(212,175,55,0.1);padding-top:8px;margin-top:2px">';
-      detail += buildFlowMiniCards('流月', monthIdx, mGan, mZhi, WU_XING_TG[mGan], WU_XING_DZ[mZhi], mNy, mSs, mCs, r.riGan, flow.year, MONTH_NAMES[monthIdx]);
-      detail += '</div>';
-      detail += '<div style="grid-column:1/-1">' + buildFlowMiniCards('流日', day, dGan, dZhi, dwxG, dwxZ, dNy, dSs, dCs, r.riGan, calY + '-' + calM + '-' + day, day + '日') + '</div>';
-
-      document.getElementById('flowDetailContent').innerHTML = detail;
-      document.getElementById('flowDetailSubtitle').textContent = '· ' + flow.year + '年 ' + lr.gan + lr.zhi + ' → ' + MONTH_NAMES[flow.monthIdx] + ' ' + mGan + mZhi + ' → ' + day + '日 ' + dGan + dZhi;
-
-      // 流时 cascade
-      const hours = calcLiuShiByDay(dGan);
-      let hHtml = '';
-      hours.forEach(h => {
-        const act = flow.hourIdx === h.idx ? ' active' : '';
-        hHtml += '<span class="cascade-chip' + act + '" data-flow="hour" data-hour-idx="' + h.idx + '"><span class="cc-label">' + h.label + '</span><span class="cc-ganzhi">' + h.gan + h.zhi + '</span></span>';
+      const dy = lastResult.daYun.pillars[expandedDayunIdx];
+      updateOverview({
+        path: ['大运' + dy.index, flow.year + '年 ' + lr.gan + lr.zhi, MONTH_NAMES[flow.monthIdx] + ' ' + mGan + mZhi, day + '日 ' + dGan + dZhi],
+        flowItems: [
+          { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ },
+          { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
+          { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi] },
+          { label: '流日', gan: dGan, zhi: dZhi, wxG: dwxG, wxZ: dwxZ }
+        ],
+        stats: [
+          { label: '十神', val: dSs },
+          { label: '长生', val: dCs },
+          { label: '纳音', val: dNy },
+          { label: '五行', val: dwxG + dwxZ }
+        ],
+        shensha: dSha,
+        relations: []
       });
-      document.getElementById('flowCascade').innerHTML =
-        '<div class="cascade-section"><h4>◆ 流月</h4><div class="cascade-grid">' +
-        calcLiuYueByYear(lr.gan).map(m => '<span class="cascade-chip' + (flow.monthIdx === m.idx ? ' active' : '') + '" data-flow="month" data-month-idx="' + m.idx + '"><span class="cc-label">' + m.label + '</span><span class="cc-ganzhi">' + m.gan + m.zhi + '</span></span>').join('') +
-        '</div></div><div class="cascade-section"><h4>◆ 流日</h4><div class="cascade-grid">' +
-        calcLiuRiByMonth(calY, calM).map(d => '<span class="cascade-chip' + (flow.day === d.day ? ' active' : '') + '" data-flow="day" data-day="' + d.day + '"><span class="cc-label">' + d.day + '日</span><span class="cc-ganzhi">' + d.gan + d.zhi + '</span></span>').join('') +
-        '</div></div><div class="cascade-section"><h4>◆ 流时</h4><div class="cascade-grid">' + hHtml + '</div></div>';
 
-      updateShenshaFromGanZhi(dGan, dZhi);
+      // Show 流时 cascade
+      const hours = calcLiuShiByDay(dGan);
+      const ly = calcLiuYueByYear(lr.gan);
+      const days = calcLiuRiByMonth(calY, calM);
+      showCascade('month', ly.map(m =>
+        ({ idx: m.idx, label: m.label, gan: m.gan, zhi: m.zhi, cls: flow.monthIdx === m.idx ? ' active' : '', data: 'data-flow="month" data-month-idx="' + m.idx + '"' })
+      ), 'day', days.map(d =>
+        ({ idx: d.day, label: d.day + '日', gan: d.gan, zhi: d.zhi, cls: flow.day === d.day ? ' active' : '', data: 'data-flow="day" data-day="' + d.day + '"' })
+      ), 'hour', hours.map(h =>
+        ({ idx: h.idx, label: h.label, gan: h.gan, zhi: h.zhi, cls: flow.hourIdx === h.idx ? ' active' : '', data: 'data-flow="hour" data-hour-idx="' + h.idx + '"' })
+      ));
+
+      buildShensha(dSha);
     }
 
     // ── Select Flow Hour ──
     function selectFlowHour(hourIdx) {
       flow.hourIdx = hourIdx;
-
       document.querySelectorAll('[data-flow="hour"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.hourIdx) === hourIdx); });
 
+      const lr = getLiuNianResult(flow.year);
       const r = lastResult;
-      const by = parseInt(document.getElementById('birthYear').value);
-      const bm = parseInt(document.getElementById('birthMonth').value);
-      const bd = parseInt(document.getElementById('birthDay').value);
-      const nianZhi = DI_ZHI[getNianZhiIndex(by, bm, bd)];
-      const lr = calcLiuNian(flow.year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
-
       const calM = flow.monthIdx + 2 <= 12 ? flow.monthIdx + 2 : flow.monthIdx + 2 - 12;
       const calY = flow.monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
       const dp = calcDayPillar(calY, calM, flow.day);
@@ -701,107 +779,63 @@
       const h = hours[hourIdx];
       const hGan = h.gan, hZhi = h.zhi;
       const hwxG = WU_XING_TG[hGan], hwxZ = WU_XING_DZ[hZhi];
+      const hSs = calcShiShen(r.riGan, hGan);
+      const hCs = calcChangSheng(r.riGan, hourIdx);
+      const hNy = calcNaYin(hGan, hZhi);
+      const hSha = calcSimpleShensha(hGan, hZhi);
 
       const ysi = TIAN_GAN.indexOf(lr.gan);
       const ms = (ysi % 5 * 2 + flow.monthIdx + 1) % 10;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
-      updateFlowHeader([
-        { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
-        { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi] },
-        { label: '流日', gan: dp.stem, zhi: dp.branch, wxG: WU_XING_TG[dp.stem], wxZ: WU_XING_DZ[dp.branch] },
-        { label: '流时', gan: hGan, zhi: hZhi, wxG: hwxG, wxZ: hwxZ }
-      ]);
-
-      const hSs = calcShiShen(r.riGan, hGan);
-      const hCs = calcChangSheng(r.riGan, hourIdx);
-      const hNy = calcNaYin(hGan, hZhi);
-
-      const dSs = calcShiShen(r.riGan, dp.stem);
-      const dCs = calcChangSheng(r.riGan, DI_ZHI.indexOf(dp.branch));
-      const dNy = calcNaYin(dp.stem, dp.branch);
-
-      let detail = buildFlowDetailCards(lr, r.riGan);
-      detail += '<div style="grid-column:1/-1;border-top:1px solid rgba(212,175,55,0.1);padding-top:8px;margin-top:2px">' +
-        buildFlowMiniCards('流月', flow.monthIdx, mGan, mZhi, WU_XING_TG[mGan], WU_XING_DZ[mZhi], calcNaYin(mGan, mZhi), calcShiShen(r.riGan, mGan), calcChangSheng(r.riGan, (flow.monthIdx + 2) % 12), r.riGan, flow.year, MONTH_NAMES[flow.monthIdx]) +
-        '</div><div style="grid-column:1/-1">' +
-        buildFlowMiniCards('流日', flow.day, dp.stem, dp.branch, WU_XING_TG[dp.stem], WU_XING_DZ[dp.branch], dNy, dSs, dCs, r.riGan, calY + '-' + calM + '-' + flow.day, flow.day + '日') +
-        '</div><div style="grid-column:1/-1">' +
-        buildFlowMiniCards('流时', hourIdx, hGan, hZhi, hwxG, hwxZ, hNy, hSs, hCs, r.riGan, h.label, h.label) +
-        '</div>';
-
-      document.getElementById('flowDetailContent').innerHTML = detail;
-      document.getElementById('flowDetailSubtitle').textContent = '· ' + flow.year + '年 ' + lr.gan + lr.zhi + ' → ' + MONTH_NAMES[flow.monthIdx] + ' ' + mGan + mZhi + ' → ' + flow.day + '日 ' + dp.stem + dp.branch + ' → ' + HOUR_NAMES[hourIdx] + ' ' + hGan + hZhi;
-
-      // Keep cascade sections
-      const ly = calcLiuYueByYear(lr.gan);
-      document.getElementById('flowCascade').innerHTML =
-        '<div class="cascade-section"><h4>◆ 流月</h4><div class="cascade-grid">' +
-        ly.map(m => '<span class="cascade-chip' + (flow.monthIdx === m.idx ? ' active' : '') + '" data-flow="month" data-month-idx="' + m.idx + '"><span class="cc-label">' + m.label + '</span><span class="cc-ganzhi">' + m.gan + m.zhi + '</span></span>').join('') +
-        '</div></div><div class="cascade-section"><h4>◆ 流日</h4><div class="cascade-grid">' +
-        calcLiuRiByMonth(calY, calM).map(d => '<span class="cascade-chip' + (flow.day === d.day ? ' active' : '') + '" data-flow="day" data-day="' + d.day + '"><span class="cc-label">' + d.day + '日</span><span class="cc-ganzhi">' + d.gan + d.zhi + '</span></span>').join('') +
-        '</div></div><div class="cascade-section"><h4>◆ 流时</h4><div class="cascade-grid">' +
-        hours.map(h => '<span class="cascade-chip' + (flow.hourIdx === h.idx ? ' active' : '') + '" data-flow="hour" data-hour-idx="' + h.idx + '"><span class="cc-label">' + h.label + '</span><span class="cc-ganzhi">' + h.gan + h.zhi + '</span></span>').join('') +
-        '</div></div>';
-
-      updateShenshaFromGanZhi(hGan, hZhi);
-    }
-
-    // ── Helpers ──
-    function updateFlowHeader(items) {
-      let html = '';
-      items.forEach(item => {
-        html += '<div class="compact-flow-pillar"><span class="cfp-label">' + item.label + '</span> <span class="cfp-gan" style="color:' + WU_XING_COLOR[item.wxG] + '">' + item.gan + '</span><span class="cfp-zhi" style="color:' + WU_XING_COLOR[item.wxZ] + '">' + item.zhi + '</span></div>';
+      const dy = lastResult.daYun.pillars[expandedDayunIdx];
+      updateOverview({
+        path: ['大运' + dy.index, flow.year + '年 ' + lr.gan + lr.zhi, MONTH_NAMES[flow.monthIdx] + ' ' + mGan + mZhi, flow.day + '日 ' + dp.stem + dp.branch, HOUR_NAMES[hourIdx] + ' ' + hGan + hZhi],
+        flowItems: [
+          { label: '大运' + dy.index, gan: dy.gan, zhi: dy.zhi, wxG: dy.wxG, wxZ: dy.wxZ },
+          { label: '流年', gan: lr.gan, zhi: lr.zhi, wxG: lr.wxG, wxZ: lr.wxZ },
+          { label: '流月', gan: mGan, zhi: mZhi, wxG: WU_XING_TG[mGan], wxZ: WU_XING_DZ[mZhi] },
+          { label: '流日', gan: dp.stem, zhi: dp.branch, wxG: WU_XING_TG[dp.stem], wxZ: WU_XING_DZ[dp.branch] },
+          { label: '流时', gan: hGan, zhi: hZhi, wxG: hwxG, wxZ: hwxZ }
+        ],
+        stats: [
+          { label: '十神', val: hSs },
+          { label: '长生', val: hCs },
+          { label: '纳音', val: hNy },
+          { label: '五行', val: hwxG + hwxZ }
+        ],
+        shensha: hSha,
+        relations: []
       });
-      document.getElementById('compactFlow').innerHTML = html;
+
+      // Keep all cascade levels
+      const ly = calcLiuYueByYear(lr.gan);
+      const days = calcLiuRiByMonth(calY, calM);
+      showCascade('month', ly.map(m =>
+        ({ idx: m.idx, label: m.label, gan: m.gan, zhi: m.zhi, cls: flow.monthIdx === m.idx ? ' active' : '', data: 'data-flow="month" data-month-idx="' + m.idx + '"' })
+      ), 'day', days.map(d =>
+        ({ idx: d.day, label: d.day + '日', gan: d.gan, zhi: d.zhi, cls: flow.day === d.day ? ' active' : '', data: 'data-flow="day" data-day="' + d.day + '"' })
+      ), 'hour', hours.map(h =>
+        ({ idx: h.idx, label: h.label, gan: h.gan, zhi: h.zhi, cls: flow.hourIdx === h.idx ? ' active' : '', data: 'data-flow="hour" data-hour-idx="' + h.idx + '"' })
+      ));
+
+      buildShensha(hSha);
     }
 
-    function buildFlowDetailCards(lr, riGan) {
-      const bg = WU_XING_COLOR[lr.wxG] || '#888';
-      return '<div class="flow-detail-content">' +
-        '<div class="flow-detail-item"><div class="fd-label">流年干支</div><div class="fd-value" style="color:' + bg + ';font-size:1.1rem">' + lr.gan + lr.zhi + '</div><div style="color:#a08870;font-size:0.72rem">' + lr.year + '年 · ' + lr.shengXiao + '年</div></div>' +
-        '<div class="flow-detail-item"><div class="fd-label">五行纳音</div><div class="fd-value">' + lr.wxG + lr.wxZ + '</div><div style="color:#a08870;font-size:0.72rem">' + lr.naYin + '</div></div>' +
-        '<div class="flow-detail-item"><div class="fd-label">对日主十神</div><div class="fd-value">' + lr.shiShen + '</div><div style="color:#a08870;font-size:0.72rem">日主' + riGan + '遇' + lr.gan + '</div></div>' +
-        '<div class="flow-detail-item"><div class="fd-label">十二长生</div><div class="fd-value">' + lr.changSheng + '</div><div style="color:#a08870;font-size:0.72rem">日主' + riGan + '遇' + lr.zhi + '</div></div>' +
-        '<div class="flow-detail-item"><div class="fd-label">流年神煞</div><div class="fd-chips">' +
-        buildShenshaChips(lr.gan, lr.zhi, lr.shenSha) +
-        '</div></div>' +
-        '<div class="flow-detail-item"><div class="fd-label">与四柱关系</div><div class="fd-chips">' +
-        (lr.relations || []).map(rel => {
-          const bad = ['六冲', '六害', '三刑', '相刑', '自刑'].includes(rel.relation);
-          const good = ['六合', '三合', '半合'].includes(rel.relation);
-          const clr = bad ? '#e57373' : good ? '#81c784' : '#d4af37';
-          return '<span class="fd-chip"><span style="color:#a08870">' + rel.pillar + rel.zhi + '</span> <span style="color:' + clr + ';font-weight:500">' + rel.relation + '</span></span>';
-        }).join('') +
-        '</div></div></div>';
-    }
-
-    function buildFlowMiniCards(label, idx, gan, zhi, wxG, wxZ, nayin, shiShen, changSheng, riGan, desc, sub) {
-      const bg = WU_XING_COLOR[wxG] || '#888';
-      return '<div class="flow-detail-content"><div class="flow-detail-item"><div class="fd-label">' + label + '干支</div><div class="fd-value" style="color:' + bg + ';font-size:1rem">' + gan + zhi + '</div><div style="color:#a08870;font-size:0.72rem">' + desc + '</div></div>' +
-        '<div class="flow-detail-item"><div class="fd-label">五行纳音</div><div class="fd-value">' + wxG + wxZ + '</div><div style="color:#a08870;font-size:0.72rem">' + nayin + '</div></div>' +
-        '<div class="flow-detail-item"><div class="fd-label">对日主十神</div><div class="fd-value">' + shiShen + '</div><div style="color:#a08870;font-size:0.72rem">日主' + riGan + '遇' + gan + '</div></div>' +
-        '<div class="flow-detail-item"><div class="fd-label">十二长生</div><div class="fd-value">' + changSheng + '</div><div style="color:#a08870;font-size:0.72rem">日主' + riGan + '遇' + zhi + '</div></div></div>';
-    }
-
-    function buildShenshaChips(gan, zhi, extraSha) {
-      const ss = calcSimpleShensha(gan, zhi);
-      mergeObj(ss, extraSha || {});
-      return Object.entries(ss).map(([n, v]) => {
-        const vs = Array.isArray(v) ? v.join('、') : v;
-        return '<span class="fd-chip"><span style="color:#a08870">' + n + '</span> <span style="color:#d4af37;font-weight:500">' + vs + '</span></span>';
-      }).join('');
-    }
-
-    function updateShensha(gan, zhi, extraSha) {
-      const ss = calcSimpleShensha(gan, zhi);
-      mergeObj(ss, extraSha || {});
-      buildShensha(ss);
-    }
-
-    function updateShenshaFromGanZhi(gan, zhi) {
-      const ss = calcSimpleShensha(gan, zhi);
-      buildShensha(ss);
+    // ── Cascade Display ──
+    function showCascade() {
+      const levels = Array.from(arguments);
+      let html = '';
+      for (let i = 0; i < levels.length; i += 2) {
+        const label = levels[i];
+        const items = levels[i + 1] || [];
+        if (!items.length) continue;
+        const name = { month: '流月', day: '流日', hour: '流时' }[label] || label;
+        html += '<div class="cascade-section"><h4>◆ ' + name + '</h4><div class="cascade-grid">' +
+          items.map(it => '<span class="cascade-chip' + it.cls + '" ' + it.data + '><span class="cc-label">' + it.label + '</span><span class="cc-ganzhi">' + it.gan + it.zhi + '</span></span>').join('') +
+          '</div></div>';
+      }
+      document.getElementById('flowCascadeArea').innerHTML = html;
     }
 
     // ═══════════════════════════════════════════
@@ -842,10 +876,7 @@
     document.getElementById('aiSaveKeyBtn').addEventListener('click', saveAIConfig);
 
     document.getElementById('aiAnalyzeBtn').addEventListener('click', function() {
-      if (!lastResult) {
-        document.getElementById('baziForm').requestSubmit();
-        return;
-      }
+      if (!lastResult) { document.getElementById('baziForm').requestSubmit(); return; }
       startAIAnalysis();
     });
 
@@ -854,14 +885,10 @@
     async function startAIAnalysis() {
       const cfg = loadAIConfig();
       const keyInput = document.getElementById('aiApiKey').value.trim();
-      if (!keyInput && !cfg.key) {
-        showAIError('请先输入 API Key');
-        return;
-      }
+      if (!keyInput && !cfg.key) { showAIError('请先输入 API Key'); return; }
       const apiKey = keyInput || cfg.key;
       const endpoint = document.getElementById('aiEndpoint').value;
       const model = document.getElementById('aiModel').value.trim() || cfg.model;
-
       const r = lastResult;
       const prompt = buildAIPrompt(r);
 
@@ -882,7 +909,6 @@
         }, aiAbortController.signal);
 
         if (!streamOk || !fullText.trim()) {
-          // Try non-streaming fallback
           fullText = await callAINonStream(apiKey, endpoint, model, prompt, aiAbortController.signal);
         }
 
@@ -899,101 +925,54 @@
     function showAIError(msg) {
       document.getElementById('aiResult').style.display = 'block';
       document.getElementById('aiResultInner').innerHTML = '<div class="ai-error">' + escapeHtml(msg) + '</div>';
-      document.getElementById('aiCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    function escapeHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
+    function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
     function buildAIPrompt(r) {
       const now = new Date();
-      const curYear = now.getFullYear();
-      const curMonth = now.getMonth() + 1;
-      const curDay = now.getDate();
-      const curHour = now.getHours();
-      const curMinute = now.getMinutes();
+      const curYear = now.getFullYear(), curMonth = now.getMonth() + 1, curDay = now.getDate();
+      const curHour = now.getHours(), curMinute = now.getMinutes();
       const curHB = getHourBranchIdx(curHour, curMinute);
       const curDP = calcDayPillar(curYear, curMonth, curDay);
       const curHP = calcHourPillar(curDP.stemIdx, curHour, curMinute);
-      const curNY = getNianZhiIndex(curYear, curMonth, curDay);
-      const curNZ = DI_ZHI[curNY];
-      const nZhi = DI_ZHI[getNianZhiIndex(
-        parseInt(document.getElementById('birthYear').value),
-        parseInt(document.getElementById('birthMonth').value),
-        parseInt(document.getElementById('birthDay').value)
-      )];
+      const nZhi = DI_ZHI[getNianZhiIndex(parseInt(document.getElementById('birthYear').value), parseInt(document.getElementById('birthMonth').value), parseInt(document.getElementById('birthDay').value))];
       const curLN = calcLiuNian(curYear, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nZhi, r.pillars[1].zhi);
 
       let dayunText = '';
-      r.daYun.pillars.forEach((p, i) => {
-        dayunText += '\n    大运' + (i+1) + ': ' + p.gan + p.zhi + ' (' + p.wxG + p.wxZ + ' · ' + p.naYin + ')  ' + p.ageFrom + '-' + p.ageTo + '岁';
-      });
+      r.daYun.pillars.forEach((p, i) => { dayunText += '\n    大运' + (i+1) + ': ' + p.gan + p.zhi + ' (' + p.wxG + p.wxZ + ' · ' + p.naYin + ')  ' + p.ageFrom + '-' + p.ageTo + '岁'; });
 
       let cangText = '';
-      r.pillars.forEach((p, i) => {
-        const cg = r.cangGan[i];
-        if (cg.length) cangText += '\n    ' + p.name + '藏干: ' + cg.join('、');
-      });
+      r.pillars.forEach((p, i) => { const cg = r.cangGan[i]; if (cg.length) cangText += '\n    ' + p.name + '藏干: ' + cg.join('、'); });
 
       let ssZhiText = '';
-      r.pillars.forEach((p, i) => {
-        const sz = r.shiShenZhi[i];
-        if (sz && sz.length) {
-          ssZhiText += '\n    ' + p.name + '藏干十神: ' + sz.join('、');
-        }
-      });
+      r.pillars.forEach((p, i) => { const sz = r.shiShenZhi[i]; if (sz && sz.length) ssZhiText += '\n    ' + p.name + '藏干十神: ' + sz.join('、'); });
 
       return [
         '## 八字命盘信息',
-        '',
         '### 基本信息',
-        '出生: ' + document.getElementById('birthYear').value + '年' + document.getElementById('birthMonth').value + '月' + document.getElementById('birthDay').value + '日 ' +
-          SHI_CHEN[parseInt(document.getElementById('birthHour').value)] + ' 性别: ' + r.gender,
-        '',
+        '出生: ' + document.getElementById('birthYear').value + '年' + document.getElementById('birthMonth').value + '月' + document.getElementById('birthDay').value + '日 ' + SHI_CHEN[parseInt(document.getElementById('birthHour').value)] + ' 性别: ' + r.gender,
         '### 四柱',
-        r.pillars.map((p, i) =>
-          '  柱: ' + p.gan + p.zhi +
-          '  五行: ' + WU_XING_TG[p.gan] + WU_XING_DZ[p.zhi] +
-          '  纳音: ' + r.nayin[i] +
-          '  十神: ' + r.shiShen[i] +
-          '  十二长生: ' + r.changSheng[i] +
-          '  阴阳: ' + r.yinyang[i].gan + r.yinyang[i].zhi
-        ).join('\n'),
-        cangText,
-        ssZhiText,
-        '',
-        '### 日主',
-        '日干: ' + r.riGan + ' (' + r.riWx + ' · ' + r.riYinYang + ')',
-        '日支: ' + r.riZhi + '  藏干: ' + r.cangGan[2].join('、'),
-        '',
+        r.pillars.map((p, i) => '  柱: ' + p.gan + p.zhi + '  五行: ' + WU_XING_TG[p.gan] + WU_XING_DZ[p.zhi] + '  纳音: ' + r.nayin[i] + '  十神: ' + r.shiShen[i] + '  十二长生: ' + r.changSheng[i] + '  阴阳: ' + r.yinyang[i].gan + r.yinyang[i].zhi).join('\n'),
+        cangText, ssZhiText,
+        '### 日主', '日干: ' + r.riGan + ' (' + r.riWx + ' · ' + r.riYinYang + ')', '日支: ' + r.riZhi + '  藏干: ' + r.cangGan[2].join('、'),
         '### 五行分布',
         Object.entries(r.wuxingCount).map(([k, v]) => '  ' + k + ': ' + v + ' (' + r.wuxingPercent[k] + '%)').join('\n'),
         '缺: ' + (r.missingWx.length ? r.missingWx.join('、') : '无') + '  旺: ' + (r.maxWx.length ? r.maxWx[0][0] : ''),
-        '',
-        '### 神煞',
-        Object.entries(r.shenSha).map(([k, v]) => '  ' + k + ': ' + (Array.isArray(v) ? v.join('、') : v)).join('\n') || '  无显著神煞',
-        '',
-        '### 大运',
-        '起运: ' + r.daYun.startAge + '岁  排法: ' + (r.daYun.shunPai ? '顺排' : '逆排'),
-        dayunText,
-        '',
+        '### 神煞', Object.entries(r.shenSha).map(([k, v]) => '  ' + k + ': ' + (Array.isArray(v) ? v.join('、') : v)).join('\n') || '  无显著神煞',
+        '### 大运', '起运: ' + r.daYun.startAge + '岁  排法: ' + (r.daYun.shunPai ? '顺排' : '逆排'), dayunText,
         '### 当前流年 (' + curYear + '年)',
         '干支: ' + curLN.gan + curLN.zhi + '  五行: ' + curLN.wxG + curLN.wxZ + '  纳音: ' + curLN.naYin,
-        '生肖: ' + curLN.shengXiao + '年',
-        '对日主十神: ' + curLN.shiShen + '  十二长生: ' + curLN.changSheng,
+        '生肖: ' + curLN.shengXiao + '年', '对日主十神: ' + curLN.shiShen + '  十二长生: ' + curLN.changSheng,
         '流年神煞: ' + Object.entries(curLN.shenSha).map(([k, v]) => k + '(' + (Array.isArray(v) ? v.join('、') : v) + ')').join('、'),
         '与四柱关系: ' + (curLN.relations || []).map(r => r.pillar + r.zhi + '-' + r.relation).join('、'),
-        '',
-        '### 当前时间',
-        '公历: ' + curYear + '-' + curMonth + '-' + curDay + ' ' + curHour + ':' + (curMinute < 10 ? '0' : '') + curMinute,
+        '### 当前时间', '公历: ' + curYear + '-' + curMonth + '-' + curDay + ' ' + curHour + ':' + (curMinute < 10 ? '0' : '') + curMinute,
         '日柱: ' + curDP.stem + curDP.branch + '  时柱: ' + curHP.stem + curHP.branch
       ].join('\n');
     }
 
-    // ── Streaming API ──
     async function callAIStream(apiKey, endpoint, model, prompt, onChunk, signal) {
-      const systemPrompt = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n' +
+      const sp = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n' +
         '1. **十神力量分析**：先确定各个十神的力量对比（考虑天干通根、地支藏干、月令旺衰、十二长生状态），所处位置（年/月/日/时柱），以及能够发挥作用的程度。\n\n' +
         '2. **格局判断**：根据十神组合确定格局是否能成立（正格/变格/从格等），如有多种可能的格局，分别评估成立概率。\n\n' +
         '3. **做功方式分析**：列出原局所有可能的做功方式（如官印相生、食神生财、杀印相生、比劫夺财等），分别评估每种做功方式的成立概率（列出概率百分比），选出最可信的做功方式。\n\n' +
@@ -1001,73 +980,45 @@
         '5. **大运流年分析**：按照上述步骤重新评估最优做功方式，再论各步大运的喜忌吉凶。当前流年对原局的影响。\n\n' +
         '6. **格局层次评估**：通过做功的效率和纯粹情况评估命局的整体层次（上等/中等/下等格局）。\n\n' +
         '请用中文输出，使用Markdown格式，每个步骤用标题分隔（一、二、三、四、五、六）。语言专业但易懂，避免过于绝对的判断。';
-
       try {
         const resp = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + apiKey
-          },
-          body: JSON.stringify({
-            model: model,
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: prompt }
-            ],
-            stream: true,
-            temperature: 0.7,
-            max_tokens: 4096
-          }),
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+          body: JSON.stringify({ model: model, messages: [{ role: 'system', content: sp }, { role: 'user', content: prompt }], stream: true, temperature: 0.7, max_tokens: 4096 }),
           signal: signal
         });
-
-        if (!resp.ok) {
-          const errText = await resp.text().catch(() => '');
-          throw new Error('HTTP ' + resp.status + (errText ? ': ' + errText.slice(0, 200) : ''));
-        }
-
+        if (!resp.ok) { const et = await resp.text().catch(() => ''); throw new Error('HTTP ' + resp.status + (et ? ': ' + et.slice(0, 200) : '')); }
         if (!resp.body) return false;
-
         const reader = resp.body.getReader();
         const decoder = new TextDecoder();
-        let buffer = '';
-        let hasContent = false;
-
+        let buf = '';
+        let has = false;
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
-          buffer += decoder.decode(value, { stream: true });
-
-          const lines = buffer.split('\n');
-          buffer = lines.pop() || '';
-
+          buf += decoder.decode(value, { stream: true });
+          const lines = buf.split('\n');
+          buf = lines.pop() || '';
           for (const line of lines) {
-            const trimmed = line.trim();
-            if (!trimmed || !trimmed.startsWith('data: ')) continue;
-            const data = trimmed.slice(6);
-            if (data === '[DONE]') continue;
+            const t = line.trim();
+            if (!t || !t.startsWith('data: ')) continue;
+            const d = t.slice(6);
+            if (d === '[DONE]') continue;
             try {
-              const parsed = JSON.parse(data);
-              const content = parsed.choices?.[0]?.delta?.content || parsed.choices?.[0]?.text || '';
-              if (content) {
-                onChunk(content);
-                hasContent = true;
-              }
-            } catch (_) { /* skip parse errors */ }
+              const p = JSON.parse(d);
+              const c = p.choices?.[0]?.delta?.content || p.choices?.[0]?.text || '';
+              if (c) { onChunk(c); has = true; }
+            } catch (_) {}
           }
         }
-
-        return hasContent;
+        return has;
       } catch (err) {
         if (err.name === 'AbortError') throw err;
-        return false; // fallback to non-stream
+        return false;
       }
     }
 
-    // ── Non-Streaming Fallback ──
     async function callAINonStream(apiKey, endpoint, model, prompt, signal) {
-      const systemPrompt = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n' +
+      const sp = '你是一位精通中国传统命理学的八字命理师。请严格按以下步骤分析用户提供的八字命盘：\n\n' +
         '1. **十神力量分析**：先确定各个十神的力量对比（考虑天干通根、地支藏干、月令旺衰、十二长生状态），所处位置（年/月/日/时柱），以及能够发挥作用的程度。\n\n' +
         '2. **格局判断**：根据十神组合确定格局是否能成立（正格/变格/从格等），如有多种可能的格局，分别评估成立概率。\n\n' +
         '3. **做功方式分析**：列出原局所有可能的做功方式（如官印相生、食神生财、杀印相生、比劫夺财等），分别评估每种做功方式的成立概率（列出概率百分比），选出最可信的做功方式。\n\n' +
@@ -1075,38 +1026,17 @@
         '5. **大运流年分析**：按照上述步骤重新评估最优做功方式，再论各步大运的喜忌吉凶。当前流年对原局的影响。\n\n' +
         '6. **格局层次评估**：通过做功的效率和纯粹情况评估命局的整体层次（上等/中等/下等格局）。\n\n' +
         '请用中文输出，使用Markdown格式，每个步骤用标题分隔（一、二、三、四、五、六）。语言专业但易懂，避免过于绝对的判断。';
-
       const resp = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + apiKey
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: prompt }
-          ],
-          stream: false,
-          temperature: 0.7,
-          max_tokens: 4096
-        }),
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+        body: JSON.stringify({ model: model, messages: [{ role: 'system', content: sp }, { role: 'user', content: prompt }], stream: false, temperature: 0.7, max_tokens: 4096 }),
         signal: signal
       });
-
-      if (!resp.ok) {
-        const errText = await resp.text().catch(() => '');
-        throw new Error('HTTP ' + resp.status + (errText ? ': ' + errText.slice(0, 200) : ''));
-      }
-
+      if (!resp.ok) { const et = await resp.text().catch(() => ''); throw new Error('HTTP ' + resp.status + (et ? ': ' + et.slice(0, 200) : '')); }
       const json = await resp.json();
       return json.choices?.[0]?.message?.content || json.choices?.[0]?.text || '';
     }
 
-    // ── Render ──
     function renderAIResult(text) {
-      // Lightweight Markdown → HTML
       let html = text
         .replace(/^#### (.+)$/gm, '<h5>$1</h5>')
         .replace(/^### (.+)$/gm, '<h5>$1</h5>')
@@ -1118,10 +1048,8 @@
         .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
         .replace(/\n\n/g, '</p><p>')
         .replace(/\n/g, '<br>');
-
       html = '<p>' + html + '</p>';
       html = html.replace(/<p><\/p>/g, '').replace(/<br><\/li>/g, '</li>').replace(/<\/ul><br>/g, '</ul>').replace(/<br><ul>/g, '<ul>');
-
       document.getElementById('aiResultInner').innerHTML = html;
     }
   </script>
