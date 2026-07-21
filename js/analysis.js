@@ -319,3 +319,59 @@ function analyzeBazi(r) {
     quality: purity.quality
   };
 }
+
+function analyzeBaziWithFlow(r, flowItems) {
+  if (!flowItems || flowItems.length === 0) return analyzeBazi(r);
+
+  const extSS = [...r.shiShen];
+  const extSSZ = r.shiShenZhi.map(arr => [...arr]);
+  const extCG = r.cangGan.map(arr => [...arr]);
+  const extWx = { ...r.wuxingCount };
+  const extPills = r.pillars.map(p => ({ ...p }));
+
+  flowItems.forEach(f => {
+    const fSS = calcShiShen(r.riGan, f.gan);
+    extSS.push(fSS);
+    const fCG = CANG_GAN[f.zhi] || [];
+    extCG.push(fCG);
+    extSSZ.push(fCG.map(g => calcShiShenFromZhi(r.riGan, g)));
+    extWx[WU_XING_TG[f.gan]] = (extWx[WU_XING_TG[f.gan]] || 0) + 1;
+    extWx[WU_XING_DZ[f.zhi]] = (extWx[WU_XING_DZ[f.zhi]] || 0) + 1;
+    extPills.push({ name: f.label, gan: f.gan, zhi: f.zhi });
+  });
+
+  const total = Object.values(extWx).reduce((a, b) => a + b, 0);
+  const extPct = {};
+  for (const [k, v] of Object.entries(extWx)) extPct[k] = Math.round(v / total * 100);
+
+  const extR = {
+    ...r,
+    shiShen: extSS,
+    shiShenZhi: extSSZ,
+    cangGan: extCG,
+    wuxingCount: extWx,
+    wuxingPercent: extPct,
+    pillars: extPills
+  };
+
+  const tp = calcTenGodPower(extR);
+  const patterns = determinePatterns(r);
+  const wm = calcWorkMethods(extR, tp);
+  const best = wm.methods[wm.bestIdx] || null;
+  const purity = assessPurity(wm, patterns);
+  const fg = calcFavorableGods(extR, { best });
+
+  return {
+    tenGodPower: tp,
+    patterns,
+    workMethods: wm.methods,
+    bestWorkMethod: best,
+    bestIdx: wm.methods.length ? wm.bestIdx : -1,
+    favorableGods: fg.favorable,
+    unfavorableGods: fg.unfavorable,
+    purity: purity.purity,
+    purityDesc: purity.description,
+    quality: purity.quality,
+    flowLabel: flowItems.map(f => f.label).join('+')
+  };
+}

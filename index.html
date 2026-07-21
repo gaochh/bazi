@@ -544,6 +544,7 @@
           renderBoxes(buildMainBoxes(r));
           renderPillarShensha(r.pillarShenSha);
           updateShenshaRelations(r.shenSha, []);
+          showAnalysis(analyzeBazi(r));
           return;
         }
       }
@@ -576,6 +577,10 @@
       const dySha = calcSimpleShensha(dy.gan, dy.zhi);
       updateShenshaRelations(dySha, []);
       document.getElementById('flowCascadeArea').innerHTML = '';
+
+      // Re-run analysis with 大运 context
+      const flowItems2 = [{ gan: dy.gan, zhi: dy.zhi, label: '大运' + dy.index }];
+      showAnalysis(analyzeBaziWithFlow(r, flowItems2));
     }
 
     // ── Flow Cascade Click ──
@@ -597,6 +602,40 @@
       const bd = parseInt(document.getElementById('birthDay').value);
       const nianZhi = DI_ZHI[getNianZhiIndex(by, bm, bd)];
       return calcLiuNian(year, r.riGan, TIAN_GAN.indexOf(r.riGan), r.pillars, nianZhi, r.pillars[1].zhi);
+    }
+
+    function getFlowItems() {
+      const r = lastResult;
+      const items = [];
+      if (expandedDayunIdx >= 0) {
+        const dy = r.daYun.pillars[expandedDayunIdx];
+        items.push({ gan: dy.gan, zhi: dy.zhi, label: '大运' + dy.index });
+      }
+      if (flow.year) {
+        const lr = getLiuNianResult(flow.year);
+        items.push({ gan: lr.gan, zhi: lr.zhi, label: '流年' + flow.year });
+      }
+      if (flow.monthIdx !== null) {
+        const lr = getLiuNianResult(flow.year);
+        const ysi = TIAN_GAN.indexOf(lr.gan);
+        const ms = (ysi % 5 * 2 + flow.monthIdx + 2) % 10, mb = (flow.monthIdx + 2) % 12;
+        items.push({ gan: TIAN_GAN[ms], zhi: DI_ZHI[mb], label: '流月' });
+      }
+      if (flow.day) {
+        const calM = flow.monthIdx + 2 <= 12 ? flow.monthIdx + 2 : flow.monthIdx + 2 - 12;
+        const calY = flow.monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
+        const dp = calcDayPillar(calY, calM, flow.day);
+        items.push({ gan: dp.stem, zhi: dp.branch, label: '流日' + flow.day });
+      }
+      if (flow.hourIdx !== null) {
+        const calM = flow.monthIdx + 2 <= 12 ? flow.monthIdx + 2 : flow.monthIdx + 2 - 12;
+        const calY = flow.monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
+        const dp = calcDayPillar(calY, calM, flow.day);
+        const hours = calcLiuShiByDay(dp.stem);
+        const h = hours[flow.hourIdx];
+        if (h) items.push({ gan: h.gan, zhi: h.zhi, label: '流时' });
+      }
+      return items;
     }
 
     function rebuildBoxesWithFlow(extraBoxes, shensha, relations) {
@@ -629,6 +668,8 @@
 
       document.getElementById('liunianYearLabel').textContent = year + ' 年';
       document.getElementById('liunianSection').style.display = 'block';
+
+      showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
     }
 
     function selectFlowMonth(monthIdx) {
@@ -657,6 +698,8 @@
         ({ idx: d.day, label: d.day + '日', gan: d.gan, zhi: d.zhi, cls: flow.day === d.day ? ' active' : '', data: 'data-flow="day" data-day="' + d.day + '"' })
       ));
       buildShenshaGrid(mSha);
+
+      showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
     }
 
     function selectFlowDay(day) {
@@ -691,9 +734,9 @@
         ({ idx: h.idx, label: h.label, gan: h.gan, zhi: h.zhi, cls: flow.hourIdx === h.idx ? ' active' : '', data: 'data-flow="hour" data-hour-idx="' + h.idx + '"' })
       ));
       buildShenshaGrid(dSha);
-    }
 
-    function selectFlowHour(hourIdx) {
+      showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
+    }(hourIdx) {
       flow.hourIdx = hourIdx;
       document.querySelectorAll('[data-flow="hour"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.hourIdx) === hourIdx); });
       const lr = getLiuNianResult(flow.year);
@@ -727,6 +770,8 @@
         ({ idx: h.idx, label: h.label, gan: h.gan, zhi: h.zhi, cls: flow.hourIdx === h.idx ? ' active' : '', data: 'data-flow="hour" data-hour-idx="' + h.idx + '"' })
       ));
       buildShenshaGrid(hSha);
+
+      showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
     }
 
     // ── Helpers ──
@@ -758,6 +803,11 @@
       card.style.display = '';
 
       let html = '<div style="font-size:0.78rem;line-height:1.6;color:#3d2b1f">';
+
+      // Flow context header
+      if (an.flowLabel) {
+        html += '<div style="margin-bottom:6px;padding:4px 8px;background:#fff6e0;border:1px solid #c4a02a;border-radius:4px;font-size:0.72rem;color:#8b6914">当前分析: ' + an.flowLabel + '</div>';
+      }
 
       // 格局
       html += '<div style="margin-bottom:8px"><strong style="color:#b8860b">格局判断</strong><br>';
