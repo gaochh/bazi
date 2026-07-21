@@ -602,7 +602,7 @@
         const y = startYear + i;
         const gi = ((y - 4) % 10 + 10) % 10, bi = ((y - 4) % 12 + 12) % 12;
         const act = flow.year === y ? ' active' : '';
-        html += '<span class="flow-year-chip' + act + '" data-flow="year" data-year="' + y + '"><span class="fy-year">' + y + '</span><span class="fy-ganzhi">' + TIAN_GAN[gi] + DI_ZHI[bi] + '</span></span>';
+        html += '<span class="flow-year-chip' + act + '" data-flow="year" data-year="' + y + '"><span class="fy-year">' + y + '(' + (dy.ageFrom + i) + '岁)</span><span class="fy-ganzhi">' + TIAN_GAN[gi] + DI_ZHI[bi] + '</span></span>';
       }
       const dySection = '<div class="dayun-section-label">大运 · ' + dy.gan + dy.zhi + '</div><div class="dayun-flow-years">' + html + '</div>';
 
