@@ -482,6 +482,16 @@
       const dt = document.getElementById('dayunTable'); dt.innerHTML = '';
       const th = document.createElement('thead'); th.innerHTML = '<tr><th>大运</th><th>年龄</th><th>干支</th><th>纳音</th><th>小运</th></tr>'; dt.appendChild(th);
       const tb = document.createElement('tbody');
+      // 小运 row (before first 大运)
+      const firstDy = dy.pillars[0];
+      if (firstDy.ageFrom > 1) {
+        const xr = document.createElement('tr'); xr.dataset.dayunIndex = '-1';
+        const xy1 = calcXiaoYun(r.pillars[3].gan, r.pillars[3].zhi, dy.shunPai, 1);
+        const xyGanZhi = xy1.gan + xy1.zhi;
+        const xyNaYin = calcNaYin(xy1.gan, xy1.zhi);
+        xr.innerHTML = '<td style="color:#8b6914;font-weight:600">小运</td><td>1-' + (firstDy.ageFrom - 1) + '岁</td><td style="white-space:nowrap"><span style="color:' + WU_XING_COLOR[WU_XING_TG[xy1.gan]] + ';font-weight:600">' + xy1.gan + '</span><span style="color:' + WU_XING_COLOR[WU_XING_DZ[xy1.zhi]] + ';font-weight:600">' + xy1.zhi + '</span></td><td style="color:#a09080;font-size:0.78rem">' + xyNaYin + '</td><td style="color:#6a5a4a;font-size:0.8rem">小运</td>';
+        tb.appendChild(xr);
+      }
       dy.pillars.forEach((p, i) => {
         const tr = document.createElement('tr'); tr.dataset.dayunIndex = i;
         const xy = calcXiaoYun(r.pillars[3].gan, r.pillars[3].zhi, dy.shunPai, p.ageFrom);
@@ -567,7 +577,45 @@
           return;
         }
       }
-      expandedDayunIdx = idx; flow.daYunIdx = idx;
+      expandedDayunIdx = idx; flow.daYunIdx = idx >= 0 ? idx : null;
+      // Reset flow cascade when switching between 小运 and 大运
+      if (flow.year !== null) {
+        flow.year = null; flow.monthIdx = null; flow.day = null; flow.hourIdx = null;
+        document.getElementById('flowCascadeArea').innerHTML = '';
+        document.getElementById('liunianSection').style.display = 'none';
+      }
+      // 小运 special row
+      if (idx === -1) {
+        const r = lastResult;
+        const xr = document.querySelector('.dayun-table tbody tr[data-dayun-index="-1"]');
+        if (!xr) return;
+        xr.classList.add('dayun-active');
+        const hourGan = r.pillars[3].gan, hourZhi = r.pillars[3].zhi;
+        const shunPai = r.daYun.shunPai;
+        const startAge = 1;
+        const endAge = r.daYun.pillars[0].ageFrom;
+        const birthYear = parseInt(document.getElementById('birthYear').value);
+        let xyHtml = '';
+        for (let age = startAge; age < endAge; age++) {
+          const y = birthYear + age;
+          const xy = calcXiaoYun(hourGan, hourZhi, shunPai, age);
+          xyHtml += '<span class="flow-year-chip' + (flow.year === y ? ' active' : '') + '" data-flow="year" data-year="' + y + '"><span class="fy-year">' + y + '(' + age + '岁)</span><span class="fy-ganzhi">' + xy.ganZhi + '</span><span class="fy-label">小运</span></span>';
+        }
+        const er = document.createElement('tr'); er.className = 'dayun-expand-row';
+        er.innerHTML = '<td colspan="6"><div class="dayun-flow-wrap"><div class="dayun-section-label">小运</div><div class="dayun-flow-years">' + xyHtml + '</div></div></td>';
+        xr.after(er);
+        // Update overview with first 小运 box
+        const xy = calcXiaoYun(hourGan, hourZhi, shunPai, 1);
+        const boxes = buildMainBoxes(r);
+        boxes.push(makeBox('小运', xy.gan, xy.zhi, r.riGan, true));
+        renderBoxes(boxes);
+        renderPillarShensha(r.pillarShenSha);
+        updateShenshaRelations([], []);
+        document.getElementById('flowCascadeArea').innerHTML = '';
+        const flowItems2 = [{ gan: xy.gan, zhi: xy.zhi, label: '小运' }];
+        showAnalysis(analyzeBaziWithFlow(r, flowItems2));
+        return;
+      }
       const row = document.querySelector('.dayun-table tbody tr[data-dayun-index="' + idx + '"]');
       if (!row) return;
       row.classList.add('dayun-active');
@@ -577,17 +625,6 @@
       const startYear = birthYear + dy.ageFrom;
       const r = lastResult;
       const hourGan = r.pillars[3].gan, hourZhi = r.pillars[3].zhi;
-
-      // 小运 before first 大运
-      let xyHtml = '';
-      if (idx === 0 && dy.ageFrom > 1) {
-        for (let age = 1; age < dy.ageFrom; age++) {
-          const y = birthYear + age;
-          const xy = calcXiaoYun(hourGan, hourZhi, dy.shunPai, age);
-          xyHtml += '<span class="flow-year-chip xiaoyun-chip' + (flow.year === y ? ' active' : '') + '" data-flow="year" data-year="' + y + '" title="' + age + '岁 小运"><span class="fy-year">' + y + '(' + age + '岁)</span><span class="fy-ganzhi">' + xy.ganZhi + '</span><span class="fy-label">小运</span></span>';
-        }
-      }
-      const xySection = xyHtml ? '<div class="dayun-section-label">小运</div><div class="dayun-flow-years">' + xyHtml + '</div>' : '';
 
       // 大运10年
       let html = '';
@@ -600,7 +637,7 @@
       const dySection = '<div class="dayun-section-label">大运 · ' + dy.gan + dy.zhi + '</div><div class="dayun-flow-years">' + html + '</div>';
 
       const er = document.createElement('tr'); er.className = 'dayun-expand-row';
-      er.innerHTML = '<td colspan="6"><div class="dayun-flow-wrap">' + xySection + dySection + '</div></td>';
+      er.innerHTML = '<td colspan="6"><div class="dayun-flow-wrap">' + dySection + '</div></td>';
       row.after(er);
 
       // Update overview: original 4 + 大运 box
@@ -645,6 +682,11 @@
       if (expandedDayunIdx >= 0) {
         const dy = r.daYun.pillars[expandedDayunIdx];
         items.push({ gan: dy.gan, zhi: dy.zhi, label: '大运' + dy.index });
+      } else if (expandedDayunIdx === -1 && flow.year) {
+        const hourGan = r.pillars[3].gan, hourZhi = r.pillars[3].zhi;
+        const age = flow.year - parseInt(document.getElementById('birthYear').value);
+        const xy = calcXiaoYun(hourGan, hourZhi, r.daYun.shunPai, age);
+        items.push({ gan: xy.gan, zhi: xy.zhi, label: '小运' + age + '岁' });
       }
       if (flow.year) {
         const lr = getLiuNianResult(flow.year);
@@ -687,14 +729,33 @@
       document.querySelectorAll('.flow-year-chip').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.year) === year); });
       const lr = getLiuNianResult(year);
       const r = lastResult;
-      const dy = r.daYun.pillars[expandedDayunIdx];
       const allSha = calcSimpleShensha(lr.gan, lr.zhi);
       mergeObj(allSha, lr.shenSha);
 
-      rebuildBoxesWithFlow([
-        makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
-        makeBox('流年', lr.gan, lr.zhi, r.riGan, true)
-      ], allSha, (lr.relations || []).map(r => ({ pillar: r.pillar + r.zhi, rel: r.relation })));
+      let flowBoxes;
+      if (expandedDayunIdx === -1) {
+        // 小运 mode
+        const hourGan = r.pillars[3].gan, hourZhi = r.pillars[3].zhi;
+        const age = year - parseInt(document.getElementById('birthYear').value);
+        const xy = calcXiaoYun(hourGan, hourZhi, r.daYun.shunPai, age);
+        flowBoxes = [
+          makeBox('小运(' + age + '岁)', xy.gan, xy.zhi, r.riGan, true),
+          makeBox('流年', lr.gan, lr.zhi, r.riGan, true)
+        ];
+        // Update the 小运 row display
+        const xr = document.querySelector('.dayun-table tbody tr[data-dayun-index="-1"]');
+        if (xr) {
+          xr.children[2].innerHTML = '<span style="color:' + WU_XING_COLOR[WU_XING_TG[xy.gan]] + ';font-weight:600">' + xy.gan + '</span><span style="color:' + WU_XING_COLOR[WU_XING_DZ[xy.zhi]] + ';font-weight:600">' + xy.zhi + '</span>';
+        }
+      } else {
+        const dy = r.daYun.pillars[expandedDayunIdx];
+        flowBoxes = [
+          makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
+          makeBox('流年', lr.gan, lr.zhi, r.riGan, true)
+        ];
+      }
+
+      rebuildBoxesWithFlow(flowBoxes, allSha, (lr.relations || []).map(r => ({ pillar: r.pillar + r.zhi, rel: r.relation })));
 
       showCascade('month', calcLiuYueByYear(lr.gan).map(m =>
         ({ idx: m.idx, label: m.label, gan: m.gan, zhi: m.zhi, cls: flow.monthIdx === m.idx ? ' active' : '', data: 'data-flow="month" data-month-idx="' + m.idx + '"' })
@@ -707,6 +768,17 @@
       showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
     }
 
+    function getFlowContextBox(r) {
+      if (expandedDayunIdx === -1) {
+        const hourGan = r.pillars[3].gan, hourZhi = r.pillars[3].zhi;
+        const age = flow.year ? flow.year - parseInt(document.getElementById('birthYear').value) : 1;
+        const xy = calcXiaoYun(hourGan, hourZhi, r.daYun.shunPai, age);
+        return makeBox('小运(' + age + '岁)', xy.gan, xy.zhi, r.riGan, true);
+      }
+      const dy = r.daYun.pillars[expandedDayunIdx];
+      return makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true);
+    }
+
     function selectFlowMonth(monthIdx) {
       flow.monthIdx = monthIdx; flow.day = null; flow.hourIdx = null;
       document.querySelectorAll('[data-flow="month"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.monthIdx) === monthIdx); });
@@ -716,10 +788,9 @@
       const ms = (ysi % 5 * 2 + monthIdx + 2) % 10, mb = (monthIdx + 2) % 12;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[mb];
       const mSha = calcSimpleShensha(mGan, mZhi);
-      const dy = r.daYun.pillars[expandedDayunIdx];
 
       rebuildBoxesWithFlow([
-        makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
+        getFlowContextBox(r),
         makeBox('流年', lr.gan, lr.zhi, r.riGan, true),
         makeBox('流月', mGan, mZhi, r.riGan, true)
       ], mSha, []);
@@ -746,13 +817,12 @@
       const calY = flow.monthIdx + 2 <= 12 ? flow.year : flow.year + 1;
       const dp = calcDayPillar(calY, calM, day);
       const dSha = calcSimpleShensha(dp.stem, dp.branch);
-      const dy = r.daYun.pillars[expandedDayunIdx];
       const ysi = TIAN_GAN.indexOf(lr.gan);
       const ms = (ysi % 5 * 2 + flow.monthIdx + 2) % 10;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
       rebuildBoxesWithFlow([
-        makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
+        getFlowContextBox(r),
         makeBox('流年', lr.gan, lr.zhi, r.riGan, true),
         makeBox('流月', mGan, mZhi, r.riGan, true),
         makeBox('流日', dp.stem, dp.branch, r.riGan, true)
@@ -784,13 +854,12 @@
       const hours = calcLiuShiByDay(dp.stem);
       const h = hours[hourIdx];
       const hSha = calcSimpleShensha(h.gan, h.zhi);
-      const dy = r.daYun.pillars[expandedDayunIdx];
       const ysi = TIAN_GAN.indexOf(lr.gan);
       const ms = (ysi % 5 * 2 + flow.monthIdx + 2) % 10;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
       rebuildBoxesWithFlow([
-        makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true),
+        getFlowContextBox(r),
         makeBox('流年', lr.gan, lr.zhi, r.riGan, true),
         makeBox('流月', mGan, mZhi, r.riGan, true),
         makeBox('流日', dp.stem, dp.branch, r.riGan, true),
