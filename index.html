@@ -312,7 +312,7 @@
       const ysi = TIAN_GAN.indexOf(yearGan);
       const arr = [];
       for (let i = 0; i < 12; i++) {
-        const s = (ysi % 5 * 2 + i + 1) % 10;
+        const s = (ysi % 5 * 2 + i + 2) % 10;
         const b = (i + 2) % 12;
         arr.push({ idx: i, gan: TIAN_GAN[s], zhi: DI_ZHI[b], label: MONTH_NAMES[i] });
       }
@@ -659,7 +659,7 @@
       const lr = getLiuNianResult(flow.year);
       const r = lastResult;
       const ysi = TIAN_GAN.indexOf(lr.gan);
-      const ms = (ysi % 5 * 2 + monthIdx + 1) % 10, mb = (monthIdx + 2) % 12;
+      const ms = (ysi % 5 * 2 + monthIdx + 2) % 10, mb = (monthIdx + 2) % 12;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[mb];
       const mSha = calcSimpleShensha(mGan, mZhi);
       const dy = r.daYun.pillars[expandedDayunIdx];
@@ -692,7 +692,7 @@
       const dSha = calcSimpleShensha(dp.stem, dp.branch);
       const dy = r.daYun.pillars[expandedDayunIdx];
       const ysi = TIAN_GAN.indexOf(lr.gan);
-      const ms = (ysi % 5 * 2 + flow.monthIdx + 1) % 10;
+      const ms = (ysi % 5 * 2 + flow.monthIdx + 2) % 10;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
       rebuildBoxesWithFlow([
@@ -728,7 +728,7 @@
       const hSha = calcSimpleShensha(h.gan, h.zhi);
       const dy = r.daYun.pillars[expandedDayunIdx];
       const ysi = TIAN_GAN.indexOf(lr.gan);
-      const ms = (ysi % 5 * 2 + flow.monthIdx + 1) % 10;
+      const ms = (ysi % 5 * 2 + flow.monthIdx + 2) % 10;
       const mGan = TIAN_GAN[ms], mZhi = DI_ZHI[(flow.monthIdx + 2) % 12];
 
       rebuildBoxesWithFlow([
