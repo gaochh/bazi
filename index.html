@@ -257,8 +257,10 @@
               </div>
               <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
                 <button type="button" class="btn-submit" id="aiAnalyzeBtn" style="padding:8px 20px;font-size:0.85rem;letter-spacing:2px;margin-top:0;flex:1;min-width:120px">开始AI解盘</button>
+                <button type="button" id="aiTestBtn" style="padding:8px 14px;font-size:0.78rem;background:#faf6f0;color:#8b7355;border:1px solid #e8ddd0;border-radius:6px;cursor:pointer;font-family:inherit">测试连接</button>
                 <button type="button" id="aiSaveKeyBtn" style="padding:8px 14px;font-size:0.78rem;background:#faf6f0;color:#8b7355;border:1px solid #e8ddd0;border-radius:6px;cursor:pointer;font-family:inherit">保存配置</button>
               </div>
+              <div id="aiConnStatus" style="display:none;margin-top:6px;text-align:center;font-size:0.78rem;padding:4px 0"></div>
             </div>
             <div id="aiStatus" style="display:none;text-align:center;padding:20px 0;color:#8b7355;font-size:0.85rem">
               <div class="ai-loading"><span></span><span></span><span></span></div>
@@ -862,6 +864,28 @@
       }
       if (cfg.endpoint && cfg.key) refreshModelList(cfg.endpoint, cfg.key);
     })();
+    document.getElementById('aiTestBtn').addEventListener('click', testConnection);
+    async function testConnection() {
+      const key = document.getElementById('aiApiKey').value.trim();
+      const endpoint = document.getElementById('aiEndpoint').value;
+      const st = document.getElementById('aiConnStatus');
+      if (!key) { st.style.display = 'block'; st.style.color = '#c62828'; st.textContent = '请先输入 API Key'; return; }
+      st.style.display = 'block'; st.style.color = '#8b7355'; st.textContent = '测试中...';
+      try {
+        const base = endpoint.replace(/\/chat\/completions$/, '');
+        const resp = await fetch(base + '/models', { headers: { 'Authorization': 'Bearer ' + key }, signal: AbortSignal.timeout(8000) });
+        if (resp.ok) {
+          st.style.color = '#2e7d32'; st.textContent = '连接成功 ✓  正在获取模型列表...';
+          await refreshModelList(endpoint, key);
+          st.textContent = '连接成功 ✓';
+        } else {
+          const err = await resp.text().catch(() => '');
+          st.style.color = '#c62828'; st.textContent = '连接失败 ✗  HTTP ' + resp.status + (err ? ': ' + err.slice(0,120) : '');
+        }
+      } catch (e) {
+        st.style.color = '#c62828'; st.textContent = '连接失败 ✗  ' + e.message;
+      }
+    }
     async function fetchModelsFromAPI(endpoint, apiKey) {
       try {
         const base = endpoint.replace(/\/chat\/completions$/, '');
