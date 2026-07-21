@@ -489,7 +489,7 @@
         const xy1 = calcXiaoYun(r.pillars[3].gan, r.pillars[3].zhi, dy.shunPai, 1);
         const xyGanZhi = xy1.gan + xy1.zhi;
         const xyNaYin = calcNaYin(xy1.gan, xy1.zhi);
-        xr.innerHTML = '<td style="color:#8b6914;font-weight:600">小运</td><td>1-' + (firstDy.ageFrom - 1) + '岁</td><td style="white-space:nowrap"><span style="color:' + WU_XING_COLOR[WU_XING_TG[xy1.gan]] + ';font-weight:600">' + xy1.gan + '</span><span style="color:' + WU_XING_COLOR[WU_XING_DZ[xy1.zhi]] + ';font-weight:600">' + xy1.zhi + '</span></td><td style="color:#a09080;font-size:0.78rem">' + xyNaYin + '</td><td style="color:#6a5a4a;font-size:0.8rem">小运</td>';
+        xr.innerHTML = '<td style="color:#8b6914;font-weight:600">0</td><td>1-' + (firstDy.ageFrom - 1) + '岁</td><td style="white-space:nowrap"><span style="color:' + WU_XING_COLOR[WU_XING_TG[xy1.gan]] + ';font-weight:600">' + xy1.gan + '</span><span style="color:' + WU_XING_COLOR[WU_XING_DZ[xy1.zhi]] + ';font-weight:600">' + xy1.zhi + '</span></td><td style="color:#a09080;font-size:0.78rem">' + xyNaYin + '</td><td style="color:#6a5a4a;font-size:0.8rem">小运</td>';
         tb.appendChild(xr);
       }
       dy.pillars.forEach((p, i) => {

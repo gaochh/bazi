@@ -271,7 +271,7 @@ header p {
 
 /* ── 流年展开 ── */
 .dayun-expand-row td { padding: 0 !important; border: none !important; }
-.dayun-flow-wrap { padding: 10px 14px 14px; background: #faf6f0; }
+.dayun-flow-wrap { padding: 10px 14px 14px; background: #faf6f0; overflow-x: auto; max-width: 100%; }
 .dayun-flow-years { display: flex; overflow-x: auto; gap: 6px; margin-top: 6px; padding-bottom: 4px; flex-wrap: nowrap; }
 .dayun-flow-years::-webkit-scrollbar { height: 4px; }
 .dayun-flow-years::-webkit-scrollbar-track { background: #e8ddd0; border-radius: 2px; }
