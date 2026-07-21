@@ -342,6 +342,15 @@
       return ((y - 4) % 12 + 12) % 12;
     }
 
+    const SOLAR_MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31];
+    function solarMonthDays(year, month) {
+      if (month === 2) {
+        const leap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+        return leap ? 29 : 28;
+      }
+      return SOLAR_MONTH_DAYS[month - 1];
+    }
+
     // ── Init ──
     (function initForm() {
       const ys = document.getElementById('birthYear');
@@ -352,17 +361,8 @@
       for (let d = 1; d <= maxD; d++) { const o = document.createElement('option'); o.value = d; o.textContent = d + ' 日'; if (d === defaultDate.day) o.selected = true; ds.appendChild(o); }
       document.getElementById('birthHour').value = getHourBranchIdx(defaultDate.hour, defaultDate.minute);
     })();
-
     let isLunar = false;
     const LUNAR_MONTH_LABELS = ['正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月'];
-    const SOLAR_MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31];
-    function solarMonthDays(year, month) {
-      if (month === 2) {
-        const leap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-        return leap ? 29 : 28;
-      }
-      return SOLAR_MONTH_DAYS[month - 1];
-    }
     function updateDayOptions() {
       const cal = isLunar ? 'lunar' : 'solar';
       const sel = document.getElementById('birthDay');
