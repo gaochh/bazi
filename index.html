@@ -188,58 +188,47 @@
       </div>
 
       <div class="form-section" style="padding-top:4px">
-        <div class="info-grid">
-          <div class="info-card full-width" id="riGanCard" style="display:none">
-            <h3>◆ 日主</h3>
-            <div style="text-align:center;padding:6px 0">
-              <span class="gan-day-master" id="riGanDisplay"></span>
-              <div style="color:#8b7355;font-size:0.82rem;margin-top:3px" id="riGanDesc"></div>
-            </div>
+        <div class="info-card full-width" id="riGanCard" style="display:none">
+          <h3>◆ 日主</h3>
+          <div style="text-align:center;padding:6px 0">
+            <span class="gan-day-master" id="riGanDisplay"></span>
+            <div style="color:#8b7355;font-size:0.82rem;margin-top:3px" id="riGanDesc"></div>
           </div>
+        </div>
+      </div>
 
-          <div class="info-card full-width">
-            <h3>◆ 五行分布</h3>
-            <div class="wuxing-bar" id="wuxingBar"></div>
-            <div class="wuxing-bar-total" id="wuxingTags"></div>
+      <div class="form-section" id="analysisCard" style="display:none">
+        <h3>◆ 做工基础分析</h3>
+        <div id="analysisContent"></div>
+      </div>
+
+      <div class="form-section" id="dayunCard">
+        <h3>◆ 大运排布 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem">（点击查看，上方面板同步更新）</span></h3>
+        <div id="dayunInfo" style="margin-bottom:10px;font-size:0.85rem;color:#8b7355"></div>
+        <div class="dayun-table-wrap">
+          <table class="dayun-table" id="dayunTable"></table>
+        </div>
+        <div id="flowCascadeArea"></div>
+
+        <div id="liunianSection" style="display:none;margin-top:12px;padding-top:10px;border-top:1px solid #e8ddd0">
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="focusAreas"></div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <button type="button" class="btn-submit" id="liunianBtn" style="flex:1;margin-top:0;padding:10px 14px;font-size:0.85rem;letter-spacing:2px;min-width:120px">AI 批流年</button>
+            <span id="liunianYearLabel" style="color:#b8860b;font-weight:600;font-size:0.9rem"></span>
           </div>
-
-          <div class="info-card full-width" id="analysisCard" style="display:none">
-            <h3>◆ 做工基础分析</h3>
-            <div id="analysisContent"></div>
+          <div id="liunianStatus" style="display:none;margin-top:10px;text-align:center;padding:16px 0;color:#8b7355;font-size:0.85rem">
+            <div class="ai-loading"><span></span><span></span><span></span></div>
+            <div id="liunianStatusText">AI 正在批流年···</div>
           </div>
-
-          <div class="info-card full-width" id="shenshaCard">
-            <h3>◆ 神煞</h3>
-            <div class="shensha-grid" id="shenshaGrid"></div>
+          <div id="liunianResult" style="display:none;margin-top:10px">
+            <div class="ai-result-inner" id="liunianResultInner"></div>
+            <div style="margin-top:8px;text-align:right"><button type="button" id="liunianClearBtn" style="background:none;border:1px solid #d4c5b0;border-radius:4px;padding:3px 10px;font-size:0.72rem;color:#a09080;cursor:pointer;font-family:inherit">隐藏结果</button></div>
           </div>
+        </div>
+      </div>
 
-          <div class="info-card full-width" id="dayunCard">
-            <h3>◆ 大运排布 <span style="color:#5a4a3a;font-weight:400;font-size:0.72rem">（点击查看，上方面板同步更新）</span></h3>
-            <div id="dayunInfo" style="margin-bottom:10px;font-size:0.85rem;color:#8b7355"></div>
-            <div class="dayun-table-wrap">
-              <table class="dayun-table" id="dayunTable"></table>
-            </div>
-            <div id="flowCascadeArea"></div>
-
-            <div id="liunianSection" style="display:none;margin-top:12px;padding-top:10px;border-top:1px solid #e8ddd0">
-              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="focusAreas"></div>
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                <button type="button" class="btn-submit" id="liunianBtn" style="flex:1;margin-top:0;padding:10px 14px;font-size:0.85rem;letter-spacing:2px;min-width:120px">AI 批流年</button>
-                <span id="liunianYearLabel" style="color:#b8860b;font-weight:600;font-size:0.9rem"></span>
-              </div>
-              <div id="liunianStatus" style="display:none;margin-top:10px;text-align:center;padding:16px 0;color:#8b7355;font-size:0.85rem">
-                <div class="ai-loading"><span></span><span></span><span></span></div>
-                <div id="liunianStatusText">AI 正在批流年···</div>
-              </div>
-              <div id="liunianResult" style="display:none;margin-top:10px">
-                <div class="ai-result-inner" id="liunianResultInner"></div>
-                <div style="margin-top:8px;text-align:right"><button type="button" id="liunianClearBtn" style="background:none;border:1px solid #d4c5b0;border-radius:4px;padding:3px 10px;font-size:0.72rem;color:#a09080;cursor:pointer;font-family:inherit">隐藏结果</button></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="info-card full-width" id="aiCard">
-            <h3>◆ AI 智能解盘</h3>
+      <div class="form-section" id="aiCard">
+        <h3>◆ AI 智能解盘</h3>
             <div id="aiConfig" style="margin-bottom:12px;font-size:0.78rem;color:#8b7355">
               <div class="form-row" style="align-items:end">
                 <div class="form-group" style="flex:2">
@@ -281,8 +270,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
     <div class="footer-note">仅供学习参考 · 传统文化研究</div>
   </div>
