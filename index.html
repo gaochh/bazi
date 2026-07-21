@@ -238,12 +238,13 @@
                 </div>
                 <div class="form-group" style="flex:1">
                   <label>接口地址 <span style="color:#5a4a3a;font-weight:400">(默认免费)</span></label>
-                  <select id="aiEndpoint" style="font-size:0.78rem;padding:6px 8px">
-                    <option value="https://api.opencode.ai/v1/chat/completions">OpenCode（免费 · 推荐）</option>
-                    <option value="https://api.deepseek.com/v1/chat/completions">DeepSeek（免费）</option>
-                    <option value="https://openrouter.ai/api/v1/chat/completions">OpenRouter</option>
-                    <option value="https://api.openai.com/v1/chat/completions">OpenAI</option>
-                  </select>
+                    <select id="aiEndpoint" style="font-size:0.78rem;padding:6px 8px">
+                      <option value="https://opencode.ai/zen/go/v1/chat/completions">OpenCode（订阅 · 推荐）</option>
+                      <option value="https://api.opencode.ai/v1/chat/completions">OpenCode（免费）</option>
+                      <option value="https://api.deepseek.com/v1/chat/completions">DeepSeek（免费）</option>
+                      <option value="https://openrouter.ai/api/v1/chat/completions">OpenRouter</option>
+                      <option value="https://api.openai.com/v1/chat/completions">OpenAI</option>
+                    </select>
                 </div>
                 <div class="form-group" style="flex:1;display:flex;flex-direction:column">
                   <label>模型 <span style="color:#5a4a3a;font-weight:400;font-size:0.7rem" id="modelStatus"></span></label>
@@ -863,7 +864,7 @@
     })();
     async function fetchModelsFromAPI(endpoint, apiKey) {
       try {
-        const base = endpoint.replace('/v1/chat/completions', '');
+        const base = endpoint.replace(/\/chat\/completions$/, '');
         const resp = await fetch(base + '/models', { headers: { 'Authorization': 'Bearer ' + apiKey }, signal: AbortSignal.timeout(5000) });
         if (!resp.ok) return [];
         const json = await resp.json();
@@ -881,6 +882,7 @@
         st.textContent = '';
       } else {
         const fallback = {
+          'opencode.ai/zen/go': ['opencode/deepseek-v4-flash','opencode/deepseek-v4-flash-free','opencode/deepseek-v3-0324'],
           'api.opencode.ai': ['opencode/deepseek-v4-flash-free','opencode/deepseek-v4-flash'],
           'api.deepseek.com': ['deepseek-chat','deepseek-reasoner'],
           'openrouter.ai': ['google/gemini-2.0-flash-exp:free','anthropic/claude-3.5-sonnet'],
