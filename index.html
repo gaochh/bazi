@@ -765,7 +765,9 @@
       buildShenshaGrid(dSha);
 
       showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
-    }(hourIdx) {
+    }
+
+    function selectFlowHour(hourIdx) {
       flow.hourIdx = hourIdx;
       document.querySelectorAll('[data-flow="hour"]').forEach(c => { c.classList.toggle('active', parseInt(c.dataset.hourIdx) === hourIdx); });
       const lr = getLiuNianResult(flow.year);
