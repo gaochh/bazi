@@ -348,22 +348,34 @@
       for (let y = 1900; y <= 2100; y++) { const o = document.createElement('option'); o.value = y; o.textContent = y + ' 年'; if (y === defaultDate.year) o.selected = true; ys.appendChild(o); }
       document.getElementById('birthMonth').value = defaultDate.month;
       const ds = document.getElementById('birthDay');
-      for (let d = 1; d <= 31; d++) { const o = document.createElement('option'); o.value = d; o.textContent = d + ' 日'; if (d === defaultDate.day) o.selected = true; ds.appendChild(o); }
+      const maxD = solarMonthDays(defaultDate.year, defaultDate.month);
+      for (let d = 1; d <= maxD; d++) { const o = document.createElement('option'); o.value = d; o.textContent = d + ' 日'; if (d === defaultDate.day) o.selected = true; ds.appendChild(o); }
       document.getElementById('birthHour').value = getHourBranchIdx(defaultDate.hour, defaultDate.minute);
     })();
 
     let isLunar = false;
     const LUNAR_MONTH_LABELS = ['正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月'];
+    const SOLAR_MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31];
+    function solarMonthDays(year, month) {
+      if (month === 2) {
+        const leap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+        return leap ? 29 : 28;
+      }
+      return SOLAR_MONTH_DAYS[month - 1];
+    }
     function updateDayOptions() {
       const cal = isLunar ? 'lunar' : 'solar';
       const sel = document.getElementById('birthDay');
       const month = parseInt(document.getElementById('birthMonth').value) || 1;
       const year = parseInt(document.getElementById('birthYear').value) || 2000;
-      const maxD = cal === 'lunar' ? lunarMonthDays(year, month) : 31;
+      const maxD = cal === 'lunar' ? lunarMonthDays(year, month) : solarMonthDays(year, month);
+      const cur = parseInt(sel.value);
+      if (cur > maxD) { sel.value = maxD; }
       sel.innerHTML = '';
       for (let d = 1; d <= maxD; d++) {
         const o = document.createElement('option'); o.value = d;
         o.textContent = cal === 'lunar' ? LUNAR_DAY_NAMES[d - 1] : d + ' 日';
+        if (d === cur) o.selected = true;
         sel.appendChild(o);
       }
     }
@@ -384,6 +396,7 @@
       });
     });
     document.getElementById('birthMonth').addEventListener('change', updateDayOptions);
+    document.getElementById('birthYear').addEventListener('change', updateDayOptions);
 
     document.getElementById('baziForm').addEventListener('submit', function(e) {
       e.preventDefault();
