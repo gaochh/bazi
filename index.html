@@ -905,8 +905,8 @@
       const el = document.getElementById('soAnalysis');
       const calib = document.getElementById('soAiCalib');
       if (!an || !an.workMethods || !an.workMethods.length) { el.style.display = 'none'; calib.style.display = 'none'; return; }
-      el.style.display = '';
-      calib.style.display = '';
+      el.style.display = 'block';
+      calib.style.display = 'block';
       const flowTag = an.flowLabel ? '<span style="color:#8b6914;font-size:0.65rem">[' + an.flowLabel + '] </span>' : '';
       const best = an.bestWorkMethod;
       const pat = (an.patterns[0] || {}).name || '—';
