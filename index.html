@@ -54,6 +54,8 @@
     .so-box .sb-meta .sm-cs { color: #8b7355; }
     .so-box .sb-meta .sm-sep { color: #c4a02a; margin: 0 1px; }
     .so-box .sb-meta .sm-cs-ri { color: #b8860b; }
+    .so-box .sb-nayin { font-size: 0.46rem; color: #8b7355; margin-top: 1px; line-height: 1.1; }
+    .so-box.so-box-flow .sb-nayin { color: #a08050; }
     .so-pillar-shensha { display: flex; gap: 3px; padding-top: 3px; border-top: 1px solid #e8ddd0; margin-bottom: 3px; }
     .so-pillar-shensha .ps-col { flex: 1; text-align: center; min-width: 0; }
     .so-pillar-shensha .ps-pillar { font-size: 0.48rem; color: #a09080; letter-spacing: 1px; margin-bottom: 1px; }
@@ -188,39 +190,6 @@
               <span class="gan-day-master" id="riGanDisplay"></span>
               <div style="color:#8b7355;font-size:0.82rem;margin-top:3px" id="riGanDesc"></div>
             </div>
-          </div>
-
-          <div class="info-card">
-            <h3>◆ 命主信息</h3>
-            <div class="info-row"><span class="info-label">命主</span><span class="info-value" id="mingZhu"></span></div>
-            <div class="info-row"><span class="info-label">生肖</span><span class="info-value" id="shengXiao"></span></div>
-            <div class="info-row"><span class="info-label">性别</span><span class="info-value" id="genderDisplay"></span></div>
-            <div class="info-row"><span class="info-label">日干五行</span><span class="info-value" id="riWxDisplay"></span></div>
-            <div class="info-row"><span class="info-label">日支藏干</span><span class="info-value" id="cangGanDisplay"></span></div>
-          </div>
-
-          <div class="info-card">
-            <h3>◆ 十神</h3>
-            <div class="info-row"><span class="info-label">年柱</span><span class="info-value" id="ssYear"></span></div>
-            <div class="info-row"><span class="info-label">月柱</span><span class="info-value" id="ssMonth"></span></div>
-            <div class="info-row"><span class="info-label">日柱</span><span class="info-value" id="ssDay">日主</span></div>
-            <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="ssHour"></span></div>
-          </div>
-
-          <div class="info-card">
-            <h3>◆ 十二长生</h3>
-            <div class="info-row"><span class="info-label">年柱</span><span class="info-value" id="csYear"></span></div>
-            <div class="info-row"><span class="info-label">月柱</span><span class="info-value" id="csMonth"></span></div>
-            <div class="info-row"><span class="info-label">日柱</span><span class="info-value" id="csDay"></span></div>
-            <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="csHour"></span></div>
-          </div>
-
-          <div class="info-card">
-            <h3>◆ 纳音五行</h3>
-            <div class="info-row"><span class="info-label">年柱</span><span class="info-value" id="nayinYear"></span></div>
-            <div class="info-row"><span class="info-label">月柱</span><span class="info-value" id="nayinMonth"></span></div>
-            <div class="info-row"><span class="info-label">日柱</span><span class="info-value" id="nayinDay"></span></div>
-            <div class="info-row"><span class="info-label">时柱</span><span class="info-value" id="nayinHour"></span></div>
           </div>
 
           <div class="info-card full-width">
@@ -425,7 +394,7 @@
     });
 
     // ── Display ──
-    function makeBox(label, gan, zhi, riGan, flow) {
+    function makeBox(label, gan, zhi, riGan, flow, naYin) {
       const cg = CANG_GAN[zhi] || [];
       return {
         label, gan, zhi,
@@ -435,11 +404,12 @@
         cgSS: cg.map(g => ({ gan: g, ss: calcShiShenFromZhi(riGan, g) })),
         ziZuo: calcChangSheng(gan, DI_ZHI.indexOf(zhi)),
         riZhiCS: calcChangSheng(riGan, DI_ZHI.indexOf(zhi)),
+        naYin: naYin || calcNaYin(gan, zhi),
         flow: !!flow
       };
     }
     function buildMainBoxes(r) {
-      return r.pillars.map((p, i) => makeBox(p.name, p.gan, p.zhi, r.riGan, false));
+      return r.pillars.map((p, i) => makeBox(p.name, p.gan, p.zhi, r.riGan, false, r.nayin[i]));
     }
 
     function displayResult(r) {
@@ -449,23 +419,9 @@
       updateShenshaRelations(r.shenSha, []);
 
       // Info cards
-      document.getElementById('mingZhu').textContent = r.gender === '男' ? '元男' : '元女';
-      document.getElementById('shengXiao').textContent = r.shengXiao;
-      document.getElementById('genderDisplay').textContent = r.gender;
-      document.getElementById('riWxDisplay').textContent = r.riWx;
-      document.getElementById('cangGanDisplay').textContent = r.cangGan[2].join('、');
-      document.getElementById('ssYear').textContent = r.shiShen[0];
-      document.getElementById('ssMonth').textContent = r.shiShen[1];
-      document.getElementById('ssDay').textContent = '日主';
-      document.getElementById('ssHour').textContent = r.shiShen[3];
-      document.getElementById('csYear').textContent = r.changSheng[0];
-      document.getElementById('csMonth').textContent = r.changSheng[1];
-      document.getElementById('csDay').textContent = r.changSheng[2];
-      document.getElementById('csHour').textContent = r.changSheng[3];
-      document.getElementById('nayinYear').textContent = r.nayin[0];
-      document.getElementById('nayinMonth').textContent = r.nayin[1];
-      document.getElementById('nayinDay').textContent = r.nayin[2];
-      document.getElementById('nayinHour').textContent = r.nayin[3];
+      document.getElementById('riGanCard').style.display = '';
+      document.getElementById('riGanDisplay').textContent = r.riGan;
+      document.getElementById('riGanDesc').textContent = r.riWx + '日 · ' + r.riYinYang + ' · 生于' + r.hourRange;
 
       // 五行 bar
       const bar = document.getElementById('wuxingBar'); bar.innerHTML = '';
@@ -517,6 +473,7 @@
           '<div class="sb-zhi" style="color:' + WU_XING_COLOR[b.wxZ] + '">' + b.zhi + '</div>' +
           cgHTML +
           '<div class="sb-meta"><span class="sm-cs">' + b.ziZuo + '</span><span class="sm-sep">·</span><span class="sm-cs-ri">' + b.riZhiCS + '</span></div>' +
+          '<div class="sb-nayin">' + b.naYin + '</div>' +
         '</div>';
       }).join('');
     }
