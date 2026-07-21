@@ -442,24 +442,9 @@
       document.getElementById('riGanDisplay').textContent = r.riGan;
       document.getElementById('riGanDesc').textContent = r.riWx + '日 · ' + r.riYinYang + ' · 生于' + r.hourRange;
 
-      // 五行 bar
-      const bar = document.getElementById('wuxingBar'); bar.innerHTML = '';
-      ['木','火','土','金','水'].forEach(wx => {
-        if (r.wuxingCount[wx] > 0) { const seg = document.createElement('div'); seg.className = 'wuxing-bar-seg'; seg.style.width = r.wuxingPercent[wx] + '%'; seg.style.background = WU_XING_COLOR[wx]; seg.textContent = r.wuxingPercent[wx] >= 10 ? wx : ''; bar.appendChild(seg); }
-      });
-      const tags = document.getElementById('wuxingTags'); tags.innerHTML = '';
-      ['木','火','土','金','水'].forEach(wx => {
-        const tag = document.createElement('span'); tag.className = 'wuxing-tag'; tag.style.background = WU_XING_COLOR[wx] + '33'; tag.style.color = WU_XING_COLOR[wx]; tag.innerHTML = wx + ' ' + r.wuxingCount[wx] + ' (' + r.wuxingPercent[wx] + '%)'; tags.appendChild(tag);
-      });
-      if (r.missingWx.length > 0) { const mt = document.createElement('span'); mt.className = 'wuxing-tag'; mt.style.background = '#555'; mt.style.color = '#ccc'; mt.textContent = '缺: ' + r.missingWx.join('、'); tags.appendChild(mt); }
-
-      // 神煞
-      const sg = document.getElementById('shenshaGrid'); sg.innerHTML = '';
-      const se = Object.entries(r.shenSha);
-      if (!se.length) { sg.innerHTML = '<div style="color:#a09080;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; }
-      else { se.forEach(([name, val]) => { const d = document.createElement('div'); d.className = 'shensha-item'; d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>'; sg.appendChild(d); }); }
-
       // 做工分析
+      const an = analyzeBazi(r);
+      showAnalysis(an);
       const an = analyzeBazi(r);
       showAnalysis(an);
 
@@ -747,7 +732,6 @@
       showCascade('month', calcLiuYueByYear(lr.gan).map(m =>
         ({ idx: m.idx, label: m.label, gan: m.gan, zhi: m.zhi, cls: flow.monthIdx === m.idx ? ' active' : '', data: 'data-flow="month" data-month-idx="' + m.idx + '"' })
       ));
-      buildShenshaGrid(allSha);
 
       document.getElementById('liunianYearLabel').textContent = year + ' 年';
       document.getElementById('liunianSection').style.display = 'block';
@@ -790,8 +774,6 @@
       ), 'day', days.map(d =>
         ({ idx: d.day, label: d.day + '日', gan: d.gan, zhi: d.zhi, cls: flow.day === d.day ? ' active' : '', data: 'data-flow="day" data-day="' + d.day + '"' })
       ));
-      buildShenshaGrid(mSha);
-
       showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
     }
 
@@ -825,8 +807,6 @@
       ), 'hour', hours.map(h =>
         ({ idx: h.idx, label: h.label, gan: h.gan, zhi: h.zhi, cls: flow.hourIdx === h.idx ? ' active' : '', data: 'data-flow="hour" data-hour-idx="' + h.idx + '"' })
       ));
-      buildShenshaGrid(dSha);
-
       showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
     }
 
@@ -862,8 +842,6 @@
       ), 'hour', hours.map(h =>
         ({ idx: h.idx, label: h.label, gan: h.gan, zhi: h.zhi, cls: flow.hourIdx === h.idx ? ' active' : '', data: 'data-flow="hour" data-hour-idx="' + h.idx + '"' })
       ));
-      buildShenshaGrid(hSha);
-
       showAnalysis(analyzeBaziWithFlow(r, getFlowItems()));
     }
 
@@ -881,13 +859,6 @@
           '</div></div>';
       }
       document.getElementById('flowCascadeArea').innerHTML = html;
-    }
-
-    function buildShenshaGrid(sha) {
-      const sg = document.getElementById('shenshaGrid'); sg.innerHTML = '';
-      const se = Object.entries(sha);
-      if (!se.length) { sg.innerHTML = '<div style="color:#a09080;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; return; }
-      se.forEach(([name, val]) => { const d = document.createElement('div'); d.className = 'shensha-item'; d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>'; sg.appendChild(d); });
     }
 
     function showAnalysis(an) {
