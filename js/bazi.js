@@ -381,6 +381,19 @@ function getDefaultDate(){
   return{year:now.getFullYear(),month:now.getMonth()+1,day:now.getDate(),hour:now.getHours(),minute:now.getMinutes()};
 }
 
+function getSexagenaryIdx(stem,branch){
+  const si=TIAN_GAN.indexOf(stem),bi=DI_ZHI.indexOf(branch);
+  for(let i=0;i<60;i++) if(i%10===si&&i%12===bi) return i;
+  return 0;
+}
+
+function calcXiaoYun(hourStem,hourBranch,shunPai,age){
+  const base=getSexagenaryIdx(hourStem,hourBranch);
+  const dir=shunPai?1:-1;
+  const idx=((base+(age-1)*dir)%60+60)%60;
+  return{gan:TIAN_GAN[idx%10],zhi:DI_ZHI[idx%12],ganZhi:TIAN_GAN[idx%10]+DI_ZHI[idx%12]};
+}
+
 // ═══════════════════════════════════════════
 //  农历数据 & 转换（1900-2100）
 //  位编码: bits 0-3 = 闰月月份(0=无闰)

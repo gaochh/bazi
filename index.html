@@ -30,34 +30,35 @@
     .so-boxes { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 4px; }
     .so-box {
       text-align: center;
-      min-width: 72px;
-      padding: 6px 8px 5px;
+      min-width: 68px;
+      max-width: 88px;
+      padding: 5px 5px 4px;
       border: 1px solid #dccfc0;
-      border-radius: 7px;
+      border-radius: 6px;
       background: #ffffff;
-      flex-shrink: 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      flex: 0 0 auto;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
     .so-box.so-box-flow { background: #fdfbf8; border-color: #c4a02a; }
-    .so-box .sb-label { font-size: 0.55rem; color: #a09080; letter-spacing: 1px; margin-bottom: 4px; }
-    .so-box .sb-gan-ss { font-size: 0.6rem; color: #b8860b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1px; }
-    .so-box .sb-gan { font-size: 1.1rem; font-weight: 700; line-height: 1.2; }
-    .so-box .sb-divider { width: 60%; height: 1px; margin: 3px auto; background: #e8ddd0; }
-    .so-box .sb-zhi { font-size: 1.1rem; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
-    .so-box .sb-cg-list { margin: 2px 0; }
-    .so-box .sb-cg-item { display: inline-flex; align-items: center; gap: 2px; font-size: 0.58rem; margin: 0 2px; }
+    .so-box .sb-label { font-size: 0.5rem; color: #a09080; letter-spacing: 1px; margin-bottom: 2px; }
+    .so-box .sb-gan-ss { font-size: 0.5rem; color: #b8860b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0; line-height: 1.1; }
+    .so-box .sb-gan { font-size: 1rem; font-weight: 700; line-height: 1.2; }
+    .so-box .sb-divider { width: 60%; height: 1px; margin: 2px auto; background: #e8ddd0; }
+    .so-box .sb-zhi { font-size: 1rem; font-weight: 700; line-height: 1.2; margin-bottom: 1px; }
+    .so-box .sb-cg-list { display: flex; flex-direction: column; align-items: center; gap: 1px; margin: 1px 0; }
+    .so-box .sb-cg-item { font-size: 0.48rem; white-space: nowrap; }
     .so-box .sb-cg-gan { color: #6a5a4a; font-weight: 600; }
-    .so-box .sb-cg-arrow { color: #c4a02a; font-size: 0.5rem; }
+    .so-box .sb-cg-arrow { color: #c4a02a; font-size: 0.45rem; margin: 0 1px; }
     .so-box .sb-cg-ss { color: #8b7355; }
-    .so-box .sb-meta { font-size: 0.52rem; color: #a09080; margin-top: 2px; line-height: 1.2; }
+    .so-box .sb-meta { font-size: 0.48rem; color: #a09080; margin-top: 1px; line-height: 1.15; }
     .so-box .sb-meta .sm-cs { color: #8b7355; }
     .so-box .sb-meta .sm-sep { color: #c4a02a; margin: 0 1px; }
     .so-box .sb-meta .sm-cs-ri { color: #b8860b; }
-    .so-pillar-shensha { display: flex; gap: 4px; padding-top: 4px; border-top: 1px solid #e8ddd0; margin-bottom: 4px; }
+    .so-pillar-shensha { display: flex; gap: 3px; padding-top: 3px; border-top: 1px solid #e8ddd0; margin-bottom: 3px; }
     .so-pillar-shensha .ps-col { flex: 1; text-align: center; min-width: 0; }
-    .so-pillar-shensha .ps-pillar { font-size: 0.52rem; color: #a09080; letter-spacing: 1px; margin-bottom: 1px; }
-    .so-pillar-shensha .ps-item { display: inline-block; font-size: 0.48rem; color: #b8860b; background: #faf6f0; border: 1px solid #e8ddd0; border-radius: 2px; padding: 0 3px; margin: 1px; }
-    .so-pillar-shensha .ps-none { font-size: 0.48rem; color: #c0b0a0; }
+    .so-pillar-shensha .ps-pillar { font-size: 0.48rem; color: #a09080; letter-spacing: 1px; margin-bottom: 1px; }
+    .so-pillar-shensha .ps-item { display: inline-block; font-size: 0.44rem; color: #b8860b; background: #faf6f0; border: 1px solid #e8ddd0; border-radius: 2px; padding: 0 2px; margin: 1px; }
+    .so-pillar-shensha .ps-none { font-size: 0.44rem; color: #c0b0a0; }
     .so-shensha { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 4px; border-top: 1px solid #e8ddd0; }
     .so-shensha-item { font-size: 0.6rem; padding: 0 5px; border-radius: 2px; background: #faf6f0; color: #8b7355; }
     .so-shensha-item .ss-name { color: #a09080; }
@@ -87,10 +88,10 @@
     .ai-result-inner th { background:#faf6f0; color:#8b7355; font-weight:500; }
     .ai-error { color:#c62828; font-size:0.82rem; padding:10px; text-align:center; background:#fef0f0; border-radius:8px; border:1px solid #e0c0c0; }
     @media (max-width: 640px) {
-      .so-box { min-width: 56px; padding: 4px 4px 3px; }
-      .so-box .sb-gan, .so-box .sb-zhi { font-size: 0.9rem; }
-      .so-box .sb-meta { font-size: 0.48rem; }
-      .so-box .sb-gan-ss { font-size: 0.52rem; }
+      .so-box { min-width: 52px; padding: 3px 2px 2px; font-size:0.9rem; }
+      .so-box .sb-gan, .so-box .sb-zhi { font-size: 0.82rem; }
+      .so-box .sb-meta { font-size: 0.44rem; }
+      .so-box .sb-gan-ss { font-size: 0.46rem; }
     }
   </style>
 </head>
@@ -191,6 +192,7 @@
 
           <div class="info-card">
             <h3>◆ 命主信息</h3>
+            <div class="info-row"><span class="info-label">命主</span><span class="info-value" id="mingZhu"></span></div>
             <div class="info-row"><span class="info-label">生肖</span><span class="info-value" id="shengXiao"></span></div>
             <div class="info-row"><span class="info-label">性别</span><span class="info-value" id="genderDisplay"></span></div>
             <div class="info-row"><span class="info-label">日干五行</span><span class="info-value" id="riWxDisplay"></span></div>
@@ -447,6 +449,7 @@
       updateShenshaRelations(r.shenSha, []);
 
       // Info cards
+      document.getElementById('mingZhu').textContent = r.gender === '男' ? '元男' : '元女';
       document.getElementById('shengXiao').textContent = r.shengXiao;
       document.getElementById('genderDisplay').textContent = r.gender;
       document.getElementById('riWxDisplay').textContent = r.riWx;
@@ -485,11 +488,12 @@
       const dy = r.daYun;
       document.getElementById('dayunInfo').innerHTML = '起运 <strong>' + dy.startAge + ' 岁</strong> · 排法 <strong>' + (dy.shunPai ? '顺排' : '逆排') + '</strong>';
       const dt = document.getElementById('dayunTable'); dt.innerHTML = '';
-      const th = document.createElement('thead'); th.innerHTML = '<tr><th>大运</th><th>年龄</th><th>干支</th><th>纳音</th></tr>'; dt.appendChild(th);
+      const th = document.createElement('thead'); th.innerHTML = '<tr><th>大运</th><th>年龄</th><th>干支</th><th>纳音</th><th>小运</th></tr>'; dt.appendChild(th);
       const tb = document.createElement('tbody');
       dy.pillars.forEach((p, i) => {
         const tr = document.createElement('tr'); tr.dataset.dayunIndex = i;
-        tr.innerHTML = '<td>' + p.index + '</td><td>' + p.ageFrom + '-' + p.ageTo + '岁</td><td style="white-space:nowrap"><span style="color:' + WU_XING_COLOR[p.wxG] + ';font-weight:600">' + p.gan + '</span><span style="color:' + WU_XING_COLOR[p.wxZ] + ';font-weight:600">' + p.zhi + '</span></td><td style="color:#a09080;font-size:0.78rem">' + p.naYin + '</td>';
+        const xy = calcXiaoYun(r.pillars[3].gan, r.pillars[3].zhi, dy.shunPai, p.ageFrom);
+        tr.innerHTML = '<td>' + p.index + '</td><td>' + p.ageFrom + '-' + p.ageTo + '岁</td><td style="white-space:nowrap"><span style="color:' + WU_XING_COLOR[p.wxG] + ';font-weight:600">' + p.gan + '</span><span style="color:' + WU_XING_COLOR[p.wxZ] + ';font-weight:600">' + p.zhi + '</span></td><td style="color:#a09080;font-size:0.78rem">' + p.naYin + '</td><td style="color:#6a5a4a;font-size:0.8rem">' + xy.ganZhi + '</td>';
         tb.appendChild(tr);
       });
       dt.appendChild(tb);
