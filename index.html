@@ -556,6 +556,21 @@
       const dy = lastResult.daYun.pillars[idx];
       const birthYear = parseInt(document.getElementById('birthYear').value);
       const startYear = birthYear + dy.ageFrom;
+      const r = lastResult;
+      const hourGan = r.pillars[3].gan, hourZhi = r.pillars[3].zhi;
+
+      // 小运 before first 大运
+      let xyHtml = '';
+      if (idx === 0 && dy.ageFrom > 1) {
+        for (let age = 1; age < dy.ageFrom; age++) {
+          const y = birthYear + age;
+          const xy = calcXiaoYun(hourGan, hourZhi, dy.shunPai, age);
+          xyHtml += '<span class="flow-year-chip xiaoyun-chip' + (flow.year === y ? ' active' : '') + '" data-flow="year" data-year="' + y + '" title="' + age + '岁 小运"><span class="fy-year">' + y + '(' + age + '岁)</span><span class="fy-ganzhi">' + xy.ganZhi + '</span><span class="fy-label">小运</span></span>';
+        }
+      }
+      const xySection = xyHtml ? '<div class="dayun-section-label">小运</div><div class="dayun-flow-years">' + xyHtml + '</div>' : '';
+
+      // 大运10年
       let html = '';
       for (let i = 0; i < 10; i++) {
         const y = startYear + i;
@@ -563,12 +578,13 @@
         const act = flow.year === y ? ' active' : '';
         html += '<span class="flow-year-chip' + act + '" data-flow="year" data-year="' + y + '"><span class="fy-year">' + y + '</span><span class="fy-ganzhi">' + TIAN_GAN[gi] + DI_ZHI[bi] + '</span></span>';
       }
+      const dySection = '<div class="dayun-section-label">大运 · ' + dy.gan + dy.zhi + '</div><div class="dayun-flow-years">' + html + '</div>';
+
       const er = document.createElement('tr'); er.className = 'dayun-expand-row';
-      er.innerHTML = '<td colspan="6"><div class="dayun-flow-wrap"><div class="dayun-flow-years">' + html + '</div></div></td>';
+      er.innerHTML = '<td colspan="6"><div class="dayun-flow-wrap">' + xySection + dySection + '</div></td>';
       row.after(er);
 
       // Update overview: original 4 + 大运 box
-      const r = lastResult;
       const boxes = buildMainBoxes(r);
       boxes.push(makeBox('大运' + dy.index, dy.gan, dy.zhi, r.riGan, true));
       renderBoxes(boxes);
