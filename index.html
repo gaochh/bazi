@@ -245,9 +245,13 @@
                     <option value="https://api.openai.com/v1/chat/completions">OpenAI</option>
                   </select>
                 </div>
-                <div class="form-group" style="flex:1">
-                  <label>模型</label>
-                   <input type="text" id="aiModel" value="opencode/deepseek-v4-flash-free" placeholder="模型名" style="font-size:0.78rem;padding:6px 8px">
+                <div class="form-group" style="flex:1;display:flex;flex-direction:column">
+                  <label>模型 <span style="color:#5a4a3a;font-weight:400;font-size:0.7rem" id="modelStatus"></span></label>
+                  <div style="display:flex;gap:4px">
+                    <select id="aiModel" style="font-size:0.78rem;padding:6px 8px;flex:1;min-width:0">
+                      <option value="opencode/deepseek-v4-flash-free">opencode/deepseek-v4-flash-free</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
@@ -845,11 +849,57 @@
       const btn = document.getElementById('aiSaveKeyBtn'); btn.textContent = '已保存 ✓'; btn.style.borderColor = '#81c784'; btn.style.color = '#81c784';
       setTimeout(() => { btn.textContent = '保存配置'; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
     }
-    (function initAI() { const cfg = loadAIConfig(); document.getElementById('aiApiKey').value = cfg.key; document.getElementById('aiEndpoint').value = cfg.endpoint; document.getElementById('aiModel').value = cfg.model; })();
+    (function initAI() {
+      const cfg = loadAIConfig();
+      document.getElementById('aiApiKey').value = cfg.key;
+      document.getElementById('aiEndpoint').value = cfg.endpoint;
+      const sel = document.getElementById('aiModel');
+      if (cfg.model) {
+        const existing = Array.from(sel.options).find(o => o.value === cfg.model);
+        if (existing) existing.selected = true;
+        else { const opt = document.createElement('option'); opt.value = cfg.model; opt.textContent = cfg.model; opt.selected = true; sel.appendChild(opt); }
+      }
+      if (cfg.endpoint && cfg.key) refreshModelList(cfg.endpoint, cfg.key);
+    })();
+    async function fetchModelsFromAPI(endpoint, apiKey) {
+      try {
+        const base = endpoint.replace('/v1/chat/completions', '');
+        const resp = await fetch(base + '/models', { headers: { 'Authorization': 'Bearer ' + apiKey }, signal: AbortSignal.timeout(5000) });
+        if (!resp.ok) return [];
+        const json = await resp.json();
+        return (json.data || []).map(m => m.id).filter(id => typeof id === 'string');
+      } catch { return []; }
+    }
+    async function refreshModelList(endpoint, apiKey) {
+      const sel = document.getElementById('aiModel');
+      const curVal = sel.value;
+      const st = document.getElementById('modelStatus');
+      st.textContent = '获取中...';
+      const models = await fetchModelsFromAPI(endpoint, apiKey);
+      if (models.length) {
+        sel.innerHTML = models.map(m => '<option value="' + m.replace(/"/g,'&quot;') + '"' + (m === curVal ? ' selected' : '') + '>' + m.replace(/</g,'&lt;') + '</option>').join('');
+        st.textContent = '';
+      } else {
+        const fallback = {
+          'api.opencode.ai': ['opencode/deepseek-v4-flash-free','opencode/deepseek-v4-flash'],
+          'api.deepseek.com': ['deepseek-chat','deepseek-reasoner'],
+          'openrouter.ai': ['google/gemini-2.0-flash-exp:free','anthropic/claude-3.5-sonnet'],
+          'api.openai.com': ['gpt-4o-mini','gpt-4o','gpt-4-turbo']
+        };
+        const list = Object.entries(fallback).find(([k]) => endpoint.includes(k));
+        if (list) {
+          sel.innerHTML = list[1].map(m => '<option value="' + m + '"' + (m === curVal ? ' selected' : '') + '>' + m + '</option>').join('');
+        }
+        st.textContent = models.length === 0 ? '(默认)' : '';
+      }
+    }
     document.getElementById('aiEndpoint').addEventListener('change', function () {
-      const models = { 'api.opencode.ai': 'opencode/deepseek-v4-flash-free', 'api.deepseek.com': 'deepseek-chat', 'openrouter.ai': 'google/gemini-2.0-flash-exp:free', 'api.openai.com': 'gpt-4o-mini' };
-      const m = Object.entries(models).find(([k]) => this.value.includes(k));
-      if (m) document.getElementById('aiModel').value = m[1];
+      const key = document.getElementById('aiApiKey').value.trim();
+      refreshModelList(this.value, key || loadAIConfig().key);
+    });
+    document.getElementById('aiApiKey').addEventListener('blur', function () {
+      const ep = document.getElementById('aiEndpoint').value;
+      if (this.value.trim()) refreshModelList(ep, this.value.trim());
     });
     document.getElementById('aiSaveKeyBtn').addEventListener('click', saveAIConfig);
     document.getElementById('aiAnalyzeBtn').addEventListener('click', function() { if (!lastResult) { document.getElementById('baziForm').requestSubmit(); return; } startAIAnalysis(); });
