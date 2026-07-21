@@ -906,6 +906,21 @@
       let relText = '';
       (lr.relations || []).forEach(function(rr) { relText += '\n    ' + rr.pillar + '(' + rr.zhi + ') → ' + rr.relation; });
 
+      // Flow analysis
+      const flowItems = [{ gan: dy.gan, zhi: dy.zhi, label: '大运' }, { gan: lr.gan, zhi: lr.zhi, label: '流年' }];
+      const flowAn = analyzeBaziWithFlow(r, flowItems);
+      let analysisText = '';
+      if (flowAn.bestWorkMethod) {
+        analysisText += '最佳做工: ' + flowAn.bestWorkMethod.name + ' (效率' + flowAn.bestWorkMethod.efficiency + '%, 概率' + Math.round(flowAn.bestWorkMethod.prob * 100) + '%) - ' + flowAn.bestWorkMethod.desc;
+      }
+      if (flowAn.patterns.length) {
+        analysisText += '\n格局: ' + flowAn.patterns.slice(0, 2).map(p => p.name + '(' + Math.round(p.prob * 100) + '%)').join('、');
+      }
+      analysisText += '\n纯粹程度: ' + flowAn.purity + ' - ' + flowAn.purityDesc;
+      analysisText += '\n喜用神(五行): ' + flowAn.favorableGods.elements.join('、');
+      analysisText += '\n忌神(五行): ' + flowAn.unfavorableGods.elements.join('、');
+      if (flowAn.quality) analysisText += '\n层次评估: ' + flowAn.quality;
+
       return ['## 八字原局信息', '### 四柱', r.pillars.map((p, i) => '  柱: ' + p.gan + p.zhi + '  五行: ' + WU_XING_TG[p.gan] + WU_XING_DZ[p.zhi] + '  纳音: ' + r.nayin[i] + '  十神: ' + r.shiShen[i] + '  十二长生: ' + r.changSheng[i]).join('\n'),
         '日主: ' + r.riGan + ' (' + r.riWx + ')',
         '### 五行分布', Object.entries(r.wuxingCount).map(([k, v]) => '  ' + k + ': ' + v + ' (' + r.wuxingPercent[k] + '%)').join('\n'),
@@ -916,6 +931,7 @@
         '流年神煞: ' + Object.entries(lr.shenSha).map(([k, v]) => k + '(' + (Array.isArray(v) ? v.join('、') : v) + ')').join('、'),
         '与四柱关系: ' + relText,
         '与大运关系: ' + (gzRel ? gzRel : '无特殊'),
+        '### 做工分析(大运+流年)', analysisText,
         '### 关注方面', areaText,
         '### 要求', '请以"批流年"的视角，分析以上信息，给出 ' + year + ' 年在这个(些)方面的应事推断。先分析流年与大运、原局的做功互动，再结合 ' + areaText + ' 进行具体推断。输出格式请使用Markdown，步骤标题用汉字数字（一、二、三、四、五）。'
       ].join('\n');
