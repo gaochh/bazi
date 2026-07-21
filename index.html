@@ -198,6 +198,11 @@
             <div class="wuxing-bar-total" id="wuxingTags"></div>
           </div>
 
+          <div class="info-card full-width" id="analysisCard" style="display:none">
+            <h3>◆ 做工基础分析</h3>
+            <div id="analysisContent"></div>
+          </div>
+
           <div class="info-card full-width" id="shenshaCard">
             <h3>◆ 神煞</h3>
             <div class="shensha-grid" id="shenshaGrid"></div>
@@ -278,6 +283,7 @@
   </div>
 
   <script src="js/bazi.js"></script>
+  <script src="js/analysis.js"></script>
   <script>
     const MONTH_NAMES = ['寅月','卯月','辰月','巳月','午月','未月','申月','酉月','戌月','亥月','子月','丑月'];
     const HOUR_NAMES = ['子时','丑时','寅时','卯时','辰时','巳时','午时','未时','申时','酉时','戌时','亥时'];
@@ -446,6 +452,10 @@
       const se = Object.entries(r.shenSha);
       if (!se.length) { sg.innerHTML = '<div style="color:#a09080;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; }
       else { se.forEach(([name, val]) => { const d = document.createElement('div'); d.className = 'shensha-item'; d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>'; sg.appendChild(d); }); }
+
+      // 做工分析
+      const an = analyzeBazi(r);
+      showAnalysis(an);
 
       // 大运
       const dy = r.daYun;
@@ -740,6 +750,63 @@
       const se = Object.entries(sha);
       if (!se.length) { sg.innerHTML = '<div style="color:#a09080;font-size:0.85rem;text-align:center;padding:8px 0">无显著神煞</div>'; return; }
       se.forEach(([name, val]) => { const d = document.createElement('div'); d.className = 'shensha-item'; d.innerHTML = '<span class="shensha-name">' + name + '</span><span class="shensha-val">' + (Array.isArray(val) ? val.join('、') : val) + '</span>'; sg.appendChild(d); });
+    }
+
+    function showAnalysis(an) {
+      const card = document.getElementById('analysisCard');
+      const ct = document.getElementById('analysisContent');
+      card.style.display = '';
+
+      let html = '<div style="font-size:0.78rem;line-height:1.6;color:#3d2b1f">';
+
+      // 格局
+      html += '<div style="margin-bottom:8px"><strong style="color:#b8860b">格局判断</strong><br>';
+      an.patterns.forEach(p => { html += '<span style="display:inline-block;padding:0 6px;margin:1px 2px;background:#faf6f0;border:1px solid #e8ddd0;border-radius:4px;font-size:0.75rem">' + p.name + ' <span style="color:#8b7355">' + Math.round(p.prob * 100) + '%</span></span> '; });
+      html += '</div>';
+
+      // 最佳做工
+      if (an.bestWorkMethod) {
+        html += '<div style="margin-bottom:6px"><strong style="color:#b8860b">最佳做功</strong><br>';
+        html += '<span style="display:inline-block;padding:2px 8px;background:#fff6e0;border:1px solid #c4a02a;border-radius:4px;font-weight:600">' + an.bestWorkMethod.name + '</span>';
+        html += ' <span style="color:#8b7355;font-size:0.72rem">效率' + an.bestWorkMethod.efficiency + '% · 概率' + Math.round(an.bestWorkMethod.prob * 100) + '%</span><br>';
+        html += '<span style="font-size:0.72rem;color:#6a5a4a">' + an.bestWorkMethod.desc + '</span></div>';
+      }
+
+      // 所有做工路线
+      if (an.workMethods.length) {
+        html += '<div style="margin-bottom:6px"><strong style="color:#b8860b">全部做工路线</strong><br>';
+        an.workMethods.forEach((m, i) => {
+          const tagClr = m.tag === '吉' ? '#2e7d32' : m.tag === '凶' ? '#c62828' : '#8b6914';
+          html += '<span style="display:inline-block;padding:1px 5px;margin:1px 2px;background:#faf6f0;border:1px solid #e8ddd0;border-radius:3px;font-size:0.72rem">' +
+            '<span style="color:' + tagClr + ';font-weight:' + (i === an.bestIdx ? 600 : 400) + '">' + m.name + '</span>' +
+            ' <span style="color:#8b7355">' + Math.round(m.prob * 100) + '%</span>' +
+            '</span> ';
+        });
+        html += '</div>';
+      }
+
+      // 喜用神忌神
+      html += '<div style="margin-bottom:6px"><strong style="color:#b8860b">喜用 · 忌神</strong><br>';
+      html += '<span style="color:#2e7d32">喜用:</span> ';
+      html += an.favorableGods.elements.map(w => '<span class="wuxing-tag" style="background:' + WU_XING_COLOR[w] + '33;color:' + WU_XING_COLOR[w] + ';font-size:0.7rem">' + w + '</span>').join(' ');
+      html += ' ';
+      html += an.favorableGods.tenGods.map(s => '<span style="background:#e8f5e9;padding:1px 5px;border-radius:3px;font-size:0.7rem">' + s + '</span>').join('');
+      html += '<br><span style="color:#c62828">忌神:</span> ';
+      html += an.unfavorableGods.elements.map(w => '<span class="wuxing-tag" style="background:' + WU_XING_COLOR[w] + '33;color:' + WU_XING_COLOR[w] + ';font-size:0.7rem">' + w + '</span>').join(' ');
+      html += ' ';
+      html += an.unfavorableGods.tenGods.map(s => '<span style="background:#fce4ec;padding:1px 5px;border-radius:3px;font-size:0.7rem">' + s + '</span>').join('');
+      html += '</div>';
+
+      // 纯粹程度 & 格局层次
+      html += '<div style="margin-bottom:4px"><strong style="color:#b8860b">格局层次</strong><br>';
+      const pureClr = an.purity === '高' ? '#2e7d32' : an.purity === '中' ? '#8b6914' : '#c62828';
+      html += '<span style="font-size:0.75rem">纯粹程度: <span style="color:' + pureClr + ';font-weight:600">' + an.purity + '</span></span><br>';
+      html += '<span style="font-size:0.72rem;color:#6a5a4a">' + an.purityDesc + '</span><br>';
+      html += '<span style="font-size:0.75rem;color:#3d2b1f;background:#f5f0e8;display:inline-block;padding:2px 8px;border-radius:4px;margin-top:2px">' + an.quality + '</span>';
+      html += '</div>';
+
+      html += '</div>';
+      ct.innerHTML = html;
     }
 
     // ═══════════════════════════════════════════
