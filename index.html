@@ -179,6 +179,11 @@
           <div class="so-pillar-shensha" id="soPillarShensha"></div>
           <div class="so-shensha" id="soShensha"></div>
           <div class="so-relations" id="soRelations"></div>
+          <div class="so-analysis" id="soAnalysis"></div>
+          <div class="so-ai-calib" id="soAiCalib">
+            <button type="button" class="so-calib-btn" id="soCalibBtn">AI 校准</button>
+            <div class="so-calib-result" id="soCalibResult"></div>
+          </div>
         </div>
       </div>
 
@@ -288,6 +293,7 @@
     const MONTH_NAMES = ['寅月','卯月','辰月','巳月','午月','未月','申月','酉月','戌月','亥月','子月','丑月'];
     const HOUR_NAMES = ['子时','丑时','寅时','卯时','辰时','巳时','午时','未时','申时','酉时','戌时','亥时'];
     let lastResult = null;
+    let lastAnalysis = null;
     let flow = { year: null, monthIdx: null, day: null, hourIdx: null, daYunIdx: null };
     let expandedDayunIdx = -1;
     const defaultDate = getDefaultDate();
@@ -888,7 +894,88 @@
 
       html += '</div>';
       ct.innerHTML = html;
+
+      // Update sticky analysis panel
+      showStickyAnalysis(an);
+      // Store for AI calibration
+      lastAnalysis = an;
     }
+
+    function showStickyAnalysis(an) {
+      const el = document.getElementById('soAnalysis');
+      const calib = document.getElementById('soAiCalib');
+      if (!an || !an.workMethods || !an.workMethods.length) { el.style.display = 'none'; calib.style.display = 'none'; return; }
+      el.style.display = '';
+      calib.style.display = '';
+      const flowTag = an.flowLabel ? '<span style="color:#8b6914;font-size:0.65rem">[' + an.flowLabel + '] </span>' : '';
+      const best = an.bestWorkMethod;
+      const pat = (an.patterns[0] || {}).name || '—';
+      const pureClr = an.purity === '高' ? 'high' : an.purity === '中' ? 'mid' : 'low';
+      el.innerHTML = flowTag +
+        '<div class="soa-item"><span class="soa-label">格局:</span> <span class="soa-val">' + pat + '</span> <span class="soa-tag ' + pureClr + '">' + an.purity + '</span></div>' +
+        (best ? '<div class="soa-item"><span class="soa-label">做功:</span> <span class="soa-val">' + best.name + '</span> <span style="color:#8b7355;font-size:0.65rem">' + best.efficiency + '%</span></div>' : '') +
+        '<div class="soa-item"><span class="soa-label">喜用:</span> <span style="color:#2e7d32">' + an.favorableGods.elements.join('') + '</span> <span class="soa-label">忌:</span> <span style="color:#c62828">' + an.unfavorableGods.elements.join('') + '</span></div>';
+    }
+
+    // ── AI 校准 ──
+    document.getElementById('soCalibBtn').addEventListener('click', async function() {
+      const resultEl = document.getElementById('soCalibResult');
+      if (!lastResult || !lastAnalysis) { resultEl.innerHTML = '<span style="color:#c62828">请先排盘</span>'; resultEl.style.display = ''; return; }
+      if (resultEl.dataset.loading === '1') return;
+
+      const apiKey = document.getElementById('aiApiKey').value.trim();
+      let endpoint = document.getElementById('aiEndpoint').value;
+      let model = document.getElementById('aiModel').value;
+
+      if (!apiKey) {
+        // Use free endpoint
+        endpoint = 'https://api.opencode.ai/v1/chat/completions';
+        model = 'opencode/free';
+      }
+
+      const r = lastResult;
+      const an = lastAnalysis;
+      const flowLabel = an.flowLabel || '原局';
+      const prompt = '你是一位资深八字命理师，请对以下八字做工分析进行校准和补充，给出专业的修正建议和补充分析。\n\n' +
+        '## 八字信息\n' +
+        '四柱: ' + r.pillars.map((p, i) => p.name + ' ' + p.gan + p.zhi).join('  ') + '\n' +
+        '日主: ' + r.riGan + '(' + r.riWx + ')\n' +
+        '五行: ' + Object.entries(r.wuxingCount).map(([k, v]) => k + v).join(' ') + '\n' +
+        '## 当前分析 (' + flowLabel + ')\n' +
+        '格局: ' + an.patterns.map(p => p.name + '(' + Math.round(p.prob * 100) + '%)').join('、') + '\n' +
+        '最佳做工: ' + (an.bestWorkMethod ? an.bestWorkMethod.name + '(效率' + an.bestWorkMethod.efficiency + '% ' + an.bestWorkMethod.desc + ')' : '无') + '\n' +
+        '全部路线: ' + an.workMethods.map(m => m.name + '(' + Math.round(m.prob * 100) + '%)').join('、') + '\n' +
+        '纯粹度: ' + an.purity + ' - ' + an.purityDesc + '\n' +
+        '喜用神: ' + an.favorableGods.elements.join('、') + ' ' + an.favorableGods.tenGods.join('、') + '\n' +
+        '忌神: ' + an.unfavorableGods.elements.join('、') + ' ' + an.unfavorableGods.tenGods.join('、') + '\n' +
+        '层次: ' + an.quality + '\n\n' +
+        '请从以下角度进行校准:\n' +
+        '1. 格局判定是否准确，是否有遗漏\n' +
+        '2. 最佳做工路线是否合理\n' +
+        '3. 喜用神和忌神是否恰当\n' +
+        '4. 补充遗漏的重要做工路线\n' +
+        '5. 整体层次评估是否有偏差\n\n' +
+        '输出格式: 先用一句话总结是否认可当前分析，然后分点列出校准意见，最后给出修正后的综合判断。';
+
+      resultEl.style.display = '';
+      resultEl.innerHTML = '<div class="calib-loading"><span></span><span></span><span></span> AI校准中...</div>';
+      resultEl.dataset.loading = '1';
+
+      try {
+        const resp = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+          body: JSON.stringify({ model, messages: [{ role: 'user', content: prompt }], stream: false, temperature: 0.7 })
+        });
+        if (!resp.ok) { resultEl.innerHTML = '<span style="color:#c62828">请求失败 ' + resp.status + '</span>'; resultEl.dataset.loading = ''; return; }
+        const data = await resp.json();
+        const text = data.choices?.[0]?.message?.content || '无响应';
+        resultEl.innerHTML = '<div class="calib-content">' + text.replace(/\n/g, '<br>') + '</div>';
+      } catch (e) {
+        resultEl.innerHTML = '<span style="color:#c62828">校准失败: ' + e.message + '</span>';
+      }
+      resultEl.dataset.loading = '';
+    });
 
     // ═══════════════════════════════════════════
     //  批流年

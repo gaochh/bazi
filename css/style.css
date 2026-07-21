@@ -294,6 +294,23 @@ header p {
 .xiaoyun-chip .fy-ganzhi { color: #8b6914; }
 .dayun-section-label { font-size: 0.68rem; color: #8b7355; letter-spacing: 1px; padding: 4px 2px 2px; }
 
+/* ── Sticky 做工分析 & AI 校准 ── */
+.so-analysis { padding-top: 4px; border-top: 1px solid #e8ddd0; margin-top: 4px; font-size: 0.7rem; line-height: 1.5; color: #5a4a3a; display: none; }
+.so-analysis .soa-item { margin: 1px 0; }
+.so-analysis .soa-label { color: #a09080; }
+.so-analysis .soa-val { color: #b8860b; font-weight: 500; }
+.so-analysis .soa-tag { display: inline-block; padding: 0 5px; border-radius: 3px; font-size: 0.65rem; font-weight: 600; }
+.so-analysis .soa-tag.high { background: #e8f5e9; color: #2e7d32; }
+.so-analysis .soa-tag.mid { background: #fff8e1; color: #8b6914; }
+.so-analysis .soa-tag.low { background: #fce4ec; color: #c62828; }
+.so-ai-calib { padding-top: 3px; margin-top: 3px; border-top: 1px solid #e8ddd0; display: none; }
+.so-calib-btn { font-size: 0.68rem; padding: 2px 10px; background: #faf6f0; border: 1px solid #d4c5b0; border-radius: 4px; color: #8b7355; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.so-calib-btn:hover { background: #f5f0e8; border-color: #c4a02a; color: #b8860b; }
+.so-calib-result { font-size: 0.68rem; color: #5a4a3a; margin-top: 4px; line-height: 1.5; display: none; }
+.so-calib-result .calib-loading { display:flex; gap:4px; align-items:center; }
+.so-calib-result .calib-loading span { width:6px;height:6px;border-radius:50%;background:#d4af37;animation:aiPulse 1.2s ease-in-out infinite; }
+.so-calib-result .calib-content { background:#faf6f0; padding:4px 8px; border-radius:4px; border:1px solid #e8ddd0; font-size:0.65rem; }
+
 /* ── 流年详情 ── */
 .flow-detail-content { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .flow-detail-item { background: #ffffff; border: 1px solid #e8ddd0; border-radius: 8px; padding: 10px 14px; }
